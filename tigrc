@@ -1,0 +1,2 @@
+bind status + !git commit -v
+bind status = !git commit --amend -v

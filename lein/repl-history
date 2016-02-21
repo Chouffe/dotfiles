@@ -1,0 +1,3 @@
+(lines-aux 50 (s/split s #"\s") '())
+(lines 20 s)
+(doc throws)
