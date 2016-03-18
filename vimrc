@@ -161,11 +161,13 @@ Plug 'airblade/vim-gitgutter'
 
 " Tmux Plugin
 " lean & mean status/tabline for vim that's light as air
-Plug 'bling/vim-airline'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 " Simple tmux statusline generator with support for powerline symbols and
 " statusline / airline / lightline integration
 Plug 'christoomey/vim-tmux-navigator'
 " Plug 'edkolev/tmuxline.vim'
+" Plug 'itchyny/lightline.vim'
 " vim plugin for tmux.conf
 Plug 'tmux-plugins/vim-tmux'
 
@@ -218,6 +220,19 @@ set laststatus=2
 highlight Pmenu ctermfg=DarkRed ctermbg=Black
 highlight PmenuSel ctermfg=Blue ctermbg=Grey
 highlight Visual ctermfg=18 ctermbg=110 gui=none
+" }}}
+
+" Status Lines {{{
+let g:tmuxline_theme = 'zenburn'
+let g:tmuxline_preset = {
+      \'a'    : '#S',
+      \'b'    : ['#H', '#(whoami)'],
+      \'c'    : '{prefix}',
+      \'win'  : ['#I', '#W'],
+      \'cwin' : ['#I', '#W'],
+      \'x'    : '{online status}',
+      \'y'    : '{cpu_status}',
+      \'z'    : '{battery_icon}'}
 " }}}
 
 " Searching {{{
@@ -488,6 +503,7 @@ nnoremap <Leader>gs :silent TigStatus<CR>
 " vim-airline {{{
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show=1
 let g:airline#extensions#tabline#buffer_min_count = 2
 " }}}
