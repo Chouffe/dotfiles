@@ -7,6 +7,7 @@ export EDITOR='vim'
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="af-magic"
+WORKON_HOME=~/Envs
 
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
@@ -73,7 +74,7 @@ ag-f () { ag -G ".*$1\$" $2 }
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(git lein autojump sudo tmuxinator tmux jsontools python cabal)
+plugins=(virtualenvwrapper git lein autojump sudo tmuxinator tmux jsontools python cabal)
 
 source $ZSH/oh-my-zsh.sh
 # source ~/.bin/tmuxinator.zsh
@@ -83,6 +84,9 @@ source $ZSH/oh-my-zsh.sh
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/git/bin:/opt/local/bin"
 export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.5/bin:/opt/alex/3.1.4/bin:$PATH
 # export MANPATH="/usr/local/man:$MANPATH"
+# export PATH=/home/chouffe/anaconda3/bin:$PATH
+
+# export PATH=/home/chouffe/anaconda2/bin:$PATH
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -104,3 +108,10 @@ export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+# Android SDK
+export ANDROID_HOME=/opt/android-sdk-linux
+export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+
+#so as not to be disturbed by Ctrl-S ctrl-Q in terminals:
+stty -ixon

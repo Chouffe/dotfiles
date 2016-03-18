@@ -13,6 +13,8 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 " Defaults everyone can agree on
 Plug 'tpope/vim-sensible'
+" Pairs of handy bracket mapping
+Plug 'tpope/vim-unimpaired'
 " asynchronous build and test dispatcher
 Plug 'tpope/vim-dispatch'
 " project configuration
@@ -25,6 +27,7 @@ Plug 'tpope/vim-surround'
 Plug 'junegunn/vim-easy-align'
 " Fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 " Asynchronous
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Autocompletion
@@ -59,27 +62,37 @@ Plug 'takac/vim-hardtime'
 " Lightweight easy motion
 Plug 'justinmk/vim-sneak'
 
-Plug 'https://github.com/sjl/tslime.vim'
+Plug 'chouffe/tslime.vim'
+" Plug 'benmills/vimux'
+" Plug 'julienr/vimux-pyutils', {'for': 'python' }
+" Python
+Plug 'klen/python-mode', { 'for': 'python' }
+
+" Graph your Vim undo tree in style.
+Plug 'sjl/gundo.vim'
 
 " Nerdtree
 Plug 'scrooloose/nerdtree'
 " NERDTree and tabs together in Vim, painlessly
 Plug 'jistr/vim-nerdtree-tabs'
 
+" Goyo: Distraction free writing in vim
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/limelight.vim'
+
 " Elm
-Plug 'https://github.com/ElmCast/elm-vim', { 'for': 'elm' }
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 
 " Marks
 Plug 'kshenoy/vim-signature'
 
 " Racket Plugins
-Plug 'https://github.com/wlangstroth/vim-racket'
+Plug 'wlangstroth/vim-racket'
 
 " Clojure Plugins
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'tpope/vim-classpath', { 'for': 'clojure' }
 Plug 'honza/vim-clojure-conceal', { 'for' : 'clojure' }
-
 Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme'] }
 Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for' : ['clojure', 'scheme'] }
 " Extend builtin syntax highlighting to referred and aliased vars in Clojure buffers
@@ -92,7 +105,9 @@ Plug 'dgrnbrg/vim-redl', { 'for': 'clojure' }
 Plug 'dgrnbrg/redl', { 'for': 'clojure' }
 " static support for Leiningen and Boot
 Plug 'tpope/vim-salve', { 'for': 'clojure' }
-
+" the Clojure formatting tool.
+Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
+" Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
 
 " Haskell Plugins
 " Syntax highlighting: vim2hs/haksyn/haskell_syntax
@@ -112,7 +127,13 @@ Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
 " Plug 'bitc/lushtags', { 'for': 'haskell' }
 Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
 
-
+" Html/Xml editing
+Plug 'tpope/vim-ragtag', { 'for': ['html', 'javascript'] }
+" JavaScript
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx'
+" provides insert mode auto-completion for quotes, parens, brackets
+Plug 'Raimondi/delimitMate', { 'for': ['html', 'javascript', 'python'] }
 
 " Unite Plugins
 Plug 'Shougo/unite.vim'
@@ -134,7 +155,6 @@ Plug 'joshdick/onedark.vim'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'Wutzara/vim-materialtheme'
 
-
 " Git Plugin
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
@@ -145,7 +165,9 @@ Plug 'bling/vim-airline'
 " Simple tmux statusline generator with support for powerline symbols and
 " statusline / airline / lightline integration
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'edkolev/tmuxline.vim'
+" Plug 'edkolev/tmuxline.vim'
+" vim plugin for tmux.conf
+Plug 'tmux-plugins/vim-tmux'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -264,9 +286,11 @@ cnoremap $d <CR>:d<CR>``
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 vmap K :m'<-2<cr>`>my`<mzgv`yo`z
 vmap J :m'>+<cr>`<my`>mzgv`yo`z
-" Splits
-nnoremap <silent> sv :vsplit<CR>
-nnoremap <silent> sh :split<CR>
+" Splits TODO -> use zv/zh instead for vim sneak to work better
+" nnoremap <silent> sv :vsplit<CR>
+" nnoremap <silent> sh :split<CR>
+nnoremap <silent> zv :vsplit<CR>
+nnoremap <silent> zh :split<CR>
 " C-k
 inoremap <C-k> <Esc>ld$a
 " }}}
@@ -323,12 +347,6 @@ nnoremap <Leader>( :RainbowParenthesesToggle<CR>
 nnoremap <Leader>cc :call ColorColumn()<CR>
 " BufOnly
 nnoremap <Leader>bb :ls<CR>:buffer<Space>
-" Fugitive maping
-nnoremap <Leader>gs :Gstatus<CR>
-nnoremap <Leader>gc :Gcommit<CR>
-nnoremap <Leader>gb :Gblame<CR>
-nnoremap <Leader>gl :Glog<CR>
-nnoremap <Leader>gp :Gpush<CR>
 " Key bindings for adjusting the tab/shift width.
 nnoremap <leader>w2 :setlocal tabstop=2<CR>:setlocal shiftwidth=2<CR>
 nnoremap <leader>w4 :setlocal tabstop=4<CR>:setlocal shiftwidth=4<CR>
@@ -358,13 +376,10 @@ highlight Search ctermfg=None ctermbg=Black cterm=bold
 " Autocmd {{{
 " Source the vimrc file after saving it
 if has("autocmd")
-    autocmd bufwritepost .vimrc source $MYVIMRC
+    autocmd! bufwritepost .vimrc source $MYVIMRC
 endif
 
 augroup rainbows
-    " Avoid defining them twice
-    autocmd!
-
     " Rainbow Parentheses
     autocmd VimEnter * RainbowParenthesesToggle
     autocmd Syntax * RainbowParenthesesLoadRound
@@ -374,8 +389,6 @@ augroup END
 
 " Haskell
 augroup HSK
-    " Avoid defining them twice
-    autocmd!
     " au Bufenter *.hs compiler ghc
     autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
     autocmd FileType haskell call HaskellSettings()
@@ -383,48 +396,48 @@ augroup END
 
 " ELM
 augroup ELM
-    " Avoid defining them twice
-    autocmd!
+    autocmd FileType elm nmap <LocalLeader>b <Plug>(elm-make)
+    autocmd FileType elm nmap <LocalLeader>m <Plug>(elm-make-main)
+    autocmd FileType elm nmap <LocalLeader>t <Plug>(elm-test)
+    autocmd FileType elm nmap <LocalLeader>r <Plug>(elm-repl)
+    autocmd FileType elm nmap <LocalLeader>e <Plug>(elm-error-detail)
+    autocmd FileType elm nmap <LocalLeader>d <Plug>(elm-show-docs)
+    autocmd FileType elm nmap <LocalLeader>w <Plug>(elm-browse-docs)
 
-    au FileType elm nmap <LocalLeader>b <Plug>(elm-make)
-    au FileType elm nmap <LocalLeader>m <Plug>(elm-make-main)
-    au FileType elm nmap <LocalLeader>t <Plug>(elm-test)
-    au FileType elm nmap <LocalLeader>r <Plug>(elm-repl)
-    au FileType elm nmap <LocalLeader>e <Plug>(elm-error-detail)
-    au FileType elm nmap <LocalLeader>d <Plug>(elm-show-docs)
-    au FileType elm nmap <LocalLeader>w <Plug>(elm-browse-docs)
-
-    au BufNewFile,BufRead,BufReadPost elm call ElmSettings()
+    autocmd BufNewFile,BufRead,BufReadPost elm call ElmSettings()
 augroup END
 " Lisp
 augroup LISP
-    autocmd!
-
     " setfiletype scheme
     " set syntax=scheme
 
     " au filetype lisp,scheme,art call SexpSettings()
-    au BufNewFile,BufRead,BufReadPost *.scm call SexpSettings()
+    autocmd BufNewFile,BufRead,BufReadPost *.scm call SexpSettings()
+augroup END
 
+augroup PYTHON
+    autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
+    autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()
+augroup END
+
+augroup GOYO
+  autocmd! User GoyoEnter Limelight
+  autocmd! User GoyoLeave Limelight!
 augroup END
 
 " Clojure
 augroup CLJ
     " Avoid defining them twice
-    autocmd!
-    au BufNewFile,BufRead,BufReadPost *.clj* call ClojureSettings()
-    au BufNewFile,BufRead,BufReadPost *.clj* call SexpSettings()
+    autocmd BufNewFile,BufRead,BufReadPost *.clj* call ClojureSettings()
+    autocmd BufNewFile,BufRead,BufReadPost *.clj* call SexpSettings()
 augroup END
 
 augroup configgroup
-    " Avoid defining them twice
-    autocmd!
-
     " No bell
-    autocmd GUIEnter * set visualbell t_vb=
+    autocmd! GUIEnter * set visualbell t_vb=
 
     " Unite Settings
-    autocmd VimEnter * call UniteSettings()
+    autocmd! VimEnter * call UniteSettings()
 
     " Save on Focus Lost
     autocmd FocusLost * silent! wa
@@ -455,8 +468,21 @@ vmap <C-V> <Plug>(expand_region_shrink)
 " noremap <Leader>m :call Toggle_task_status()<CR>
 " }}}
 
-" Python Mode {{{
-" let g:pymode_run_bind = 'cql'
+" Fugitive {{{
+" nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gc :Gcommit<CR>
+nnoremap <Leader>gb :Gblame<CR>
+nnoremap <Leader>gl :Glog<CR>
+nnoremap <Leader>gp :Gpush<CR>
+" }}}
+
+" Tig Integration {{{
+function! s:tig_status()
+  cd `driller --scm-root %`
+  !tig status
+endfunction
+command! TigStatus call s:tig_status()
+nnoremap <Leader>gs :silent TigStatus<CR>
 " }}}
 
 " vim-airline {{{
@@ -489,6 +515,7 @@ function! ClojureSettings()
     let g:vimclojure#HighlightBuiltins=1
     let g:vimclojure#ParenRainbow=1
     let g:clojure_fuzzy_indent = 1
+    let g:clojure_align_multiline_strings = 1
     let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let', '^fact', '^facts', '^tabular', 'if', 'when', '^test-extractor', 'against-background']
     let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
 
@@ -514,6 +541,7 @@ endfunction
 
 function! SexpSettings()
     " Disable insertion after wrapping
+    " let g:sexp_enable_insert_mode_mappings = 0
     let g:sexp_insert_after_wrap = 0
 
     " mapping
@@ -522,6 +550,55 @@ function! SexpSettings()
     nmap <silent><buffer> << <Plug>(sexp_capture_prev_element)
     nmap <silent><buffer> >> <Plug>(sexp_capture_next_element)
 
+endfunction
+" }}}
+
+" Python-Mode {{{
+" TODO: Refactor in a function
+" Turn on pymode
+let g:pymode=1
+
+" Enable default options
+" text-width, commentstring, ...
+let g:pymode_options=0
+
+" Python version (python 2 -> vim needs to be compiled with the
+" appropriate flags
+let g:pymode_python='python'
+
+" Motion
+" M: Method
+" C: Class
+let g:pymode_motion=1
+
+" Documentation
+let g:pymode_doc=1
+let g:pymode_doc_key='K'
+
+" Run code
+let g:pymode_run=1
+let g:pymode_run_bind='cr'
+
+" Linting
+let g:pymode_lint = 1
+let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
+let g:pymode_lint_message = 1
+
+" Syntax
+let g:pymode_syntax_all = 1
+
+" Disable breakpoints plugin
+let g:pymode_breakpoint = 0
+let g:pymode_breakpoint_bind = '<LocalLeader>b'
+
+" Don't autofold code
+let g:pymode_folding = 0
+" }}}
+
+" Python {{{
+function! PythonSettings()
+    let g:ycm_autoclose_preview_window_after_completion=1
+    map <C-f> :YcmCompleter GoToReferences<CR>
 endfunction
 " }}}
 
@@ -630,6 +707,10 @@ xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
 " }}}
 
+" Gundo {{{
+nnoremap <leader>gt :GundoToggle<CR>
+" }}}
+
 " Tmux {{{
 " Navigate between tmux and vim with ease
 let g:tmux_navigator_no_mappings = 1
@@ -696,7 +777,7 @@ function! UniteSettings()
     nnoremap <silent> <leader>] :Unite -buffer-name=search line:forward -start-insert<CR>
     let g:unite_source_history_yank_enable = 1
     nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
-    nnoremap <C-f> :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
+    nnoremap <C-s> :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
 
     autocmd FileType unite call s:unite_my_settings()
 
@@ -724,25 +805,54 @@ hi link SneakPluginScope IncSearch
 
 " Vim Sneak {{{
 " Remaps f for sneak mode
-nmap f <Plug>Sneak_s
-nmap F <Plug>Sneak_S
-xmap f <Plug>Sneak_s
-xmap F <Plug>Sneak_S
-omap f <Plug>Sneak_s
-omap F <Plug>Sneak_S
+" TODO: bug with sh/sv
+" nmap <C-s> <Plug>Sneak_s
+" nmap <C-S> <Plug>Sneak_S
+" xmap <C-s> <Plug>Sneak_s
+" xmap <C-S> <Plug>Sneak_S
+" omap <C-s> <Plug>Sneak_s
+" omap <C-S> <Plug>Sneak_S
+
+" minimalist easy motion
+" let g:sneak#streak = 1
+" nmap f <Plug>Sneak_s
+" nmap F <Plug>Sneak_S
+" xmap f <Plug>Sneak_s
+" xmap F <Plug>Sneak_S
+" omap f <Plug>Sneak_s
+" omap F <Plug>Sneak_S
+
+nmap s <Plug>Sneak_s
+nmap S <Plug>Sneak_S
+xmap s <Plug>Sneak_s
+xmap S <Plug>Sneak_S
+omap s <Plug>Sneak_s
+omap S <Plug>Sneak_S
+" }}}
+
+" fzf {{{
+set rtp+=~/.fzf
 " }}}
 
 " tslime {{{
-let g:tslime_ensure_trailing_newlines = 1
-vmap <silent> <Leader>rs <Plug>SendSelectionToTmux
-nmap <silent> <Leader>rs <Plug>NormalModeSendToTmux
-nmap <silent> <Leader>rv <Plug>SetTmuxVars
-" let g:tslime_normal_mapping = rs
-" let g:tslime_visual_mapping = rs
-" let g:tslime_vars_mapping = rv
-" let g:tslime_normal_mapping = '<localleader>s'
-" let g:tslime_visual_mapping = '<localleader>s'
-" let g:tslime_vars_mapping = '<localleader>v'
+function! TslimeSettings()
+
+  let g:tslime_always_current_session = 1
+  let g:tslime_always_current_window = 1
+  let g:tslime_ensure_trailing_newlines = 1
+
+  vmap <silent> ce <Plug>SendSelectionToTmux
+  nmap <silent> ce <Plug>NormalModeSendToTmux
+  " nmap <silent> sr <Plug>SetTmuxVars
+  nmap <silent> cc <Plug>NormalModeSendAllToTmux
+  " let g:tslime_normal_mapping = rs
+  " let g:tslime_visual_mapping = rs
+  " let g:tslime_vars_mapping = rv
+  " let g:tslime_normal_mapping = '<localleader>s'
+  " let g:tslime_visual_mapping = '<localleader>s'
+  " let g:tslime_vars_mapping = '<localleader>v'
+
+endfunction
 " }}}
 
 " Ag vim {{{
