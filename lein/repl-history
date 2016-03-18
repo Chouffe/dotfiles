@@ -1,3 +1,5 @@
 (lines-aux 50 (s/split s #"\s") '())
 (lines 20 s)
 (doc throws)
+(/ .25 .65)
+(/ 0.25 0.65)
