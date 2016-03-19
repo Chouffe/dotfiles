@@ -56,7 +56,7 @@ Plug 'terryma/vim-expand-region'
 " Better Rainbow Parentheses
 Plug 'kien/rainbow_parentheses.vim'
 " continuously updated session files (to be used with tmux resurect)
-" Plug 'tpope/vim-obsession'
+Plug 'tpope/vim-obsession'
 " help you stop repeating the basic movement keys
 Plug 'takac/vim-hardtime'
 " Lightweight easy motion
