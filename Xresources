@@ -7,7 +7,8 @@ URxvt*depth: 32
 URxvt*borderless: 1
 URxvt*scrollBar: false
 URxvt*loginShell: true
-Urxvt*secondaryScroll:  true    # Enable Shift-PageUp/Down in screen
+! Enable Shift-PageUp/Down in screen
+Urxvt*secondaryScroll:  true
 URxvt*saveLines: 5000
 URxvt*termName: rxvt-unicode
 URxvt.perl-ext-common: default,matcher,clipboard
@@ -100,3 +101,6 @@ URxvt.iso14755: False
 !! white dark/light
 *color7:                S_base2
 *color15:               S_base3
+
+URxvt*background: rgba:0000/0000/0000/dddd
+URxvt*fading: 20

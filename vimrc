@@ -205,6 +205,9 @@ set cursorline              " Highlight the line you are on
 set cursorline cursorcolumn " Highlights the column you are in
 set showmatch               " Show matches ({[
 set pastetoggle=<F2>
+colorscheme hybrid_material " Awesome colorscheme
+highlight Normal ctermbg=NONE      " No background color
+highlight LineNr ctermfg=242  " Set line number colors grey
 " set textwidth=79          " Max text-width
 filetype plugin indent on   " Enable filetype plugins
 " Tab completion on the command line
@@ -955,7 +958,7 @@ endfunction
 " colorscheme Tomorrow-Night-Eighties " Awesome colorscheme
 " colorscheme Tomorrow-Night-Eighties " Awesome colorscheme
 " colorscheme badwolf " Awesome colorscheme
-colorscheme hybrid_material " Awesome colorscheme
+" colorscheme hybrid_material " Awesome colorscheme
 " Make the tab line much lighter than the background.
 " let g:badwolf_tabline=3
 " colorscheme wombat        " Awesome colorscheme
