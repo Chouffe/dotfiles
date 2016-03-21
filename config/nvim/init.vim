@@ -757,8 +757,8 @@ function! UniteSettings()
     " Reopend last buffer
     nnoremap <silent> <C-x> :UniteResume -no-start-insert<CR>
     " Uses too much CPU (Fixed in the next vim version -> Patch it)
-    " nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
-    nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
+    nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
+    " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
     nnoremap <silent> <C-b> :Unite -buffer-name=buffers buffer<CR>
     nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
     nnoremap <silent> <C-[> :Unite -buffer-name=search line:forward -start-insert<CR>

@@ -1,6 +1,6 @@
 # Path to your oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -22,7 +22,8 @@ alias r=ranger
 alias h=htop
 alias mux=tmuxinator
 alias m=tmuxinator
-alias v="gvim -v"
+# alias v="gvim -v"
+alias v="nvim"
 # alias v="nvim"
 # alias vim="nvim"
 alias n="nvim"
