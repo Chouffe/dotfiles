@@ -22,7 +22,6 @@ alias r=ranger
 alias h=htop
 alias mux=tmuxinator
 alias m=tmuxinator
-alias v="nvim"
 alias v="gvim -v"
 # alias v="nvim"
 # alias vim="nvim"

@@ -452,24 +452,19 @@ augroup END
 
 augroup configgroup
     " No bell
-    autocmd! GUIEnter * set visualbell t_vb=
-
+    autocmd GUIEnter * set visualbell t_vb=
     " Unite Settings
     autocmd! VimEnter * call UniteSettings()
-
     " Save on Focus Lost
     autocmd FocusLost * silent! wa
     autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
     autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
     autocmd InsertLeave * match ExtraWhitespace /\s\+$/
     autocmd BufWinLeave * call clearmatches()
-
     " TrimWhiteSpaces when saving
     autocmd BufWritePre * :call TrimWhiteSpace()
-
     " Fugitive
-    autocmd QuickFixCmdPost *grep* cwindow " all the files are open in a quickfix buffer
-
+    " autocmd QuickFixCmdPost *grep* cwindow " all the files are open in a quickfix buffer
 augroup END
 " }}}
 
@@ -522,10 +517,8 @@ nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 " Clojure {{{
 function! ClojureSettings()
-
     setfiletype clojure
     set syntax=clojure
-
     " let g:ycm_semantic_triggers = {'clojure' : ['/', '(', '.']}
     let g:ycm_semantic_triggers = {'clojure' : ['/']}
     " let g:ycm_semantic_triggers.clojure = ['re!.']
@@ -562,13 +555,11 @@ function! SexpSettings()
     " Disable insertion after wrapping
     " let g:sexp_enable_insert_mode_mappings = 0
     let g:sexp_insert_after_wrap = 0
-
     " mapping
     " nmap <silent><buffer> w <Plug>(sexp_round_tail_wrap_element)
     " Slurpage & Burfage
     nmap <silent><buffer> << <Plug>(sexp_capture_prev_element)
     nmap <silent><buffer> >> <Plug>(sexp_capture_next_element)
-
 endfunction
 " }}}
 
@@ -685,7 +676,6 @@ endfunction
 
 " Tags {{{
 set tags=tags;/,codex.tags;/
-
 let g:tagbar_type_haskell = {
     \ 'ctagsbin'  : 'hasktags',
     \ 'ctagsargs' : '-x -c -o-',
@@ -855,7 +845,6 @@ set rtp+=~/.fzf
 
 " tslime {{{
 function! TslimeSettings()
-
   let g:tslime_always_current_session = 1
   let g:tslime_always_current_window = 1
   let g:tslime_ensure_trailing_newlines = 1
