@@ -15,6 +15,7 @@ WORKON_HOME=~/Envs
 # My aliases
 alias tmux='tmux -2'
 alias tm='tmux -2'
+alias t='tmux -2'
 export TERM='xterm-256color'
 [ -n "$TMUX" ] && export TERM='screen-256color'
 alias r=ranger
@@ -26,7 +27,7 @@ alias v="gvim -v"
 # alias v="nvim"
 # alias vim="nvim"
 alias n="nvim"
-alias t=tig
+alias tg=tig
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
@@ -74,7 +75,7 @@ ag-f () { ag -G ".*$1\$" $2 }
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(virtualenvwrapper git lein autojump sudo tmuxinator tmux jsontools python cabal)
+plugins=(virtualenvwrapper git lein autojump sudo tmux jsontools python cabal)
 
 source $ZSH/oh-my-zsh.sh
 # source ~/.bin/tmuxinator.zsh
@@ -107,11 +108,11 @@ export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
+# export PATH="/usr/local/heroku/bin:$PATH"
 
-# Android SDK
-export ANDROID_HOME=/opt/android-sdk-linux
-export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+# # Android SDK
+# export ANDROID_HOME=/opt/android-sdk-linux
+# export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
 #so as not to be disturbed by Ctrl-S ctrl-Q in terminals:
 stty -ixon
