@@ -22,6 +22,7 @@ URxvt.matcher.button: 1
 
 ! Enable Paste with C-V
 ! URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.keysym.M-v: perl:clipboard:paste
 URxvt.keysym.Control-v: perl:clipboard:paste
 URxvt.iso14755: False
 !! drop in Solarized colorscheme for Xresources/Xdefaults

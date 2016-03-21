@@ -2,6 +2,7 @@
 ## Terminal
 * rxvt-unicode-256colors
   * perl extension clipboard
+  * xsel, xclip
 * tmux >= 2.0
   * tmux plugin manager (git clone)
   * Install all tmux plugins
