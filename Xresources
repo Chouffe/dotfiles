@@ -19,6 +19,9 @@ URxvt.matcher.button: 1
 ! URxvt*transparent: true
 ! URxvt*shading: 90
 
+! Use visual bell on receipt of a bell character. Helpful to be used with inputrc and tmux.
+URxvt*visualBell:  false
+URxvt*urgentOnBell: false
 
 ! Enable Paste with C-V
 ! URxvt.keysym.Shift-Control-V: perl:clipboard:paste

@@ -919,3 +919,6 @@ endfunction
 " colorscheme badwolf        " Awesome colorscheme
 " colorscheme wombat256i        " Awesome colorscheme
 " }}}
+
+" Todo: move to appropriate location
+highlight Search ctermfg=white ctermbg=red
