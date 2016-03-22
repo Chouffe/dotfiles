@@ -23,6 +23,7 @@
 * iotop
 * ncdu
 * autojump
+* ssh
 * ag
 * virtualenvwrapper
 * fzf (should be installed with neovim)
