@@ -25,6 +25,7 @@
 * autojump
 * ssh
 * ag
+* rlwrap
 * virtualenvwrapper
 * fzf (should be installed with neovim)
 * ranger
@@ -34,6 +35,7 @@
   * w3m
   * poppler-utils
   * mediainfo
+  * Run ranger --copy-config=all to activate all the plugins
 * Neovim
   * Python modules
     * pip
@@ -52,3 +54,15 @@
 * Remap Caps lock to Control
   * edit /etc/default/keyboard
   * set XKBOPTIONS=“ctrl:nocaps”
+* Remap volume keys to volume
+
+## Programming languages
+
+* Clojure
+  * Leiningen
+  * Java
+* Install Anaconda for ML
+* Haskell
+* Scheme
+* Racket
+* Common Lisp

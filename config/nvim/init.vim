@@ -442,6 +442,10 @@ augroup LISP
     autocmd BufNewFile,BufRead,BufReadPost *.scm call SexpSettings()
 augroup END
 
+augroup ML
+    autocmd BufNewFile,BufRead,BufReadPost *.ml call TslimeSettings()
+augroup END
+
 augroup PYTHON
     autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
     autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()

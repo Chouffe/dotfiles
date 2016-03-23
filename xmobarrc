@@ -2,7 +2,7 @@ Config {font = "xft:Inconsolata:size=12"
         , borderColor = "black"
                 , border = TopB
                 , bgColor = "black"
-                , fgColor = "grey"
+                , fgColor = "#eeeeee"
                 , position = TopW L 100
                 , commands = [ Run Weather "CYVR" ["-t","<tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000
                 , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
@@ -56,5 +56,5 @@ Config {font = "xft:Inconsolata:size=12"
                 ]
                 , sepChar = "%"
                 , alignSep = "}{"
-                , template = "%StdinReader% | %memory% * %swap% | %dynnetwork% }{ %multicpu% | <fc=#dddddd>%date%</fc> | %uname% | %battery% "
+                , template = "%StdinReader% | %memory% * %swap% | %dynnetwork% }{ %multicpu% | <fc=#cccccc>%date%</fc> | %battery% "
 }
