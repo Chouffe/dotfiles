@@ -10,7 +10,7 @@ import XMonad.Layout.ToggleLayouts
 
 term = "urxvt"
 
-myLayout = toggleLayouts Full tiled ||| Mirror tiled ||| Full
+myLayout = toggleLayouts Full tiled ||| toggleLayouts Full (Mirror tiled)
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -44,6 +44,8 @@ main = do
         , ((mod4Mask .|. controlMask, xK_space), sendMessage ToggleLayout)
         , ((mod4Mask, xK_z), sendMessage (Toggle "Full"))
         , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
+        , ((0                     ,xF86XK_MonBrightnessUp),  spawn "xbacklight -inc 10")
+        , ((0                     ,xF86XK_MonBrightnessDown),  spawn "xbacklight -dec 10")
         , ((0                     ,xF86XK_AudioLowerVolume), spawn "amixer -D pulse sset Master 5%-")
         , ((0                     ,xF86XK_AudioRaiseVolume), spawn "amixer -D pulse sset Master 5%+")
         , ((0                     ,xF86XK_AudioMute), spawn "amixer -D pulse sset Master toggle")
