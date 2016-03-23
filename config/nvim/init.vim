@@ -80,6 +80,10 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 
+" vim notes
+Plug 'xolox/vim-misc'
+Plug 'xolox/vim-notes'
+
 " Elm
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 
@@ -474,7 +478,7 @@ augroup END
 " }}}
 
 " Vim notes {{{
-" let g:notes_directories = ['~/Documents/Notes', '~/Dropbox/Shared Notes']
+let g:notes_directories = ['~/Documents/Notes']
 " }}}
 
 " Vim expand region {{{
@@ -803,9 +807,11 @@ set rtp+=~/.fzf
 " }}}
 
 " tslime {{{
+function! TslimeSettings()
   let g:tslime_always_current_session = 1
   let g:tslime_always_current_window = 1
   let g:tslime_ensure_trailing_newlines = 1
+
   vmap <silent> ce <Plug>SendSelectionToTmux
   nmap <silent> ce <Plug>NormalModeSendToTmux
   " nmap <silent> sr <Plug>SetTmuxVars
@@ -816,6 +822,8 @@ set rtp+=~/.fzf
   " let g:tslime_normal_mapping = '<localleader>s'
   " let g:tslime_visual_mapping = '<localleader>s'
   " let g:tslime_vars_mapping = '<localleader>v'
+
+endfunction
 " }}}
 
 " Ag vim {{{

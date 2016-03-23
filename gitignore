@@ -3,4 +3,7 @@
 *swm
 .cljs_rhino_repl/
 lein/repl_history
+lein/repl-history
+.ropeproject/
+.ipynb*
 Session.vim

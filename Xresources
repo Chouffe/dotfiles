@@ -107,4 +107,7 @@ URxvt.iso14755: False
 *color15:               S_base3
 
 URxvt*background: rgba:0000/0000/0000/dddd
-URxvt*fading: 20
+URxvt*fading: 30
+
+URxvt*transparent: true
+URxvt*shading: 30

@@ -15,7 +15,6 @@ WORKON_HOME=~/Envs
 # My aliases
 alias tmux='tmux -2'
 alias tm='tmux -2'
-alias t='tmux -2'
 export TERM='xterm-256color'
 [ -n "$TMUX" ] && export TERM='screen-256color'
 alias r=ranger
@@ -28,6 +27,7 @@ alias v="nvim"
 # alias vim="nvim"
 alias n="nvim"
 alias tg=tig
+alias t=tig
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
