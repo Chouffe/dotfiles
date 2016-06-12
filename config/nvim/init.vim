@@ -61,12 +61,19 @@ Plug 'tpope/vim-obsession'
 Plug 'takac/vim-hardtime'
 " Lightweight easy motion
 Plug 'justinmk/vim-sneak'
+" Indentation level
+Plug 'Yggdroot/indentLine'
+" Cursor color
+Plug 'miyakogi/conoline.vim'
 
 Plug 'chouffe/tslime.vim'
 " Plug 'benmills/vimux'
 " Plug 'julienr/vimux-pyutils', {'for': 'python' }
 " Python
 Plug 'klen/python-mode', { 'for': 'python' }
+
+" Ruby
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
 
 " Graph your Vim undo tree in style.
 Plug 'sjl/gundo.vim'
@@ -96,7 +103,7 @@ Plug 'wlangstroth/vim-racket'
 " Clojure Plugins
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'tpope/vim-classpath', { 'for': 'clojure' }
-Plug 'honza/vim-clojure-conceal', { 'for' : 'clojure' }
+" Plug 'honza/vim-clojure-conceal', { 'for' : 'clojure' }
 Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme'] }
 Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for' : ['clojure', 'scheme'] }
 " Extend builtin syntax highlighting to referred and aliased vars in Clojure buffers
@@ -138,6 +145,9 @@ Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx'
 " provides insert mode auto-completion for quotes, parens, brackets
 Plug 'Raimondi/delimitMate', { 'for': ['html', 'javascript', 'python'] }
+
+" Ctrl-P
+Plug 'kien/ctrlp.vim'
 
 " Unite Plugins
 Plug 'Shougo/unite.vim'
@@ -200,8 +210,8 @@ endif
 " " let base16colorspace=256
 " let $NVIM_TUI_ENABLE_TRUE_COLOR='1'
 set spelllang=en_gb         " Set region to British English
-" set mouse=a               " Enable mouse usage in terminal vim
-set mouse=                  " Disable mouse usage in terminal vim
+set mouse=a               " Enable mouse usage in terminal vim
+" set mouse=                  " Disable mouse usage in terminal vim
 set relativenumber          " Enable relative number
 set number                  " Enable hybrid mode
 set encoding=utf-8          " UTF-8 encoding
@@ -225,7 +235,8 @@ set splitright
 " Status line always on
 set laststatus=2
 " Autocomplete color
-highlight Pmenu ctermfg=DarkRed ctermbg=Black
+" highlight Pmenu ctermfg=DarkRed ctermbg=Black
+highlight Pmenu ctermfg=15 ctermbg=23
 highlight PmenuSel ctermfg=Blue ctermbg=Grey
 highlight Visual ctermfg=18 ctermbg=110 gui=none
 " }}}
@@ -346,6 +357,9 @@ nmap <Leader>p "+p
 nmap <Leader>P "+P
 vmap <Leader>p "+p
 vmap <Leader>P "+P
+" Splits
+nnoremap <silent> <Leader>k :vsplit<CR>
+nnoremap <silent> <Leader>j :split<CR>
 " Edit vimrc
 nnoremap <leader>ev :edit $MYVIMRC<CR>
 nnoremap <leader>ez :edit ~/.zshrc<CR>
@@ -396,7 +410,7 @@ highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 " Change Highlights colors
 highlight SignColumn ctermbg=16
-highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
+" highlight ColorColumn ctermbg=lightgrey guibg=lightgrey
 highlight Search ctermfg=None ctermbg=Black cterm=bold
 " }}}
 
@@ -765,12 +779,15 @@ function! UniteSettings()
     " Reopend last buffer
     nnoremap <silent> <C-x> :UniteResume -no-start-insert<CR>
     " Uses too much CPU (Fixed in the next vim version -> Patch it)
-    nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
+    " nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
+    " Use Ctrl-P for now
+    " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/git<CR>
     " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
     nnoremap <silent> <C-b> :Unite -buffer-name=buffers buffer<CR>
     nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
     nnoremap <silent> <C-[> :Unite -buffer-name=search line:forward -start-insert<CR>
     nnoremap <silent> <leader>[ :Unite -buffer-name=search line:forward -start-insert<CR>
+    nnoremap <silent> <M-[> :Unite -buffer-name=search line:forward -start-insert<CR>
     nnoremap <silent> <leader>] :Unite -buffer-name=search line:forward -start-insert<CR>
     let g:unite_source_history_yank_enable = 1
     nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
@@ -788,13 +805,22 @@ function! s:unite_my_settings()
 endfunction
 " }}}
 
+" CtrlP {{{
+let g:ctrlp_map = '<c-p>'
+nnoremap <M-m> :CtrlPMRU<CR>
+let g:ctrlp_lazy_update = 200 "Only refreshes the results every 100ms so if you type fast searches don't pile up
+" let g:ctrlp_user_command = 'find %s -type f | ag -iv "(\.(eot|gif|gz|ico|jpg|jpeg|otf|png|psd|pyc|svg|ttf|woff|zip)$)|(/\.)|((^|\/)tmp\/)"' "Quicker indexing
+let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+" }}}
+
+
 " vim hardTime {{{
-let g:hardtime_showmsg = 1
-let g:hardtime_ignore_buffer_patterns = [ "NERD.*", ".*Tagbar.*"]
-let g:hardtime_ignore_quickfix = 1
-let g:hardtime_default_on = 1
-hi link SneakPluginTarget IncSearch
-hi link SneakPluginScope IncSearch
+" let g:hardtime_showmsg = 1
+" let g:hardtime_ignore_buffer_patterns = [ "NERD.*", ".*Tagbar.*"]
+" let g:hardtime_ignore_quickfix = 1
+" let g:hardtime_default_on = 1
+" hi link SneakPluginTarget IncSearch
+" hi link SneakPluginScope IncSearch
 " }}}
 
 " Vim Sneak {{{
@@ -804,6 +830,12 @@ xmap s <Plug>Sneak_s
 xmap S <Plug>Sneak_S
 omap s <Plug>Sneak_s
 omap S <Plug>Sneak_S
+" }}}
+
+" IndentLine {{{
+let g:indentLine_color_term = 239
+let g:indentLine_color_gui = '#09AA08'
+let g:indentLine_char = '│'
 " }}}
 
 " fzf {{{
@@ -934,3 +966,19 @@ endfunction
 
 " Todo: move to appropriate location
 highlight Search ctermfg=white ctermbg=red
+
+" Cursor tuning {{{
+" hi CursorLine ctermbg=23 ctermfg=15
+" hi CursorColumn ctermbg=23
+hi Cursor ctermbg=15
+" For dark colorschemes
+let g:conoline_auto_enable = 1
+let g:conoline_color_normal_dark = 'ctermbg=23'
+let g:conoline_color_normal_nr_dark = 'ctermbg=23'
+let g:conoline_color_insert_dark = 'ctermbg=black'
+let g:conoline_color_insert_nr_dark = 'ctermbg=black'
+let g:conoline_color_normal_light = 'ctermbg=23'
+let g:conoline_color_normal_nr_light = 'ctermbg=23'
+let g:conoline_color_insert_light = 'ctermbg=black'
+let g:conoline_color_insert_nr_light = 'ctermbg=black'
+" }}}
