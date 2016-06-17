@@ -1,1 +1,10 @@
-/Users/arthur_caillau/.dotfiles/path
+#!/usr/bin/env bash
+
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/git/bin:/opt/local/bin"
+export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.5/bin:/opt/alex/3.1.4/bin:$PATH
+
+# Anaconda
+export PATH=$PATH:~/anaconda/bin
+
+# Ruby dev
+export PATH=$PATH:~/.gem/ruby/2.0.0/bin

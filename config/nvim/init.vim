@@ -66,6 +66,9 @@ Plug 'Yggdroot/indentLine'
 " Cursor color
 Plug 'miyakogi/conoline.vim'
 
+" vim over: :substitute preview
+Plug 'osyo-manga/vim-over'
+
 Plug 'chouffe/tslime.vim'
 " Plug 'benmills/vimux'
 " Plug 'julienr/vimux-pyutils', {'for': 'python' }
@@ -74,6 +77,7 @@ Plug 'klen/python-mode', { 'for': 'python' }
 
 " Ruby
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'danchoi/ri.vim', { 'for': 'ruby' }
 
 " Graph your Vim undo tree in style.
 Plug 'sjl/gundo.vim'
@@ -140,11 +144,25 @@ Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
 
 " Html/Xml editing
 Plug 'tpope/vim-ragtag', { 'for': ['html', 'javascript'] }
+Plug 'othree/html5.vim', { 'for': 'html' }
+
 " JavaScript
+" Plug 'othree/jspc.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'mxw/vim-jsx'
+Plug 'moll/vim-node', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+Plug 'elzr/vim-json', { 'for':  ['html', 'javascript']}
+Plug 'othree/javascript-libraries-syntax.vim', { 'for' : 'javascript' }
+Plug 'ternjs/tern_for_vim', { 'for':  'javascript', 'do': 'npm install'}
 " provides insert mode auto-completion for quotes, parens, brackets
-Plug 'Raimondi/delimitMate', { 'for': ['html', 'javascript', 'python'] }
+Plug 'Raimondi/delimitMate', { 'for': ['html', 'javascript', 'python', 'ruby'] }
+
+" CSS
+  Plug 'JulesWang/css.vim'
+        \| Plug 'hail2u/vim-css3-syntax'
+        \| Plug 'cakebaker/scss-syntax.vim'
+" Plug 'gorodinskiy/vim-coloresque', { 'for': ['css', 'sass', 'scss'] }
+
 
 " Ctrl-P
 Plug 'kien/ctrlp.vim'
@@ -172,6 +190,7 @@ Plug 'Wutzara/vim-materialtheme'
 " Git Plugin
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+Plug 'lambdalisue/vim-gita'
 
 " Tmux Plugin
 " lean & mean status/tabline for vim that's light as air
@@ -184,6 +203,33 @@ Plug 'christoomey/vim-tmux-navigator'
 " Plug 'itchyny/lightline.vim'
 " vim plugin for tmux.conf
 Plug 'tmux-plugins/vim-tmux'
+
+" Editing keys
+" e for entire file
+" i for indent level
+" l for current line
+" u for url
+" b for any block type (parens, braces, quotes, ltgt)
+" = and i= for conflicts marked blocks
+" f for function (c, java, js, php, vim only)
+" i,/a, for function parameter
+" r for a block in ruby
+" f,c for function and class in python
+" c for css class
+"
+Plug 'kana/vim-textobj-user'
+      \| Plug 'kana/vim-textobj-entire'
+      \| Plug 'kana/vim-textobj-indent'
+      \| Plug 'kana/vim-textobj-line'
+      \| Plug 'mattn/vim-textobj-url'
+      \| Plug 'rhysd/vim-textobj-anyblock'
+      \| Plug 'rhysd/vim-textobj-conflict'
+      \| Plug 'kana/vim-textobj-function'
+      \| Plug 'sgur/vim-textobj-parameter'
+      \| Plug 'thinca/vim-textobj-function-javascript'
+      \| Plug 'nelstrom/vim-textobj-rubyblock'
+      \| Plug 'bps/vim-textobj-python'
+      \| Plug 'jasonlong/vim-textobj-css'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -456,8 +502,16 @@ augroup LISP
     autocmd BufNewFile,BufRead,BufReadPost *.scm call SexpSettings()
 augroup END
 
+augroup JS
+    autocmd BufNewFile,BufRead,BufReadPost *.js call JavaScriptSettings()
+augroup END
+
 augroup ML
     autocmd BufNewFile,BufRead,BufReadPost *.ml call TslimeSettings()
+augroup END
+
+augroup RUBY
+    autocmd BufNewFile,BufRead,BufReadPost *.rb call TslimeSettings()
 augroup END
 
 augroup PYTHON
@@ -581,7 +635,42 @@ function! SexpSettings()
     nmap <silent><buffer> << <Plug>(sexp_capture_prev_element)
     nmap <silent><buffer> >> <Plug>(sexp_capture_next_element)
 endfunction
+
+function! JavaScriptSettings()
+    " mapping
+    imap <C-j> <CR><Esc>O
+
+    " Map the conceal characters to their expanded forms.
+    inoremap <silent> @ <C-r>=syntax_expand#expand("@", "this")<CR>
+    " inoremap <silent> # <C-r>=syntax_expand#expand("#", "prototype")<CR>
+    inoremap <silent> < <C-r>=syntax_expand#expand_head("<", "return")<CR>
+
+    " Keeps everything concealed at all times. Even when my cursor is on the word.
+    set conceallevel=1
+    set concealcursor=nvic
+
+endfunction
 " }}}
+
+" Javascript vim-javascript
+
+" JavaScript thanks to pangloss/vim-javascript
+let g:javascript_conceal_function       = "λ"
+let g:javascript_conceal_null           = "ø"
+let g:javascript_conceal_this           = "@"
+let g:javascript_conceal_return         = "⇚"
+" let g:javascript_conceal_undefined      = "¿"
+" let g:javascript_conceal_NaN            = "ℕ"
+" let g:javascript_conceal_prototype      = "¶"
+" let g:javascript_conceal_static         = "•"
+" let g:javascript_conceal_super          = "Ω"
+let g:javascript_conceal_arrow_function = "⇒"
+" }}}
+
+" javascript-lib-syntax {{{
+let g:used_javascript_libs = 'react,flux,jquery,chai'
+" }}}
+
 
 " Python-Mode {{{
 " TODO: Refactor in a function
@@ -733,6 +822,12 @@ let g:SignatureMarkTextHL=1
 let g:SignatureMarkerTextHL=1
 " }}}
 
+" The silver searcher {{{
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+" }}}
+
 " Unite {{{
 function! UniteSettings()
 
@@ -785,13 +880,15 @@ function! UniteSettings()
     " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
     nnoremap <silent> <C-b> :Unite -buffer-name=buffers buffer<CR>
     nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
+    nnoremap <silent> <C-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
     nnoremap <silent> <C-[> :Unite -buffer-name=search line:forward -start-insert<CR>
     nnoremap <silent> <leader>[ :Unite -buffer-name=search line:forward -start-insert<CR>
     nnoremap <silent> <M-[> :Unite -buffer-name=search line:forward -start-insert<CR>
     nnoremap <silent> <leader>] :Unite -buffer-name=search line:forward -start-insert<CR>
     let g:unite_source_history_yank_enable = 1
     nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
-    nnoremap <C-f> :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
+    nnoremap <C-f> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr>
+    nnoremap <C-a> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
     autocmd FileType unite call s:unite_my_settings()
     " FIXME
     nnoremap <ESC> <Nop>
@@ -808,11 +905,44 @@ endfunction
 " CtrlP {{{
 let g:ctrlp_map = '<c-p>'
 nnoremap <M-m> :CtrlPMRU<CR>
-let g:ctrlp_lazy_update = 200 "Only refreshes the results every 100ms so if you type fast searches don't pile up
+let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you type fast searches don't pile up
 " let g:ctrlp_user_command = 'find %s -type f | ag -iv "(\.(eot|gif|gz|ico|jpg|jpeg|otf|png|psd|pyc|svg|ttf|woff|zip)$)|(/\.)|((^|\/)tmp\/)"' "Quicker indexing
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 " }}}
 
+" Syntastic Linter {{{
+scriptencoding utf-8
+" Always add any detected errors into the location list
+let g:syntastic_always_populate_loc_list = 1
+
+" Don't auto-open it when errors/warnings are detected, but auto-close when no
+" more errors/warnings are detected.
+let g:syntastic_auto_loc_list = 2
+
+" Highlight syntax errors where possible
+let g:syntastic_enable_highlighting = 1
+
+" Show this many errors/warnings at a time in the location list
+let g:syntastic_loc_list_height = 5
+
+" Don't run checkers when saving and quitting--only on saving
+let g:syntastic_check_on_wq = 0
+
+" TODO: setup better characters
+let g:syntastic_error_symbol         = '✗' " There are better characters, but Hackpad won't show them
+let g:syntastic_warning_symbol       = '▲'
+let g:syntastic_style_error_symbol   = '✗'
+let g:syntastic_style_warning_symbol = '▲'
+
+let g:syntastic_javascript_checkers    = ['eslint']
+let s:eslint_path = system('PATH=$(npm bin):$PATH && which eslint')
+let g:syntastic_javascript_eslint_exec = substitute(s:eslint_path, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
+let g:syntastic_json_checkers          = ['jsonlint']
+let g:syntastic_ruby_checkers          = ['rubocop']
+let g:syntastic_scss_checkers          = ['scss_lint']
+let g:syntastic_vim_checkers           = ['vint']
+" }}}
 
 " vim hardTime {{{
 " let g:hardtime_showmsg = 1
@@ -821,6 +951,10 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 " let g:hardtime_default_on = 1
 " hi link SneakPluginTarget IncSearch
 " hi link SneakPluginScope IncSearch
+" }}}
+
+" Vim jsz {{{
+ let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 " }}}
 
 " Vim Sneak {{{
@@ -833,9 +967,12 @@ omap S <Plug>Sneak_S
 " }}}
 
 " IndentLine {{{
-let g:indentLine_color_term = 239
+" highlight Conceal ctermfg=248
+let g:indentLine_color_term = 246
+" let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#09AA08'
-let g:indentLine_char = '│'
+" let g:indentLine_char = '│'
+let g:indentLine_char = '┆'
 " }}}
 
 " fzf {{{
@@ -939,6 +1076,12 @@ function! MyAgSearch()
     else
         execute "Ag" l:pattern "**/*." . l:fileType
     endif
+endfunction
+" }}}
+
+" JSON Formater {{{
+function! FormatJSON()
+  :%!python -m json.tool
 endfunction
 " }}}
 

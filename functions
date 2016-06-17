@@ -1,1 +1,12 @@
-ag-f () { ag -G ".*$1\$" $2 }
+#!/usr/bin/env bash
+
+function agf () { ag -G ".*$1\$" $2 }
+
+# Create a new directory and enter it
+function mkd() {
+	mkdir -p "$@" && cd "$_";
+}
+
+function tre() {
+	tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
+}

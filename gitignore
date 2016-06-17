@@ -7,3 +7,4 @@ lein/repl-history
 .ropeproject/
 .ipynb*
 Session.vim
+.tern-project
