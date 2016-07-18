@@ -910,7 +910,8 @@ function! UniteSettings()
     nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
     nnoremap <C-f><Space> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr>
     nnoremap <C-f><C-f> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
-    " nnoremap <C-a> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
+    nnoremap <C-f><C-b> :execute 'Unite grep:$buffers::' . expand("<cword>") . '  -start-insert'<cr>
+    " TODO: live grep in directory
     autocmd FileType unite call s:unite_my_settings()
     " FIXME
     nnoremap <ESC> <Nop>
