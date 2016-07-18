@@ -121,7 +121,7 @@ Plug 'dgrnbrg/redl', { 'for': 'clojure' }
 " static support for Leiningen and Boot
 Plug 'tpope/vim-salve', { 'for': 'clojure' }
 " the Clojure formatting tool.
-Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
+" Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
 " Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
 
 " Haskell Plugins
@@ -504,6 +504,7 @@ augroup END
 
 augroup JS
     autocmd BufNewFile,BufRead,BufReadPost *.js call JavaScriptSettings()
+    autocmd BufNewFile,BufRead,BufReadPost *.js call TslimeSettings()
 augroup END
 
 augroup ML
@@ -527,8 +528,14 @@ augroup END
 " Clojure
 augroup CLJ
     " Avoid defining them twice
-    autocmd BufNewFile,BufRead,BufReadPost *.clj* call ClojureSettings()
-    autocmd BufNewFile,BufRead,BufReadPost *.clj* call SexpSettings()
+    autocmd BufNewFile,BufRead,BufReadPost *.clj call ClojureSettings()
+    autocmd BufNewFile,BufRead,BufReadPost *.clj call SexpSettings()
+augroup END
+
+augroup CLJS
+  " autocmd BufNewFile,BufRead,BufReadPost *.cljs call TslimeSettings()
+  autocmd BufNewFile,BufRead,BufReadPost *.cljs call SexpSettings()
+  command! Figwheel :Piggieback! (do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/cljs-repl))
 augroup END
 
 augroup configgroup
@@ -538,6 +545,12 @@ augroup configgroup
     autocmd! VimEnter * call UniteSettings()
     " Save on Focus Lost
     autocmd FocusLost * silent! wa
+    " Conoline
+    " autocmd FocusLost * ConoLineDisable
+    " autocmd FocusGained * ConoLineEnable
+    " autocmd BufWinLeave * ConoLineDisable
+    " autocmd BufWinEnter * ConoLineEnable
+    " Whitespace cleaning
     autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
     autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
     autocmd InsertLeave * match ExtraWhitespace /\s\+$/
@@ -637,13 +650,21 @@ function! SexpSettings()
 endfunction
 
 function! JavaScriptSettings()
+  " Two space indentation
+  set tabstop=2
+  set softtabstop=2
+  set shiftwidth=2
+  set expandtab
+  au BufWinEnter,BufNewFile * silent tab
+
     " mapping
     imap <C-j> <CR><Esc>O
+    imap <C-l> <C-o>A
 
     " Map the conceal characters to their expanded forms.
-    inoremap <silent> @ <C-r>=syntax_expand#expand("@", "this")<CR>
+    " inoremap <silent> @ <C-r>=syntax_expand#expand("@", "this")<CR>
     " inoremap <silent> # <C-r>=syntax_expand#expand("#", "prototype")<CR>
-    inoremap <silent> < <C-r>=syntax_expand#expand_head("<", "return")<CR>
+    " inoremap <silent> < <C-r>=syntax_expand#expand_head("<", "return")<CR>
 
     " Keeps everything concealed at all times. Even when my cursor is on the word.
     set conceallevel=1
@@ -878,7 +899,7 @@ function! UniteSettings()
     " Use Ctrl-P for now
     " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/git<CR>
     " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
-    nnoremap <silent> <C-b> :Unite -buffer-name=buffers buffer<CR>
+    nnoremap <silent> <M-m> :Unite -buffer-name=buffers buffer<CR>
     nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
     nnoremap <silent> <C-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
     nnoremap <silent> <C-[> :Unite -buffer-name=search line:forward -start-insert<CR>
@@ -887,8 +908,9 @@ function! UniteSettings()
     nnoremap <silent> <leader>] :Unite -buffer-name=search line:forward -start-insert<CR>
     let g:unite_source_history_yank_enable = 1
     nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
-    nnoremap <C-f> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr>
-    nnoremap <C-a> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
+    nnoremap <C-f><Space> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr>
+    nnoremap <C-f><C-f> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
+    " nnoremap <C-a> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
     autocmd FileType unite call s:unite_my_settings()
     " FIXME
     nnoremap <ESC> <Nop>
@@ -904,7 +926,7 @@ endfunction
 
 " CtrlP {{{
 let g:ctrlp_map = '<c-p>'
-nnoremap <M-m> :CtrlPMRU<CR>
+nnoremap <C-b> :CtrlPMRU<CR>
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you type fast searches don't pile up
 " let g:ctrlp_user_command = 'find %s -type f | ag -iv "(\.(eot|gif|gz|ico|jpg|jpeg|otf|png|psd|pyc|svg|ttf|woff|zip)$)|(/\.)|((^|\/)tmp\/)"' "Quicker indexing
@@ -1115,6 +1137,7 @@ highlight Search ctermfg=white ctermbg=red
 " hi CursorColumn ctermbg=23
 hi Cursor ctermbg=15
 " For dark colorschemes
+" Conoline {{{
 let g:conoline_auto_enable = 1
 let g:conoline_color_normal_dark = 'ctermbg=23'
 let g:conoline_color_normal_nr_dark = 'ctermbg=23'
