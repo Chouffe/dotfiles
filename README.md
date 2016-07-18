@@ -22,7 +22,7 @@
 * htop
 * iotop
 * ncdu
-* autojump
+* fasd
 * ssh
 * ag
 * rlwrap

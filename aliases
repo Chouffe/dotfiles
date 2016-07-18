@@ -9,8 +9,8 @@ alias v=nvim
 alias n=nvim
 alias t=tig
 alias less="less -R"
-alias git=gitsafe
-alias g=gitsafe
+# alias git=gitsafe
+# alias g=gitsafe
 alias pg="ping 8.8.8.8"
 alias hist=history
 
@@ -18,6 +18,18 @@ alias hist=history
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
+
+# fasd
+alias a='fasd -a'        # any
+alias s='fasd -si'       # show / search / select
+alias d='fasd -d'        # directory
+alias f='fasd -f'        # file
+alias sd='fasd -sid'     # interactive directory selection
+alias sf='fasd -sif'     # interactive file selection
+alias z='fasd_cd -d'     # cd, same functionality as j in autojump
+alias zz='fasd_cd -d -i' # cd with interactive selection
+alias j=z
+alias jj=zz
 
 # Trim new lines and copy to clipboard
 alias c="tr -d '\n' | pbcopy"
@@ -27,7 +39,7 @@ alias -g C="| c"
 alias -g H='| head'
 alias -g T='| tail'
 alias -g G='| grep'
-alias -g L="| less"
+alias -g L="| less -R"
 alias -g M="| most"
 alias -g LL="2>&1 | less"
 alias -g CA="2>&1 | cat -A"
@@ -52,4 +64,6 @@ alias map="xargs -n1"
 
 # Job related alisases
 alias vsh='ssh devbox'
+alias vu='cd ~/airlab && vagrant up'
+alias vp='cd ~/airlab && vagrant provision'
 alias gk='goldkey'
