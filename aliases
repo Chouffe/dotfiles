@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 
 # Shortcuts
+
 alias tmux='tmux -2'
 alias tm='tmux -2'
 alias r=ranger
 alias h=htop
+alias nvim=/usr/local/bin/nvim
 alias v=nvim
 alias n=nvim
 alias t=tig

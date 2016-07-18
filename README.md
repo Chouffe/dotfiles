@@ -28,6 +28,7 @@
 * rlwrap
 * virtualenvwrapper
 * fzf (should be installed with neovim)
+  * https://github.com/junegunn/fzf/wiki/examples
 * ranger
   * caca-utils
   * highlight
