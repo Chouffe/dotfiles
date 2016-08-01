@@ -4,7 +4,7 @@
 [core]
   editor = nvim
   excludesfile = ~/.gitignore
-	precomposeunicode = true
+  precomposeunicode = true
 [merge]
   tool = vimdiff
 [alias]
@@ -28,6 +28,6 @@
 [credential]
   helper = cache --timeout=3600000
 [push]
-	default = current
+  default = current
 [rerere]
-	enabled = 1
+  enabled = 1

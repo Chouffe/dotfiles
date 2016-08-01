@@ -8,3 +8,6 @@ export PATH=$PATH:~/anaconda/bin
 
 # Ruby dev
 export PATH=$PATH:~/.gem/ruby/2.0.0/bin
+
+# Work
+export PATH=$PATH:/opt/airbnb/bin

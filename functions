@@ -14,23 +14,30 @@ function fzf-git-branches() { git branch | fzf-tmux -d 15; }
 # with ag - respects .agignore and .gitignore
 function agi() { ag --nobreak --nonumbers --noheading . | fzf; }
 
+# ---
 # Git
+# ---
 
 # fbr - checkout git branch
-fbr() {
-  local branches branch
-  branches=$(git branch -vv) &&
-    branch=$(echo "$branches" | fzf +m) &&
-    git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
-}
+# fbr() {
+#   local branches branch
+#   branches=$(git branch -vv) &&
+#     branch=$(echo "$branches" | fzf +m) &&
+#     git checkout $(echo "$branch" | awk '{print $1}' | sed "s/.* //")
+# }
 
 # fbr - checkout git branch (including remote branches)
-fbr() {
-  local branches branch
-  branches=$(git branch --all | grep -v HEAD) &&
-    branch=$(echo "$branches" |
-  fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-    git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+# fbr() {
+#   local branches branch
+#   branches=$(git branch --all | grep -v HEAD) &&
+#     branch=$(echo "$branches" |
+#   fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+#     git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+# }
+
+# Fuzzy search over git branches ordered by recency
+fbr () {
+    git checkout $(git for-each-ref --sort=-committerdate refs/heads/ | awk '{print $3}' | cut -c $(echo " refs/head/" | wc -c)- | fzf-tmux)
 }
 
 # fco - checkout git branch/tag
@@ -77,7 +84,7 @@ fstash() {
 }
 
 # Fasd
-v() {
-  local file
-  file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)" && vi "${file}" || return 1
-}
+# v() {
+#   local file
+#   file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)" && nvim "${file}" || return 1
+# }

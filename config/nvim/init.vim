@@ -149,6 +149,7 @@ Plug 'othree/html5.vim', { 'for': 'html' }
 " JavaScript
 " Plug 'othree/jspc.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'flowtype/vim-flow', { 'for': 'javascript' }
 Plug 'moll/vim-node', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 Plug 'elzr/vim-json', { 'for':  ['html', 'javascript']}
@@ -483,15 +484,33 @@ augroup END
 
 " ELM
 augroup ELM
-    autocmd FileType elm nmap <LocalLeader>b <Plug>(elm-make)
-    autocmd FileType elm nmap <LocalLeader>m <Plug>(elm-make-main)
-    autocmd FileType elm nmap <LocalLeader>t <Plug>(elm-test)
-    autocmd FileType elm nmap <LocalLeader>r <Plug>(elm-repl)
-    autocmd FileType elm nmap <LocalLeader>e <Plug>(elm-error-detail)
-    autocmd FileType elm nmap <LocalLeader>d <Plug>(elm-show-docs)
-    autocmd FileType elm nmap <LocalLeader>w <Plug>(elm-browse-docs)
 
-    autocmd BufNewFile,BufRead,BufReadPost elm call ElmSettings()
+  " Provides my own keybindings
+  let g:elm_setup_keybindings = 0
+
+  " Keybindings
+  autocmd FileType elm nmap <LocalLeader>b <Plug>(elm-make)
+  autocmd FileType elm nmap <LocalLeader>m <Plug>(elm-make-main)
+  autocmd FileType elm nmap <LocalLeader>t <Plug>(elm-test)
+  autocmd FileType elm nmap <LocalLeader>r <Plug>(elm-repl)
+  autocmd FileType elm nmap <LocalLeader>e <Plug>(elm-error-detail)
+  autocmd FileType elm nmap <LocalLeader>d <Plug>(elm-show-docs)
+  autocmd FileType elm nmap <LocalLeader>w <Plug>(elm-browse-docs)
+
+  autocmd BufNewFile,BufRead,BufReadPost elm call ElmSettings()
+
+  " Requires elm-format
+  " let g:elm_format_autosave = 1
+
+  " Syntastic
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+
+  let g:elm_syntastic_show_warnings = 1
+  " YouCompleteMe
+  let g:ycm_semantic_triggers = {
+        \ 'elm' : ['.'],
+        \}
 augroup END
 " Lisp
 augroup LISP
@@ -778,11 +797,21 @@ endfunction
 " }}}
 
 function! ElmSettings()
-    let g:elm_jump_to_error = 1
+    " let g:elm_jump_to_error = 1
+    " let g:elm_make_output_file = "elm.js"
+    " let g:elm_make_show_warnings = 0
+    " let g:elm_browser_command = ""
+    " let g:elm_detailed_complete = 1
+
+    let g:elm_jump_to_error = 0
     let g:elm_make_output_file = "elm.js"
     let g:elm_make_show_warnings = 0
+    let g:elm_syntastic_show_warnings = 0
     let g:elm_browser_command = ""
-    let g:elm_detailed_complete = 1
+    let g:elm_detailed_complete = 0
+    let g:elm_format_autosave = 0
+    let g:elm_setup_keybindings = 0
+    let g:elm_classic_hightlighting = 0
 endfunction
 
 " Tags {{{
