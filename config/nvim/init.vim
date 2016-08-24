@@ -1,5 +1,3 @@
-syntax enable
-
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
@@ -44,6 +42,8 @@ Plug 'szw/vim-tags'
 Plug 'rking/ag.vim'
 " Syntax checking hacks for vim
 Plug 'scrooloose/syntastic'
+" Syntax checking for vim
+" Plug 'neomake/neomake'
 " Some utility functions for vim
 Plug 'tomtom/tlib_vim'
 " Interpret a file by function and cache file automatically
@@ -128,8 +128,9 @@ Plug 'tpope/vim-salve', { 'for': 'clojure' }
 " Syntax highlighting: vim2hs/haksyn/haskell_syntax
 " Plug 'dag/vim2hs', { 'for': 'haskell' }
 " Plug 'travitch/hasksyn', { 'for' : 'haskell' }
-Plug 'urso/haskell_syntax.vim', { 'for' : 'haskell' }
-Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
+" Plug 'urso/haskell_syntax.vim', { 'for' : 'haskell' }
+Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+" Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " Vim plugin for Haskell development
@@ -141,6 +142,9 @@ Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
 " Create ctags compatible tags files for Haskell programs
 " Plug 'bitc/lushtags', { 'for': 'haskell' }
 Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
+
+" Idris Plugins
+Plug 'idris-hackers/idris-vim', { 'for': 'idris' }
 
 " Html/Xml editing
 Plug 'tpope/vim-ragtag', { 'for': ['html', 'javascript'] }
@@ -178,6 +182,7 @@ Plug 'Shougo/neomru.vim'
 Plug 'tacroe/unite-mark'
 Plug 'ujihisa/unite-colorscheme'
 Plug 'tsukkee/unite-tag'
+Plug 'osyo-manga/unite-quickfix'
 
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
@@ -261,7 +266,7 @@ set mouse=a               " Enable mouse usage in terminal vim
 " set mouse=                  " Disable mouse usage in terminal vim
 set relativenumber          " Enable relative number
 set number                  " Enable hybrid mode
-set encoding=utf-8          " UTF-8 encoding
+" set encoding=utf-8          " UTF-8 encoding
 set scrolloff=3             " number of screen lines to show around the cursor
 set cursorline              " Highlight the line you are on
 set cursorline cursorcolumn " Highlights the column you are in
@@ -281,11 +286,6 @@ set splitbelow
 set splitright
 " Status line always on
 set laststatus=2
-" Autocomplete color
-" highlight Pmenu ctermfg=DarkRed ctermbg=Black
-highlight Pmenu ctermfg=15 ctermbg=23
-highlight PmenuSel ctermfg=Blue ctermbg=Grey
-highlight Visual ctermfg=18 ctermbg=110 gui=none
 " }}}
 
 " Status Lines {{{
@@ -320,7 +320,7 @@ nnoremap 0 ^
 nnoremap `` ^
 nnoremap \\ $
 nnoremap <BS><BS> $
-nnoremap <CR> G
+" nnoremap <CR> G
 " move to the search
 " Treat long lines as break lines (useful when moving around in them)
 map j gj
@@ -479,6 +479,8 @@ augroup END
 augroup HSK
     " au Bufenter *.hs compiler ghc
     autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
+    " Use tc instead
+    " autocmd BufWritePost *.hs :GhcModCheckAndLintAsync
     autocmd FileType haskell call HaskellSettings()
 augroup END
 
@@ -500,7 +502,7 @@ augroup ELM
   autocmd BufNewFile,BufRead,BufReadPost elm call ElmSettings()
 
   " Requires elm-format
-  " let g:elm_format_autosave = 1
+  let g:elm_format_autosave = 1
 
   " Syntastic
   let g:syntastic_always_populate_loc_list = 1
@@ -508,9 +510,6 @@ augroup ELM
 
   let g:elm_syntastic_show_warnings = 1
   " YouCompleteMe
-  let g:ycm_semantic_triggers = {
-        \ 'elm' : ['.'],
-        \}
 augroup END
 " Lisp
 augroup LISP
@@ -581,6 +580,12 @@ augroup configgroup
 augroup END
 " }}}
 
+augroup QUICKFIX_WINDOW
+  " In the quickfix window, <CR> is used to jump to the error under the
+  " cursor, so undefine the mapping there.
+  autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+augroup END
+
 " Vim notes {{{
 let g:notes_directories = ['~/Documents/Notes']
 " }}}
@@ -627,12 +632,14 @@ let g:multi_cursor_quit_key='<C-d>'
 nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " }}}
 
+" YouCompleteMe {{{
+    let g:ycm_semantic_triggers = {'clojure' : ['/'], 'haskell': ['.'], 'elm': ['.']}
+" }}}
+
 " Clojure {{{
 function! ClojureSettings()
     setfiletype clojure
     set syntax=clojure
-    " let g:ycm_semantic_triggers = {'clojure' : ['/', '(', '.']}
-    let g:ycm_semantic_triggers = {'clojure' : ['/']}
     " Highlight references
     let g:clojure_highlight_references=1
     let g:vimclojure#HighlightBuiltins=1
@@ -647,6 +654,7 @@ function! ClojureSettings()
     nnoremap cc :%Eval<CR>
     nnoremap cl :Last<CR>
     nnoremap cf :setf clojure<CR>
+    let g:clj_fmt_autosave = 1
     call RedlSettings()
 endfunction
 
@@ -751,44 +759,80 @@ function! PythonSettings()
     map <C-f> :YcmCompleter GoToReferences<CR>
 endfunction
 " }}}
+"
+function! GhcModQuickFix()
+  :Unite -no-empty -no-start-insert quickfix
+endfunction
 
 " Haskell {{{
 function! HaskellSettings()
-    " Disable haskell-vim omnifunc
-    let g:haskellmode_completion_ghc = 0
-    autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-    " Haskell Lint
-    let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['haskell'] }
-    nmap <silent> <leader>hl :SyntasticCheck hlint<CR>
-    " Hoogle
-    " Hoogle the word under the cursor
-    nnoremap <silent> <leader>hh :Hoogle<CR>
-    " Hoogle and prompt for input
-    nnoremap <leader>hH :Hoogle
-    " Hoogle for detailed documentation and prompt for input
-    nnoremap <leader>hI :HoogleInfo
-    " Hoogle, close the Hoogle window
-    nnoremap <silent> <leader>hz :HoogleClose<CR>
-    " Type of expression under cursor
-    nmap <silent> <leader>ht :GhcModType<CR>
-    " Insert type of expression under cursor
-    nmap <silent> <leader>hT :GhcModTypeInsert<CR>
-    " GHC errors and warnings
-    nmap <silent> <leader>hc :SyntasticCheck hdevtools<CR>
-    " map <LocalLeader>i :GhcModInfo<cr>
-    " map <LocalLeader>t :GhcModType<cr>
-    " map <LocalLeader>c :GhcModCheck<cr>
-    " map <LocalLeader>l :GhcModLint<cr>
-    " map <LocalLeader>e :GhcModExpand<cr>
-    nnoremap <esc> :noh<return>:GhcModTypeClear<return><esc>
-    hi ghcmodType guibg=Green guifg=White ctermbg=green ctermfg=black cterm=None
-    let g:ghcmod_type_highlight = 'ghcmodType'
-    " Pretty unicode haskell symbols
-    let g:haskell_conceal_wide = 1
-    let g:haskell_conceal_enumerations = 1
-    let hscoptions="𝐒𝐓𝐄𝐌xRtB𝔻w"
-    call WSHighlight()
+  " Syntastic does not work with ghc mod and stack yet
+  " map <Leader>s :SyntasticToggleMode<CR>
+  " disable syntastic for haskell
+  let g:syntastic_haskell_checkers=['']
+  set statusline+=%#warningmsg#
+  set statusline+=%{SyntasticStatuslineFlag()}
+  set statusline+=%*
+
+  let g:syntastic_always_populate_loc_list = 0
+  let g:syntastic_auto_loc_list = 0
+  let g:syntastic_check_on_open = 0
+  let g:syntastic_check_on_wq = 0
+
+  " YouCompleteMe and NecoGHC
+  " Disable haskell-vim omnifunc
+  let g:haskellmode_completion_ghc = 0
+  set omnifunc=necoghc#omnifunc
+  let g:ycm_min_num_of_chars_for_completion = 0
+  let g:ycm_auto_trigger = 1
+  let g:necoghc_enable_detailed_browse = 1
+
+  " Hoogle
+  " Hoogle the word under the cursor
+  nnoremap <silent> K :Hoogle<CR>
+  nnoremap <silent> <LocalLeader>hh :Hoogle<CR>
+  " Hoogle, close the Hoogle window
+  nnoremap <silent> <LocalLeader>hz :HoogleClose<CR>
+  " Hoogle for detailed documentation and prompt for input
+  nnoremap <silent> <LocalLeader>hi :HoogleInfo
+
+  " GHC Mod
+  let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
+  " Resource: http://www.stephendiehl.com/posts/vim_2016.html
+  " Type of expression under cursor
+  nnoremap <silent> tt :GhcModType<CR>
+  " Insert type of expression under cursor
+  nnoremap <silent> tw :GhcModTypeInsert<CR>
+  nnoremap <silent> ts :GhcModSplitFunCase<CR>
+  nnoremap <silent> tq :GhcModType<CR>
+  nnoremap <silent> te :GhcModTypeClear<CR>
+  nnoremap <silent> tc :GhcModCheckAndLintAsync<CR>
+
+  " TODO: improve
+  " Customize colors
+  " highlight ghcmodType ctermfg=15 ctermbg=23
+  let g:ghcmod_type_highlight = 'ghcmodType'
+  highlight ghcmodType ctermfg=15 ctermbg=24
+  " highlight ghcmodType guibg=Green guifg=White ctermbg=green ctermfg=black cterm=None
+
+  " Pretty unicode haskell symbols
+  let g:haskell_conceal_wide = 1
+  let g:haskell_conceal_enumerations = 1
+  let hscoptions="𝐒𝐓𝐄𝐌xRtB𝔻w"
+  call WSHighlight()
+
 endfunction
+
+
+" vim-haskell: Syntax highlighting{{{
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+" }}}
+
 
 function! WSHighlight()
     syn match BadWhiteSpace "^\\s*\\t\\+"
@@ -945,7 +989,7 @@ function! UniteSettings()
     " FIXME
     nnoremap <ESC> <Nop>
     unmap <CR>
-    nnoremap <CR> G
+    " nnoremap <CR> G
 endfunction
 
 function! s:unite_my_settings()
@@ -961,6 +1005,11 @@ let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you type fast searches don't pile up
 " let g:ctrlp_user_command = 'find %s -type f | ag -iv "(\.(eot|gif|gz|ico|jpg|jpeg|otf|png|psd|pyc|svg|ttf|woff|zip)$)|(/\.)|((^|\/)tmp\/)"' "Quicker indexing
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
+" }}}
+
+" Neomake Linter {{{
+" let g:neomake_javascript_enabled_makers = ['eslint']
+" autocmd! BufWritePost * Neomake
 " }}}
 
 " Syntastic Linter {{{
@@ -994,6 +1043,7 @@ let g:syntastic_json_checkers          = ['jsonlint']
 let g:syntastic_ruby_checkers          = ['rubocop']
 let g:syntastic_scss_checkers          = ['scss_lint']
 let g:syntastic_vim_checkers           = ['vint']
+
 " }}}
 
 " vim hardTime {{{
@@ -1178,3 +1228,11 @@ let g:conoline_color_normal_nr_light = 'ctermbg=23'
 let g:conoline_color_insert_light = 'ctermbg=black'
 let g:conoline_color_insert_nr_light = 'ctermbg=black'
 " }}}
+
+syntax enable
+
+" Autocomplete color
+" highlight Pmenu ctermfg=DarkRed ctermbg=Black
+highlight Pmenu ctermfg=15 ctermbg=23
+highlight PmenuSel ctermfg=Blue ctermbg=Grey
+highlight Visual ctermfg=18 ctermbg=110 gui=none
