@@ -9,5 +9,16 @@ export PATH=$PATH:~/anaconda/bin
 # Ruby dev
 export PATH=$PATH:~/.gem/ruby/2.0.0/bin
 
+# Haskell dev
+export PATH=$PATH:~/.local/bin
+export PATH=$PATH:~/.stack/programs/x86_64-osx/ghc-7.10.3/bin
+
+# Add GHC 7.10.3 to the PATH, via https://ghcformacosx.github.io/
+# export GHC_DOT_APP="/Applications/ghc-7.10.3.app"
+# if [ -d "$GHC_DOT_APP" ]; then
+#   export PATH=PATH:"${HOME}/.local/bin:${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+# fi
+
 # Work
 export PATH=$PATH:/opt/airbnb/bin
+export PATH=$PATH:~/airlab/sysops/ec2_tools

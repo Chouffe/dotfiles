@@ -18,8 +18,9 @@ export LC_ALL='en_US.UTF-8';
 # Highlight section titles in manual pages.
 export LESS_TERMCAP_md="${yellow}";
 
-# Don’t clear the screen after quitting a manual page.
-export MANPAGER='less -X';
+# makes Vim default man pager
+export MANPAGER="less -X"
+# export MANPAGER="nvim -c 'set ft=neoman' -"
 
 # Password file
 export KP_DB_FILE=~/Documents/pass.kdb

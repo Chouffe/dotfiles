@@ -9,6 +9,7 @@
   * Install all tmux plugins
 * zsh
   * oh my zsh
+    * auto suggestions: https://github.com/zsh-users/zsh-autosuggestions
 * Inconsolata for Powerline font
 * Inconsolata
 * sudo localectl set-locale LANG=en_US.UTF-8
