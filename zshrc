@@ -1,13 +1,8 @@
-# Path to your oh-my-zsh installation.
-# export ZSH=$HOME/.oh-my-zsh
-# export EDITOR='nvim'
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="af-magic"
-# export WORKON_HOME=~/Envs
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
@@ -64,11 +59,6 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Virtualenvwrapper
-export WORKON_HOME=$HOME/.virtualenvs
-export PROJECT_HOME=$HOME/Devel
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
-export VIRTUALENVWRAPPER_VIRTUALENV=/usr/local/bin/virtualenv
-export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 source /usr/local/bin/virtualenvwrapper.sh
 
 # Compilation flags
@@ -77,6 +67,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
+# FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ### Added by the Heroku Toolbelt
@@ -86,7 +77,7 @@ source /usr/local/bin/virtualenvwrapper.sh
 # export ANDROID_HOME=/opt/android-sdk-linux
 # export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
-# TMUX
+# AUTO TMUX
 if [[ -z "$TMUX" ]] ;then
     ID="`tmux ls | grep -vm1 attached | cut -d: -f1`" # get the id of a deattached session
     if [[ -z "$ID" ]] ;then # if not available create a new one
@@ -99,8 +90,8 @@ fi
 #so as not to be disturbed by Ctrl-S ctrl-Q in terminals:
 stty -ixon
 
-export NVM_DIR="/Users/arthur_caillau/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+# Loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 # Syntax Highlighting
 source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
