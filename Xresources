@@ -11,10 +11,7 @@ URxvt*loginShell: true
 Urxvt*secondaryScroll:  true
 URxvt*saveLines: 5000
 URxvt*termName: rxvt-unicode
-URxvt.perl-ext-common: default,matcher,clipboard
-! Clickable links
-URxvt.urlLauncher: firefox
-URxvt.matcher.button: 1
+
 ! Transparency
 ! URxvt*transparent: true
 ! URxvt*shading: 90
@@ -23,12 +20,36 @@ URxvt.matcher.button: 1
 URxvt*visualBell:  false
 URxvt*urgentOnBell: false
 
-! Enable Paste with C-V
-! URxvt.keysym.Shift-Control-V: perl:clipboard:paste
-URxvt.keysym.M-v: perl:clipboard:paste
-URxvt.keysym.Control-v: perl:clipboard:paste
-URxvt.iso14755: False
-!! drop in Solarized colorscheme for Xresources/Xdefaults
+! Plugins
+! Resource: http://funloop.org/post/2015-06-25-urxvt-plugins.html
+URxvt.perl-ext-common: default,font-size,matcher,clipboard,keyboard-select
+
+! Copy and Paste -> install xsel
+URxvt.clipboard.copycmd:  xsel -ib
+URxvt.clipboard.pastecmd: xsel -ob
+URxvt.keysym.M-c:         perl:clipboard:copy
+URxvt.keysym.M-v:         perl:clipboard:paste
+URxvt.keysym.M-C-v:       perl:clipboard:paste_escaped
+
+! Keyboard Select
+URxvt.keysym.M-Escape: perl:keyboard-select:activate
+URxvt.keysym.M-r:      perl:keyboard-select:search
+
+! Clickable links
+URxvt.urlLauncher:    firefox
+URxvt.matcher.button: 1
+
+! Font sizes: scale up and down
+URxvt.keysym.C-minus: perl:font-size:decrease
+URxvt.keysym.C-equal: perl:font-size:increase
+! The default font increase step size is 1. This is for portability across all
+! fonts (some fonts do not support particular font sizes). Because changing font
+! size only really makes sense for anti-aliased fonts (Terminus is bitmapped),
+! and because anti-aliased fonts support any size, it makes sense to just use a
+! size step of 4 for faster transitions between font size changes.
+URxvt.font-size.step: 4
+
+
 
 !!SOLARIZED HEX     16/8 TERMCOL  XTERM/HEX   L*A*B      RGB         HSB
 !!--------- ------- ---- -------  ----------- ---------- ----------- -----------
@@ -107,7 +128,7 @@ URxvt.iso14755: False
 *color15:               S_base3
 
 URxvt*background: rgba:0000/0000/0000/dddd
-URxvt*fading: 30
+URxvt*fading: 10
 
 URxvt*transparent: true
-URxvt*shading: 30
+URxvt*shading: 11

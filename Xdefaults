@@ -1,27 +1,20 @@
 ! URxvt*font       : xft:Inconsolata Powerline:pixelsize=17:antialias=true
-URxvt*font:  xft:inconsolata:size=17:antialias=true
-URxvt*depth: 32
-URxvt*boldFont       : xft:Inconsolata:pixelsize=17:antialias=true
+URxvt*font:      xft:inconsolata:size=13:antialias=true
+URxvt*depth:     32
+URxvt*boldFont:  xft:Inconsolata:pixelsize=17:antialias=true
 ! URxvt*font       : xft:Inconsolata:pixelsize=13:antialias=true
-URxvt*scrollBar  : False
-URxvt*termName: rxvt-unicode
+URxvt*scrollBar: False
+URxvt*termName:  rxvt-unicode
 
 ! Blinking cursor
 URxvt*cursorBlink:1
 ! Only an underline
 ! URxvt.cursorUnderline: 1
 
-! Transparency
-! URxvt*transparent:true
-! URxvt*shading:50
-
 
 ! URxvt*foreground : #bcbcbc
 ! URxvt*background : #262626
 ! URxvt*cursorColor: #d0d0d0
-
-! Enables fading
-! URxvt*fading     : 10
 
 URxvt*underlineColor : Yellow
 
