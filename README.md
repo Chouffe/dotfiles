@@ -26,6 +26,7 @@
 * fasd
 * ssh
 * ag
+* gawk for fzf mru
 * rlwrap
 * virtualenvwrapper
 * fzf (should be installed with neovim)

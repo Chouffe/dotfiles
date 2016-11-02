@@ -26,6 +26,8 @@ Plug 'junegunn/vim-easy-align'
 " Fuzzy finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+" Requirements: bash, gawk, fzf
+Plug 'tweekmonster/fzf-filemru'
 " Asynchronous
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Autocompletion
@@ -153,19 +155,20 @@ Plug 'othree/html5.vim', { 'for': 'html' }
 " JavaScript
 " Plug 'othree/jspc.vim', { 'for': 'javascript' }
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'flowtype/vim-flow', { 'for': 'javascript' }
+" Plug 'flowtype/vim-flow', { 'for': ['javascript', 'jsx'] }
+Plug 'flowtype/vim-flow'
 Plug 'moll/vim-node', { 'for': 'javascript' }
 Plug 'mxw/vim-jsx', { 'for': 'javascript' }
 Plug 'elzr/vim-json', { 'for':  ['html', 'javascript']}
 Plug 'othree/javascript-libraries-syntax.vim', { 'for' : 'javascript' }
 Plug 'ternjs/tern_for_vim', { 'for':  'javascript', 'do': 'npm install'}
 " provides insert mode auto-completion for quotes, parens, brackets
-Plug 'Raimondi/delimitMate', { 'for': ['html', 'javascript', 'python', 'ruby'] }
+Plug 'Raimondi/delimitMate', { 'for': ['haskell', 'html', 'javascript', 'python', 'ruby'] }
 
 " CSS
-  Plug 'JulesWang/css.vim'
-        \| Plug 'hail2u/vim-css3-syntax'
-        \| Plug 'cakebaker/scss-syntax.vim'
+Plug 'JulesWang/css.vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'cakebaker/scss-syntax.vim'
 " Plug 'gorodinskiy/vim-coloresque', { 'for': ['css', 'sass', 'scss'] }
 
 
@@ -183,6 +186,9 @@ Plug 'tacroe/unite-mark'
 Plug 'ujihisa/unite-colorscheme'
 Plug 'tsukkee/unite-tag'
 Plug 'osyo-manga/unite-quickfix'
+Plug 'Shougo/unite-help'
+" Use / to search and then :Unite anzu to have a Unite buffer
+Plug 'osyo-manga/vim-anzu'
 
 " Colorschemes
 Plug 'flazz/vim-colorschemes'
@@ -224,18 +230,18 @@ Plug 'tmux-plugins/vim-tmux'
 " c for css class
 "
 Plug 'kana/vim-textobj-user'
-      \| Plug 'kana/vim-textobj-entire'
-      \| Plug 'kana/vim-textobj-indent'
-      \| Plug 'kana/vim-textobj-line'
-      \| Plug 'mattn/vim-textobj-url'
-      \| Plug 'rhysd/vim-textobj-anyblock'
-      \| Plug 'rhysd/vim-textobj-conflict'
-      \| Plug 'kana/vim-textobj-function'
-      \| Plug 'sgur/vim-textobj-parameter'
-      \| Plug 'thinca/vim-textobj-function-javascript'
-      \| Plug 'nelstrom/vim-textobj-rubyblock'
-      \| Plug 'bps/vim-textobj-python'
-      \| Plug 'jasonlong/vim-textobj-css'
+Plug 'kana/vim-textobj-entire'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-line'
+Plug 'mattn/vim-textobj-url'
+Plug 'rhysd/vim-textobj-anyblock'
+Plug 'rhysd/vim-textobj-conflict'
+Plug 'kana/vim-textobj-function'
+Plug 'sgur/vim-textobj-parameter'
+Plug 'thinca/vim-textobj-function-javascript'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'bps/vim-textobj-python'
+Plug 'jasonlong/vim-textobj-css'
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -305,6 +311,16 @@ let g:tmuxline_preset = {
 set ignorecase  " ignore case when using a search pattern
 set incsearch   " Highlight pattern matches as you type
 set hlsearch    " Highlight the search results
+" }}}
+
+" anzu {{{
+nmap n <Plug>(anzu-n-with-echo)
+" nmap n <Plug>(anzu-mode-n)
+nmap N <Plug>(anzu-N-with-echo)
+" nmap N <Plug>(anzu-mode-N)
+
+nmap * <Plug>(anzu-star-with-echo)
+nmap # <Plug>(anzu-sharp-with-echo)
 " }}}
 
 " Movement {{{
@@ -469,10 +485,11 @@ endif
 
 augroup rainbows
     " Rainbow Parentheses
-    autocmd VimEnter * RainbowParenthesesToggle
-    autocmd Syntax * RainbowParenthesesLoadRound
-    autocmd Syntax * RainbowParenthesesLoadSquare
-    autocmd Syntax * RainbowParenthesesLoadBraces
+    " autocmd BufRead,BufNewFile * RainbowParenthesesToggle
+    " autocmd VimEnter * RainbowParenthesesToggle
+    " autocmd Syntax * RainbowParenthesesLoadRound
+    " autocmd Syntax * RainbowParenthesesLoadSquare
+    " autocmd Syntax * RainbowParenthesesLoadBraces
 augroup END
 
 " Haskell
@@ -761,7 +778,9 @@ endfunction
 " }}}
 "
 function! GhcModQuickFix()
-  :Unite -no-empty -no-start-insert quickfix
+
+  :Unite -no-empty -no-start-insert -no-quit quickfix
+  " :CtrlPQuickfix
 endfunction
 
 " Haskell {{{
@@ -794,19 +813,19 @@ function! HaskellSettings()
   " Hoogle, close the Hoogle window
   nnoremap <silent> <LocalLeader>hz :HoogleClose<CR>
   " Hoogle for detailed documentation and prompt for input
-  nnoremap <silent> <LocalLeader>hi :HoogleInfo
+  nnoremap <silent> <LocalLeader>hi :HoogleInfo <Space>
 
   " GHC Mod
   let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
   " Resource: http://www.stephendiehl.com/posts/vim_2016.html
   " Type of expression under cursor
-  nnoremap <silent> tt :GhcModType<CR>
+  nnoremap <silent> tt :w<CR> :GhcModType<CR>
   " Insert type of expression under cursor
-  nnoremap <silent> tw :GhcModTypeInsert<CR>
-  nnoremap <silent> ts :GhcModSplitFunCase<CR>
-  nnoremap <silent> tq :GhcModType<CR>
-  nnoremap <silent> te :GhcModTypeClear<CR>
-  nnoremap <silent> tc :GhcModCheckAndLintAsync<CR>
+  nnoremap <silent> tw :w<CR> :GhcModTypeInsert<CR>
+  nnoremap <silent> ts :w<CR> :GhcModSplitFunCase<CR>
+  nnoremap <silent> tq :w<CR> :GhcModType<CR>
+  nnoremap <silent> te :w<CR> :GhcModTypeClear<CR>
+  nnoremap <silent> tc :w<CR> :GhcModCheckAndLintAsync<CR>
 
   " TODO: improve
   " Customize colors
@@ -925,71 +944,74 @@ endif
 " Unite {{{
 function! UniteSettings()
 
-    call unite#filters#matcher_default#use(['matcher_fuzzy'])
-    call unite#filters#sorter_default#use(['sorter_rank'])
+  " Settings
+  call unite#filters#matcher_default#use(['matcher_fuzzy'])
+  call unite#filters#sorter_default#use(['sorter_rank'])
+  call unite#custom_source('quickfix', 'sorters', 'sorter_reverse')
+  call unite#custom#source(
+        \ 'neomru/file', 'matchers',
+        \ ['matcher_project_files', 'matcher_fuzzy'])
 
-    " start-insert starts in INSERT mode when Unite is triggered
-    " prompt defines the prompt text
-    " winheight is the height of the Unite items
-    " direction is the location of the unite buffer
-    call unite#custom#profile('default', 'context', {
-                \   'start_insert': 1,
-                \   'prompt': ">> ",
-                \   'winheight': 10,
-                \   'direction': 'botright',
-                \ })
-    " WIP: Platinium Searcher
-    " if executable('pt')
-    "   let g:unite_source_grep_command = 'pt'
-    "   let g:unite_source_grep_default_opts = '--nogroup --nocolor'
-    "   let g:unite_source_grep_recursive_opt = ''
-    "   let g:unite_source_grep_encoding = 'utf-8'
-    " endif
-    " if executable('ag')
-        " Use ag in unite grep source.
-        " let g:unite_source_grep_command = 'ag'
-        " let g:unite_source_grep_command = 'grep'
-        " let g:unite_source_rec_async_command =
-        "             \ 'ag --follow --nocolor --nogroup --hidden -g ""'
-        " let g:unite_source_grep_default_opts =
-        "             \ '-</CR>q-hidden --ignore ' .
-        "             \ '''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
-        " let g:unite_source_grep_recursive_opt = ''
-    " endif
-    " Use ag for search
-    if executable('ag')
-      let g:unite_source_grep_command = 'ag'
-      let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
-      let g:unite_source_grep_recursive_opt = ''
-    endif
-    " nnoremap <silent> ,g :<C-u>Unite grep:. -buffer-name=search-buffer<CR>
-    " Closes Last Unit Buffer
-    nnoremap <silent> <C-g> :UniteClose<CR>
-    " Reopend last buffer
-    nnoremap <silent> <C-x> :UniteResume -no-start-insert<CR>
-    " Uses too much CPU (Fixed in the next vim version -> Patch it)
-    " nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
-    " Use Ctrl-P for now
-    " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/git<CR>
-    " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
-    nnoremap <silent> <M-m> :Unite -buffer-name=buffers buffer<CR>
-    nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
-    nnoremap <silent> <C-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
-    nnoremap <silent> <C-[> :Unite -buffer-name=search line:forward -start-insert<CR>
-    nnoremap <silent> <leader>[ :Unite -buffer-name=search line:forward -start-insert<CR>
-    nnoremap <silent> <M-[> :Unite -buffer-name=search line:forward -start-insert<CR>
-    nnoremap <silent> <leader>] :Unite -buffer-name=search line:forward -start-insert<CR>
-    let g:unite_source_history_yank_enable = 1
-    nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
-    nnoremap <C-f><Space> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr>
-    nnoremap <C-f><C-f> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
-    nnoremap <C-f><C-b> :execute 'Unite grep:$buffers::' . expand("<cword>") . '  -start-insert'<cr>
-    " TODO: live grep in directory
-    autocmd FileType unite call s:unite_my_settings()
-    " FIXME
-    nnoremap <ESC> <Nop>
-    unmap <CR>
-    " nnoremap <CR> G
+  " start-insert starts in INSERT mode when Unite is triggered
+  " prompt defines the prompt text
+  " winheight is the height of the Unite items
+  " direction is the location of the unite buffer
+  call unite#custom#profile('default', 'context', {
+        \   'start_insert': 1,
+        \   'prompt': ">> ",
+        \   'winheight': 10,
+        \   'direction': 'botright',
+        \ })
+  " Use ag for search
+  if executable('ag')
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+    let g:unite_source_grep_recursive_opt = ''
+  endif
+
+  " Closes/Reopens Last Unit Buffer
+  nnoremap <silent> <C-g> :UniteClose<CR>
+  nnoremap <silent> <C-x> :UniteResume -no-start-insert<CR>
+
+  " Uses too much CPU (Fixed in the next vim version -> Patch it)
+  " nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
+  " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/git<CR>
+  " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
+  " Use Ctrl-P for now
+  nnoremap <silent> <M-m> :Unite -buffer-name=buffers buffer<CR>
+  nnoremap <silent> <C-b> :Unite -buffer-name=buffers buffer<CR>
+  nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
+  nnoremap <silent> <C-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
+  let g:unite_source_history_yank_enable = 1
+  nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
+  " nnoremap <C-f><Space> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr>
+  " nnoremap <C-f><C-f> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
+  nnoremap <C-q> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
+  " nnoremap <C-f><C-b> :execute 'Unite grep:$buffers::' . expand("<cword>") . '  -start-insert'<cr>
+
+  " nnoremap <C-b> :<C-u>Unite -buffer-name=mru file_mru -start-insert<CR>
+
+  " Search / search
+  nnoremap <M-/> :Unite anzu -no-start-insert<CR>
+  nnoremap <C-/> :Unite anzu -no-start-insert<CR>
+
+  " Help
+  nnoremap <silent> <M-h> :Unite help<CR>
+
+  " Search lines
+  nnoremap <silent> <leader>[ :Unite -buffer-name=search line:all -start-insert<CR>
+  nnoremap <silent> <M-[> :Unite -buffer-name=search line:all -start-insert<CR>
+  " nnoremap <silent> <C-[> :Unite -buffer-name=search line:forward -start-insert<CR>
+  " nnoremap <silent> <leader>[ :Unite -buffer-name=search line:forward -start-insert<CR>
+  " nnoremap <silent> <M-[> :Unite -buffer-name=search line:forward -start-insert<CR>
+  " nnoremap <silent> <leader>] :Unite -buffer-name=search line:forward -start-insert<CR>
+
+  autocmd FileType unite call s:unite_my_settings()
+
+  " FIXME
+  nnoremap <ESC> <Nop>
+  unmap <CR>
+  " nnoremap <CR> G
 endfunction
 
 function! s:unite_my_settings()
@@ -999,8 +1021,8 @@ endfunction
 " }}}
 
 " CtrlP {{{
-let g:ctrlp_map = '<c-p>'
-nnoremap <C-b> :CtrlPMRU<CR>
+let g:ctrlp_map = '<c-]>'
+" nnoremap <C-b> :CtrlPMRU<CR>
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you type fast searches don't pile up
 " let g:ctrlp_user_command = 'find %s -type f | ag -iv "(\.(eot|gif|gz|ico|jpg|jpeg|otf|png|psd|pyc|svg|ttf|woff|zip)$)|(/\.)|((^|\/)tmp\/)"' "Quicker indexing
@@ -1077,8 +1099,49 @@ let g:indentLine_color_gui = '#09AA08'
 let g:indentLine_char = '┆'
 " }}}
 
-" fzf {{{
+" FZF {{{
+" Resource: https://github.com/junegunn/fzf.vim
 set rtp+=~/.fzf
+let g:fzf_command_prefix = 'FZF'
+
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Only in neovim
+function! s:fzf_statusline()
+  " Override statusline as you like
+  highlight fzf1 ctermfg=161 ctermbg=251
+  highlight fzf2 ctermfg=23 ctermbg=251
+  highlight fzf3 ctermfg=237 ctermbg=251
+  setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+endfunction
+
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
+
+nnoremap <C-f> :FZFAg<CR>
+nnoremap <C-p> :FZF<CR>
+
+" FZF MRU: https://github.com/tweekmonster/fzf-filemru
+" Seems broken and does not output MRUs...
+" nnoremap <C-b> :FilesMru --tiebreak=end<CR>
 " }}}
 
 " tslime {{{
@@ -1105,7 +1168,7 @@ endfunction
 " let g:ag_highlight=1
 " let g:ag_mapping_message=0 " Does not show the mappings when the search is done
 " Ag remap
-nnoremap <C-f> :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
+" nnoremap <C-f> :<C-u>Unite -no-quit -buffer-name=search grep:.<cr>
 " nnoremap <Leader>aa :call MyAgSearch()<CR>
 " nnoremap <silent> <Leader>al :cl<CR>
 " nnoremap <silent> <Leader>ac :ccl<CR>
@@ -1207,6 +1270,33 @@ endfunction
 "
 " colorscheme badwolf        " Awesome colorscheme
 " colorscheme wombat256i        " Awesome colorscheme
+" }}}
+
+" Rainbow parentheses {{{
+autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesActivate
+autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadRound
+autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadSquare
+autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadBraces
+autocmd BufEnter *.cljs,*.clj,*.cljs.hl setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
+" -- Rainbow parenthesis options
+let g:rbpt_colorpairs = [
+	\ ['darkyellow',  'RoyalBlue3'],
+	\ ['darkgreen',   'SeaGreen3'],
+	\ ['darkcyan',    'DarkOrchid3'],
+	\ ['Darkblue',    'firebrick3'],
+	\ ['DarkMagenta', 'RoyalBlue3'],
+	\ ['darkred',     'SeaGreen3'],
+	\ ['darkyellow',  'DarkOrchid3'],
+	\ ['darkgreen',   'firebrick3'],
+	\ ['darkcyan',    'RoyalBlue3'],
+	\ ['Darkblue',    'SeaGreen3'],
+	\ ['DarkMagenta', 'DarkOrchid3'],
+	\ ['Darkblue',    'firebrick3'],
+	\ ['darkcyan',    'SeaGreen3'],
+	\ ['darkgreen',   'RoyalBlue3'],
+	\ ['darkyellow',  'DarkOrchid3'],
+	\ ['darkred',     'firebrick3'],
+	\ ]
 " }}}
 
 " Todo: move to appropriate location
