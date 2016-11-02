@@ -14,6 +14,17 @@ function fzf-git-branches() { git branch | fzf-tmux -d 15; }
 # with ag - respects .agignore and .gitignore
 function agi() { ag --nobreak --nonumbers --noheading . | fzf; }
 
+# Syntax-highlight JSON strings or files
+function json() {
+	if [ -p /dev/stdin ]; then
+		# piping, e.g. `echo '{"foo":42}' | json`
+		python -mjson.tool | pygmentize -l javascript
+	else
+		# e.g. `json '{"foo":42}'`
+		python -mjson.tool <<< "$*" | pygmentize -l javascript
+	fi
+}
+
 # ---
 # Git
 # ---
