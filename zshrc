@@ -59,7 +59,8 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Virtualenvwrapper
-source /usr/local/bin/virtualenvwrapper.sh
+# source /usr/local/bin/virtualenvwrapper.sh
+source ~/.local/bin/virtualenvwrapper.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -94,4 +95,4 @@ stty -ixon
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 # Syntax Highlighting
-source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
