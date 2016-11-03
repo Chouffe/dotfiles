@@ -1,42 +1,16 @@
-# Path to your oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-export EDITOR='nvim'
-
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="af-magic"
-WORKON_HOME=~/Envs
 
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-# My aliases
-alias tmux='tmux -2'
-alias tm='tmux -2'
-export TERM='xterm-256color'
-[ -n "$TMUX" ] && export TERM='screen-256color'
-alias r=ranger
-alias h=htop
-alias mux=tmuxinator
-alias m=tmuxinator
-# alias v="gvim -v"
-alias v="nvim"
-# alias v="nvim"
-# alias vim="nvim"
-alias n="nvim"
-alias tg=tig
-alias t=tig
-alias -g H='| head'
-alias -g T='| tail'
-alias -g G='| grep'
-alias -g L="| less"
-alias pg="ping 8.8.8.8"
-alias elm-repl='elm-repl --interpreter=node-js'
-
-# My functions
-ag-f () { ag -G ".*$1\$" $2 }
+# Load the shell dotfiles, and then some:
+# * ~/.path can be used to extend `$PATH`.
+# * ~/.extra can be used for other settings you don’t want to commit.
+for file in ~/.{path,functions,aliases,exports,bindings,extra}; do
+	[ -r "$file" ] && [ -f "$file" ] && source "$file";
+done;
+unset file;
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -75,29 +49,17 @@ ag-f () { ag -G ".*$1\$" $2 }
 # Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
-plugins=(virtualenvwrapper git lein autojump sudo tmux jsontools python cabal)
+# plugins=(git lein autojump sudo tmux jsontools python cabal)
+# virtualenvwrapper
+plugins=(git gitfast git-extras fasd extract lein sudo tmux jsontools python cabal osx brew catimg web-search zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
-# source ~/.bin/tmuxinator.zsh
-
-# User configuration
-
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/git/bin:/opt/local/bin"
-export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.5/bin:/opt/alex/3.1.4/bin:$PATH
-# export MANPATH="/usr/local/man:$MANPATH"
-# export PATH=/home/chouffe/anaconda3/bin:$PATH
-
-# export PATH=/home/chouffe/anaconda2/bin:$PATH
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+# Virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -105,6 +67,7 @@ export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.
 # ssh
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
+# FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 ### Added by the Heroku Toolbelt
@@ -114,5 +77,21 @@ export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.
 # export ANDROID_HOME=/opt/android-sdk-linux
 # export PATH=${PATH}:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
 
+# AUTO TMUX
+if [[ -z "$TMUX" ]] ;then
+    ID="`tmux ls | grep -vm1 attached | cut -d: -f1`" # get the id of a deattached session
+    if [[ -z "$ID" ]] ;then # if not available create a new one
+        tmux new-session
+    else
+        tmux attach-session -t "$ID" # if available attach to it
+    fi
+fi
+
 #so as not to be disturbed by Ctrl-S ctrl-Q in terminals:
 stty -ixon
+
+# Loads nvm
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+# Syntax Highlighting
+source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh

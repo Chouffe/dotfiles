@@ -68,3 +68,6 @@ alias vsh='ssh devbox'
 alias vu='cd ~/airlab && vagrant up'
 alias vp='cd ~/airlab && vagrant provision'
 alias gk='goldkey'
+
+# Passwords
+# alias k='kp -k ~/passwords/keyfile -d ~/passwords/db.kdb'

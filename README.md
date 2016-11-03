@@ -31,7 +31,8 @@
 * ncdu
 * fasd
 * ssh
-* ag (silver-searcher)
+* ag
+* gawk for fzf mru
 * rlwrap
 * virtualenvwrapper
 * fzf (should be installed with neovim)
