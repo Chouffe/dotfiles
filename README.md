@@ -1,8 +1,14 @@
 # Dev dependencies
+
 ## Terminal
 
 * rxvt-unicode-256colors
-  * perl extension clipboard
+  * perl extensions:
+    * clipboard
+    * keyboard-select
+    * font-size
+    * matcher
+    * ...
   * xsel, xclip
 * tmux >= 2.0
   * tmux plugin manager (git clone)
@@ -14,7 +20,7 @@
 * Inconsolata
 * sudo localectl set-locale LANG=en_US.UTF-8
 
-## Tools
+# Tools
 
 * wget
 * curl
@@ -25,7 +31,7 @@
 * ncdu
 * fasd
 * ssh
-* ag
+* ag (silver-searcher)
 * rlwrap
 * virtualenvwrapper
 * fzf (should be installed with neovim)
@@ -58,6 +64,23 @@
   * set XKBOPTIONS=“ctrl:nocaps”
 * Remap volume keys to volume
 
+## Xmonad
+
+* xmonad
+* xmobar
+
+## Browsers
+
+* Chrome
+  * Vimium
+* Firefox
+  * Vimperator
+
+## Editor: nvim
+
+* Install vim-plug
+* Install all plugins with `:PlugInstall`
+
 ## Programming languages
 
 * Clojure
@@ -65,6 +88,10 @@
   * Java
 * Install Anaconda for ML
 * Haskell
+  * cabal
+  * stack
+  * ghc-mod
+  * hoogle
 * Scheme
 * Racket
 * Common Lisp
