@@ -70,4 +70,4 @@ alias vp='cd ~/airlab && vagrant provision'
 alias gk='goldkey'
 
 # Passwords
-# alias k='kp -k ~/passwords/keyfile -d ~/passwords/db.kdb'
+alias k='kp -d ~/passwords/db.kdb'
