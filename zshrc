@@ -95,3 +95,6 @@ stty -ixon
 
 # Syntax Highlighting
 source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Right Prompt
+RPROMPT="$FG[013]%D{%H:%M}%{$reset_color%}$FG[015]%D{ « }%{$reset_color%}$FG[014]%D{%m/%d}%{$reset_color%}"
