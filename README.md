@@ -13,6 +13,7 @@
 * tmux >= 2.0
   * tmux plugin manager (git clone)
   * Install all tmux plugins
+  * Install tmuxp
 * zsh
   * oh my zsh
     * auto suggestions: https://github.com/zsh-users/zsh-autosuggestions
