@@ -97,9 +97,5 @@ stty -ixon
 # Syntax Highlighting
 # source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Left Prompt
-# PROMPT="$FG[237]------------------------------------------------------------%{$reset_color%}
-# $FG[032]%~$(git_prompt_info) $FG[105]%(!.#.»)%{$reset_color%} "
-
 # Right Prompt
 RPROMPT="$FG[013]%D{%H:%M}%{$reset_color%}$FG[015] %D{»} %{$reset_color%}$FG[014]%D{%m/%d}%{$reset_color%}"

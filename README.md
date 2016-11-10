@@ -16,6 +16,7 @@
   * Install tmuxp
 * zsh
   * oh my zsh
+    * syntax highlighting: https://github.com/zsh-users/zsh-syntax-highlighting
     * auto suggestions: https://github.com/zsh-users/zsh-autosuggestions
 * Inconsolata for Powerline font
 * Inconsolata
