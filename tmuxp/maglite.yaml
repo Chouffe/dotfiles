@@ -1,0 +1,17 @@
+session_name: 3-panes
+start_directory: '~/airlab/repos/maglite'  # run as a first command in all panes
+windows:
+- window_name: dev window
+  layout: main-horizontal
+  focus: true
+  options:
+    main-pane-height: 95
+  panes:
+    - shell_command:
+      - n                            # Neovim
+      - :NERDTree
+      - :TmuxNavigateRight
+      - :FZF
+      focus: true
+    - rlwrap lein figwheel devcards  # REPL and devcards
+    - lein doo phantom test auto     # Test suite
