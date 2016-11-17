@@ -128,7 +128,7 @@ URxvt.font-size.step: 4
 *color15:               S_base3
 
 URxvt*background: rgba:0000/0000/0000/dddd
-URxvt*fading: 10
+URxvt*fading: 3
 
 URxvt*transparent: true
-URxvt*shading: 11
+URxvt*shading: 3

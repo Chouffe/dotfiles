@@ -1,4 +1,5 @@
 # Set name of the theme to load.
+set -g pane-border-fg black
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
@@ -51,7 +52,7 @@ unset file;
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git lein autojump sudo tmux jsontools python cabal)
 # virtualenvwrapper
-plugins=(git gitfast git-extras fasd extract lein sudo tmux jsontools python cabal osx brew catimg web-search zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal osx brew catimg web-search zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 

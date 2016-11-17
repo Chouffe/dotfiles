@@ -59,6 +59,9 @@
 * ml
   * Anaconda
   * tensorflow
+* docker
+  * fpco/stack-build
+  * fpco/stack-full
 
 ## Config
 
