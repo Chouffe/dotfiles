@@ -65,6 +65,7 @@ alias map="xargs -n1"
 
 # Job related alisases
 alias vsh='ssh devbox'
+alias ash='airlab ssh'
 alias vu='cd ~/airlab && vagrant up'
 alias vp='cd ~/airlab && vagrant provision'
 alias gk='goldkey'
