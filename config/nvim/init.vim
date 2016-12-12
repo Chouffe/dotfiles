@@ -43,7 +43,7 @@ Plug 'szw/vim-tags'
 " Ag for vim
 Plug 'rking/ag.vim'
 " Syntax checking hacks for vim
-Plug 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic', { 'for': ['python', 'javascript'] }
 " Syntax checking for vim
 " Plug 'neomake/neomake'
 " Some utility functions for vim
@@ -77,7 +77,7 @@ Plug 'chouffe/tslime.vim'
 " Python
 Plug 'klen/python-mode', { 'for': 'python' }
 
-" Ruby
+" Ruby, Rails
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'danchoi/ri.vim', { 'for': 'ruby' }
 
@@ -104,7 +104,7 @@ Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 Plug 'kshenoy/vim-signature'
 
 " Racket Plugins
-Plug 'wlangstroth/vim-racket'
+Plug 'wlangstroth/vim-racket', { 'for' : 'racket' }
 
 " Clojure Plugins
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
@@ -132,7 +132,7 @@ Plug 'tpope/vim-salve', { 'for': 'clojure' }
 " Plug 'travitch/hasksyn', { 'for' : 'haskell' }
 " Plug 'urso/haskell_syntax.vim', { 'for' : 'haskell' }
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-" Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
+Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " Vim plugin for Haskell development
@@ -140,9 +140,11 @@ Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " Vim plugin used to query hoogle, the haskell search engine
 Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 " Extended Haskell Conceal feature for Vim
-Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
+" Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
 " Create ctags compatible tags files for Haskell programs
 " Plug 'bitc/lushtags', { 'for': 'haskell' }
+
+Plug 'neomake/neomake', { 'for': 'haskell' }
 Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
 
 " Idris Plugins
@@ -459,6 +461,10 @@ nnoremap <leader>w8 :setlocal tabstop=8<CR>:setlocal shiftwidth=8<CR>
 nnoremap <Leader>g :echo expand('%:p')<CR>
 " }}}
 
+" Terminal {{{
+:tnoremap <Esc> <C-\><C-n>
+" }}}
+
 " Buffers {{{
 " Jumps to the desired buffer
 " nnoremap <Leader>j :<C-U>exe "buffer ".v:count<CR>
@@ -499,6 +505,11 @@ augroup HSK
     " Use tc instead
     " autocmd BufWritePost *.hs :GhcModCheckAndLintAsync
     autocmd FileType haskell call HaskellSettings()
+augroup END
+
+augroup NeomakeHaskell
+  autocmd!
+  autocmd! BufWritePost *.hs Neomake
 augroup END
 
 " ELM
@@ -778,26 +789,12 @@ endfunction
 " }}}
 "
 function! GhcModQuickFix()
-
   :Unite -no-empty -no-start-insert -no-quit quickfix
   " :CtrlPQuickfix
 endfunction
 
 " Haskell {{{
 function! HaskellSettings()
-  " Syntastic does not work with ghc mod and stack yet
-  " map <Leader>s :SyntasticToggleMode<CR>
-  " disable syntastic for haskell
-  let g:syntastic_haskell_checkers=['']
-  set statusline+=%#warningmsg#
-  set statusline+=%{SyntasticStatuslineFlag()}
-  set statusline+=%*
-
-  let g:syntastic_always_populate_loc_list = 0
-  let g:syntastic_auto_loc_list = 0
-  let g:syntastic_check_on_open = 0
-  let g:syntastic_check_on_wq = 0
-
   " YouCompleteMe and NecoGHC
   " Disable haskell-vim omnifunc
   let g:haskellmode_completion_ghc = 0
@@ -815,6 +812,7 @@ function! HaskellSettings()
   " Hoogle for detailed documentation and prompt for input
   nnoremap <silent> <LocalLeader>hi :HoogleInfo <Space>
 
+  " TODO: how to make it work with stack?
   " GHC Mod
   let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
   " Resource: http://www.stephendiehl.com/posts/vim_2016.html
@@ -835,21 +833,24 @@ function! HaskellSettings()
   " highlight ghcmodType guibg=Green guifg=White ctermbg=green ctermfg=black cterm=None
 
   " Pretty unicode haskell symbols
-  let g:haskell_conceal_wide = 1
-  let g:haskell_conceal_enumerations = 1
-  let hscoptions="𝐒𝐓𝐄𝐌xRtB𝔻w"
+  " let g:haskell_conceal_wide = 1
+  " let g:haskell_conceal_enumerations = 1
+  " let hscoptions="𝐒𝐓𝐄𝐌xRtB𝔻w"
   call WSHighlight()
 
 endfunction
 
 
-" vim-haskell: Syntax highlighting{{{
+" haskell-vim: Syntax highlighting (https://github.com/neovimhaskell/haskell-vim) {{{
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
 let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
 let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
 let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
 let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+
+let g:haskell_indent_if = 0
+let g:haskell_indent_in = 0
 " }}}
 
 
@@ -913,6 +914,8 @@ let g:tagbar_type_haskell = {
 " }}}
 
 " vim easy align {{{
+" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
@@ -1032,6 +1035,9 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 " Neomake Linter {{{
 " let g:neomake_javascript_enabled_makers = ['eslint']
 " autocmd! BufWritePost * Neomake
+let g:neomake_open_list=1
+let g:neomake_highlight_lines=1
+let g:neomake_haskell_enabled_makers = ['hlint', 'ghcmod']
 " }}}
 
 " Syntastic Linter {{{
@@ -1242,6 +1248,13 @@ function! MyAgSearch()
         execute "Ag" l:pattern "**/*." . l:fileType
     endif
 endfunction
+" }}}
+
+" Easy Align {{{
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
 " }}}
 
 " JSON Formater {{{

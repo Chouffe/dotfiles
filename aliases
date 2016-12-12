@@ -71,3 +71,7 @@ alias gk='goldkey'
 
 # Passwords
 alias k='kp -d ~/passwords/db.kdb'
+
+# Haskell
+alias ghc='stack exec -- ghc'
+alias ghci='stack exec -- ghci'

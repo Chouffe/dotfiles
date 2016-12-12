@@ -97,7 +97,10 @@
   * cabal
   * stack
   * ghc-mod
+  * hlint
   * hoogle
+    * Exuberant Ctags
+    * Hasktags
 * Scheme
 * Racket
 * Common Lisp
