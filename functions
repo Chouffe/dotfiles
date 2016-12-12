@@ -99,3 +99,9 @@ fstash() {
 #   local file
 #   file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)" && nvim "${file}" || return 1
 # }
+
+# Tmux
+
+function tmsession () {
+  tmux -2 new-session -s $1
+}
