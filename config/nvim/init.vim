@@ -132,7 +132,7 @@ Plug 'tpope/vim-salve', { 'for': 'clojure' }
 " Plug 'travitch/hasksyn', { 'for' : 'haskell' }
 " Plug 'urso/haskell_syntax.vim', { 'for' : 'haskell' }
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
+" Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " Vim plugin for Haskell development
@@ -732,15 +732,15 @@ endfunction
 
 " JavaScript thanks to pangloss/vim-javascript
 let g:javascript_conceal_function       = "λ"
-let g:javascript_conceal_null           = "ø"
-let g:javascript_conceal_this           = "@"
-let g:javascript_conceal_return         = "⇚"
+" let g:javascript_conceal_null           = "ø"
+" let g:javascript_conceal_this           = "@"
+" let g:javascript_conceal_return         = "⇚"
 " let g:javascript_conceal_undefined      = "¿"
 " let g:javascript_conceal_NaN            = "ℕ"
 " let g:javascript_conceal_prototype      = "¶"
 " let g:javascript_conceal_static         = "•"
 " let g:javascript_conceal_super          = "Ω"
-let g:javascript_conceal_arrow_function = "⇒"
+" let g:javascript_conceal_arrow_function = "⇒"
 " }}}
 
 " javascript-lib-syntax {{{
@@ -817,13 +817,13 @@ function! HaskellSettings()
   let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
   " Resource: http://www.stephendiehl.com/posts/vim_2016.html
   " Type of expression under cursor
-  nnoremap <silent> tt :w<CR> :GhcModType<CR>
+  nnoremap <silent> <LocalLeader>tt :w<CR> :GhcModType<CR>
   " Insert type of expression under cursor
-  nnoremap <silent> tw :w<CR> :GhcModTypeInsert<CR>
-  nnoremap <silent> ts :w<CR> :GhcModSplitFunCase<CR>
-  nnoremap <silent> tq :w<CR> :GhcModType<CR>
-  nnoremap <silent> te :w<CR> :GhcModTypeClear<CR>
-  nnoremap <silent> tc :w<CR> :GhcModCheckAndLintAsync<CR>
+  nnoremap <silent> <LocalLeader>tw :w<CR> :GhcModTypeInsert<CR>
+  nnoremap <silent> <LocalLeader>ts :w<CR> :GhcModSplitFunCase<CR>
+  nnoremap <silent> <LocalLeader>tq :w<CR> :GhcModType<CR>
+  nnoremap <silent> <LocalLeader>te :w<CR> :GhcModTypeClear<CR>
+  nnoremap <silent> <LocalLeader>tc :w<CR> :GhcModCheckAndLintAsync<CR>
 
   " TODO: improve
   " Customize colors

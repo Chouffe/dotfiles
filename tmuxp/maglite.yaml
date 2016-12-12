@@ -1,4 +1,4 @@
-session_name: 3-panes
+session_name: Maglite
 start_directory: '~/airlab/repos/maglite'  # run as a first command in all panes
 windows:
 - window_name: dev window
