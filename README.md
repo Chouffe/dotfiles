@@ -69,6 +69,9 @@
   * edit /etc/default/keyboard
   * set XKBOPTIONS=“ctrl:nocaps”
 * Remap volume keys to volume
+* Cursor speed:
+  * xset q | grep rate
+  * xset r rate 250 40
 
 ## Xmonad
 
