@@ -189,6 +189,7 @@ Plug 'ujihisa/unite-colorscheme'
 Plug 'tsukkee/unite-tag'
 Plug 'osyo-manga/unite-quickfix'
 Plug 'Shougo/unite-help'
+Plug 'ujihisa/unite-haskellimport', { 'for': 'haskell' }
 " Use / to search and then :Unite anzu to have a Unite buffer
 Plug 'osyo-manga/vim-anzu'
 
@@ -462,7 +463,7 @@ nnoremap <Leader>g :echo expand('%:p')<CR>
 " }}}
 
 " Terminal {{{
-:tnoremap <Esc> <C-\><C-n>
+tnoremap <Esc> <C-\><C-n>
 " }}}
 
 " Buffers {{{
@@ -508,8 +509,9 @@ augroup HSK
 augroup END
 
 augroup NeomakeHaskell
-  autocmd!
-  autocmd! BufWritePost *.hs Neomake
+  " autocmd BufRead,BufWritePost,BufEnter *.hs silent! Neomake
+  " TODO: Fix when opening different file types (it breaks)
+  autocmd BufWritePost *.hs silent! Neomake
 augroup END
 
 " ELM
@@ -590,7 +592,7 @@ augroup configgroup
     " Unite Settings
     autocmd! VimEnter * call UniteSettings()
     " Save on Focus Lost
-    autocmd FocusLost * silent! wa
+    " autocmd FocusLost * silent! wa
     " Conoline
     " autocmd FocusLost * ConoLineDisable
     " autocmd FocusGained * ConoLineEnable
@@ -795,6 +797,11 @@ endfunction
 
 " Haskell {{{
 function! HaskellSettings()
+  " Neomake
+  let g:neomake_open_list=2  " Conserves the cursor position + open the quickfix
+  let g:neomake_highlight_lines=0
+  let g:neomake_haskell_enabled_makers = ['hlint', 'ghcmod']
+
   " YouCompleteMe and NecoGHC
   " Disable haskell-vim omnifunc
   let g:haskellmode_completion_ghc = 0
@@ -811,6 +818,8 @@ function! HaskellSettings()
   nnoremap <silent> <LocalLeader>hz :HoogleClose<CR>
   " Hoogle for detailed documentation and prompt for input
   nnoremap <silent> <LocalLeader>hi :HoogleInfo <Space>
+  " Imports
+  nnoremap <silent> <LocalLeader>i :Unite haskellimport<CR>
 
   " TODO: how to make it work with stack?
   " GHC Mod
@@ -1030,14 +1039,6 @@ let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you type fast searches don't pile up
 " let g:ctrlp_user_command = 'find %s -type f | ag -iv "(\.(eot|gif|gz|ico|jpg|jpeg|otf|png|psd|pyc|svg|ttf|woff|zip)$)|(/\.)|((^|\/)tmp\/)"' "Quicker indexing
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-" }}}
-
-" Neomake Linter {{{
-" let g:neomake_javascript_enabled_makers = ['eslint']
-" autocmd! BufWritePost * Neomake
-let g:neomake_open_list=1
-let g:neomake_highlight_lines=1
-let g:neomake_haskell_enabled_makers = ['hlint', 'ghcmod']
 " }}}
 
 " Syntastic Linter {{{
