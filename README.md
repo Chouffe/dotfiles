@@ -99,6 +99,7 @@
 * Haskell
   * cabal
   * stack
+  * Stylish-haskell
   * ghc-mod
   * hlint
   * hoogle

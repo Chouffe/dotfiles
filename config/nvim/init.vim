@@ -143,6 +143,8 @@ Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 " Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
 " Create ctags compatible tags files for Haskell programs
 " Plug 'bitc/lushtags', { 'for': 'haskell' }
+" Code reformatting
+Plug 'nbouscal/vim-stylish-haskell', { 'for': 'haskell' }
 
 Plug 'neomake/neomake', { 'for': 'haskell' }
 Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
@@ -840,6 +842,7 @@ function! HaskellSettings()
   let g:ghcmod_type_highlight = 'ghcmodType'
   highlight ghcmodType ctermfg=15 ctermbg=24
   " highlight ghcmodType guibg=Green guifg=White ctermbg=green ctermfg=black cterm=None
+  " Stylish Haskell: Installed globally
 
   " Pretty unicode haskell symbols
   " let g:haskell_conceal_wide = 1
