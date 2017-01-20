@@ -1,0 +1,37 @@
+session_name: monorail
+start_directory: '~/repos/airbnb'
+before_script: 'airlab ssh sudo service monorail stop && sudo service nginx restart'
+windows:
+- window_name: dev
+  layout: main-horizontal
+  focus: true
+  options:
+    main-pane-height: 95
+  panes:
+    - shell_command:
+      - n                            # Neovim
+      - :NERDTree
+      - :TmuxNavigateRight
+      - :FZF
+    - shell_command:
+      - airlab ssh
+      - cd repos/airbnb
+      - sleep 60                     # Wait for zeus to start
+      - zeus console
+    - shell_command:
+      - airlab ssh
+      - cd repos/airbnb
+      - sleep 60                     # Wait for zeus to start
+      # TODO: Add tests
+- window_name: zeus server
+  layout: main-horizontal
+  panes:
+    - shell_command:
+      - airlab ssh
+      - cd repos/airbnb
+      - zeus start
+    - shell_command:
+      - airlab ssh
+      - cd repos/airbnb
+      - sleep 60                     # Wait for zeus to start
+      - zeus server

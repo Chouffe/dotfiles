@@ -1,0 +1,18 @@
+session_name: saturn5
+start_directory: '~/airlab'  # run as a first command in all panes
+before_script: kp get yubikey
+windows:
+- window_name: airlab sync
+  layout: main-horizontal
+  focus: true
+  panes:
+    - shell_command:
+      - yk
+      - exit
+      focus: true
+    - shell_command:
+      - sleep 10
+      - airlab sync
+    - shell_command:
+      - sleep 10
+      - vagrant provision
