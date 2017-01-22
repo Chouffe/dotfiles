@@ -1010,11 +1010,11 @@ function! UniteSettings()
   " Uses too much CPU (Fixed in the next vim version -> Patch it)
   " nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
   " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/git<CR>
-  " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
+  nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
   " Use Ctrl-P for now
-  nnoremap <silent> <M-m> :Unite -buffer-name=buffers buffer<CR>
-  nnoremap <silent> <C-b> :Unite -buffer-name=buffers buffer<CR>
-  nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
+  " nnoremap <silent> <M-m> :Unite -buffer-name=buffers buffer<CR>
+  " nnoremap <silent> <C-b> :Unite -buffer-name=buffers buffer<CR>
+  " nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
   nnoremap <silent> <C-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
   let g:unite_source_history_yank_enable = 1
   nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
@@ -1249,10 +1249,23 @@ function! s:all_files()
   \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
 endfunction
 
-nnoremap <C-f> :FZFAg<CR>
-nnoremap <C-p> :FZF<CR>
-nnoremap <M-p> :FZFLines<CR>
-nnoremap <M-S-p> :FZFMru<CR>
+" TODO: make a search section that mixes FZF, Unite and CtrlP
+nnoremap <M-g> :FZFAg<CR>'
+" nnoremap <C-p> :FZF<CR>
+" nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
+nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
+nnoremap <M-p> :FZF<CR>
+nnoremap <M-b> :FZFBuffers<CR>
+" nnoremap <M-i> :FZFLines<CR>
+nnoremap <M-o> :FZFMru<CR>
+
+" Tags
+nnoremap <M-t> :Unite -buffer-name=tags tag -start-insert<CR>
+" nnoremap <M-t> :FZFTags<CR>'
+nnoremap <M-f> :FZFBTags<CR>
+" nnoremap <M-m> :FZFMarks<CR>
+nnoremap <M-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<CR>
+nnoremap <C-f> :Unite -buffer-name=search line:all -start-insert<CR>
 
 " FZF MRU: https://github.com/tweekmonster/fzf-filemru
 " Seems broken and does not output MRUs...
