@@ -78,7 +78,12 @@ Plug 'chouffe/tslime.vim'
 Plug 'klen/python-mode', { 'for': 'python' }
 
 " Ruby, Rails
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
+Plug 'tpope/vim-bundler', { 'for': 'ruby' }
+
+" Browse ri documentation from vim
 Plug 'danchoi/ri.vim', { 'for': 'ruby' }
 
 " Graph your Vim undo tree in style.
@@ -388,6 +393,8 @@ cnoremap $d <CR>:d<CR>``
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
 vmap K :m'<-2<cr>`>my`<mzgv`yo`z
 vmap J :m'>+<cr>`<my`>mzgv`yo`z
+" Sorting
+vmap <C-s> !sort<CR>
 " Splits
 nnoremap <silent> sv :vsplit<CR>
 nnoremap <silent> sh :split<CR>
@@ -808,9 +815,11 @@ function! HaskellSettings()
   " Disable haskell-vim omnifunc
   let g:haskellmode_completion_ghc = 0
   set omnifunc=necoghc#omnifunc
+
   let g:ycm_min_num_of_chars_for_completion = 0
   let g:ycm_auto_trigger = 1
   let g:necoghc_enable_detailed_browse = 1
+  let g:necoghc_debug=1
 
   " Hoogle
   " Hoogle the word under the cursor
@@ -892,6 +901,16 @@ endfunction
 
 " Tags {{{
 set tags=tags;/,codex.tags;/
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+\ }
 let g:tagbar_type_haskell = {
     \ 'ctagsbin'  : 'hasktags',
     \ 'ctagsargs' : '-x -c -o-',
@@ -1036,7 +1055,7 @@ endfunction
 " }}}
 
 " CtrlP {{{
-let g:ctrlp_map = '<c-]>'
+" let g:ctrlp_map = '<c-]>'
 " nnoremap <C-b> :CtrlPMRU<CR>
 let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
 let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you type fast searches don't pile up
@@ -1152,9 +1171,6 @@ endfunction
 
 autocmd! User FzfStatusLine call <SID>fzf_statusline()
 
-nnoremap <C-f> :FZFAg<CR>
-nnoremap <C-p> :FZF<CR>
-
 " Narrow ag results within vim
 
 " CTRL-X, CTRL-V, CTRL-T to open in a new split, vertical split, tab respectively.
@@ -1197,6 +1213,46 @@ command! -nargs=* Ag call fzf#run({
       \            '--color hl:68,hl+:110',
       \ 'down':    '50%'
       \ })
+
+function! s:line_handler(l)
+  let keys = split(a:l, ':\t')
+  exec 'buf' keys[0]
+  exec keys[1]
+  normal! ^zz
+endfunction
+
+function! s:buffer_lines()
+  let res = []
+  for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
+    call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
+  endfor
+  return res
+endfunction
+
+command! FZFLines call fzf#run({
+\   'source':  <sid>buffer_lines(),
+\   'sink':    function('<sid>line_handler'),
+\   'options': '--extended --nth=3..',
+\   'down':    '60%'
+\})
+
+command! FZFMru call fzf#run({
+\ 'source':  reverse(s:all_files()),
+\ 'sink':    'edit',
+\ 'options': '-m -x +s',
+\ 'down':    '40%' })
+
+function! s:all_files()
+  return extend(
+  \ filter(copy(v:oldfiles),
+  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+endfunction
+
+nnoremap <C-f> :FZFAg<CR>
+nnoremap <C-p> :FZF<CR>
+nnoremap <M-p> :FZFLines<CR>
+nnoremap <M-S-p> :FZFMru<CR>
 
 " FZF MRU: https://github.com/tweekmonster/fzf-filemru
 " Seems broken and does not output MRUs...
