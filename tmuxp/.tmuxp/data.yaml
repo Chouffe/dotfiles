@@ -1,0 +1,13 @@
+session_name: Data Exploration
+start_directory: '~/airlab/repos/analyses'  # run as a first command in all panes
+windows:
+- window_name: dev window
+  shell_command_before:
+    - workon dataexploration
+  layout: main-horizontal
+  focus: true
+  options:
+    main-pane-height: 95
+  panes:
+    - jupyter notebook
+    - ipython

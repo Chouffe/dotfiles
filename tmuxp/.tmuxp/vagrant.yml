@@ -1,0 +1,12 @@
+session_name: Vagrant
+start_directory: '~/airlab'  # run as a first command in all panes
+windows:
+- window_name: vm window
+  layout: tiled
+  focus: true
+  panes:
+    - vagrant up
+    - vagrant provision
+    - kp get yubi
+    - yk
+    - htop
