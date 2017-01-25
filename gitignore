@@ -8,3 +8,5 @@ lein/repl-history
 .ipynb*
 Session.vim
 .tern-project
+tags
+.ctags
