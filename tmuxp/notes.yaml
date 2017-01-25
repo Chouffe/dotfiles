@@ -1,0 +1,12 @@
+session_name: Notes
+start_directory: '~/Documents/notes'
+windows:
+- window_name: ATO
+  layout: main-horizontal
+  focus: true
+  options:
+    main-pane-height: 95
+  panes:
+    - shell_command:
+      - n ato.md
+      - :vsplit weekly-snippets.md
