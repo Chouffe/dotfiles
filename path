@@ -1,24 +1,33 @@
 #!/usr/bin/env bash
 
-export PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/git/bin:/opt/local/bin"
-export PATH=~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.5/bin:/opt/alex/3.1.4/bin:$PATH
 
-# Anaconda
-export PATH=$PATH:~/anaconda/bin
+PREPAND_PATH="/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/X11/bin:/usr/local/git/bin:/opt/local/bin"
+
+ # GHC and haskell
+PREPAND_PATH=$PREPAND_PATH:~/.cabal/bin:/opt/cabal/1.22/bin:/opt/ghc/7.8.4/bin:/opt/happy/1.19.5/bin:/opt/alex/3.1.4/bin:$PATH
+PREPAND_PATH=$PREPAND_PATH:~/.local/bin
+PREPAND_PATH=$PREPAND_PATH:~/.stack/programs/x86_64-osx/ghc-7.10.3/bin
+
+# Python and anaconda
+PREPAND_PATH=$PREPAND_PATH:~/anaconda/bin
 
 # Ruby dev
-export PATH=$PATH:~/.gem/ruby/2.0.0/bin
-
-# Haskell dev
-export PATH=$PATH:~/.local/bin
-export PATH=$PATH:~/.stack/programs/x86_64-osx/ghc-7.10.3/bin
-
-# Add GHC 7.10.3 to the PATH, via https://ghcformacosx.github.io/
-# export GHC_DOT_APP="/Applications/ghc-7.10.3.app"
-# if [ -d "$GHC_DOT_APP" ]; then
-#   export PATH=PATH:"${HOME}/.local/bin:${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
-# fi
+PREPAND_PATH=$PREPAND_PATH:~/.gem/ruby/2.0.0/bin
 
 # Work
-export PATH=$PATH:/opt/airbnb/bin
-export PATH=$PATH:~/airlab/sysops/ec2_tools
+PREPAND_PATH=$PREPAND_PATH:/opt/airbnb/bin
+PREPAND_PATH=$PREPAND_PATH:~/airlab/sysops/ec2_tools
+
+POSTPAND_PATH=""
+
+export PATH=$PREPAND_PATH:$PATH:$POSTPAND_PATH
+
+# # Add GHC 7.10.3 to the PATH, via https://ghcformacosx.github.io/
+# # export GHC_DOT_APP="/Applications/ghc-7.10.3.app"
+# # if [ -d "$GHC_DOT_APP" ]; then
+# #   export PATH=PATH:"${HOME}/.local/bin:${HOME}/.cabal/bin:${GHC_DOT_APP}/Contents/bin:${PATH}"
+# # fi
+
+# # Work
+# export PATH=$PATH:/opt/airbnb/bin
+# export PATH=$PATH:~/airlab/sysops/ec2_tools
