@@ -105,3 +105,7 @@ fstash() {
 function tmsession () {
   tmux -2 new-session -s $1
 }
+
+function silver-presto () {
+  cat $1 | ssh silver10 presto | less -SFX
+}

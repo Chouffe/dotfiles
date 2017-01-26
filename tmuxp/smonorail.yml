@@ -1,0 +1,17 @@
+session_name: smonorail
+start_directory: '~/repos/airbnb'
+windows:
+- window_name: dev
+  layout: main-horizontal
+  focus: true
+  options:
+    main-pane-height: 95
+  panes:
+    - shell_command:
+      - sleep 60
+      - zeus console
+    - zeus start
+- window_name: zeus server
+  layout: main-horizontal
+  panes:
+    - zeus server
