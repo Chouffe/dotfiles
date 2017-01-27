@@ -1010,6 +1010,7 @@ function! UniteSettings()
   " Uses too much CPU (Fixed in the next vim version -> Patch it)
   " nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
   " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/git<CR>
+  " nnoremap <silent> <C-p> :Unite -buffer-name=files file_rec/neovim<CR>
   " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/neovim<CR>
   " Use Ctrl-P for now
   " nnoremap <silent> <M-m> :Unite -buffer-name=buffers buffer<CR>

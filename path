@@ -13,6 +13,7 @@ PREPAND_PATH=$PREPAND_PATH:~/anaconda/bin
 
 # Ruby dev
 PREPAND_PATH=$PREPAND_PATH:~/.gem/ruby/2.0.0/bin
+PREPAND_PATH=$PREPAND_PATH:$HOME/.rvm/bin
 
 # Work
 PREPAND_PATH=$PREPAND_PATH:/opt/airbnb/bin
