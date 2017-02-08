@@ -1264,9 +1264,12 @@ nnoremap <M-o> :FZFMru<CR>
 " Tags
 nnoremap <M-t> :Unite -buffer-name=tags tag -start-insert<CR>
 " nnoremap <M-t> :FZFTags<CR>'
-nnoremap <M-f> :FZFBTags<CR>
-" nnoremap <M-m> :FZFMarks<CR>
-nnoremap <M-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<CR>
+" nnoremap <M-f> :FZFLines<CR>
+nnoremap <M-f> :Unite lines<CR>
+nnoremap <M-o> :FZFLines<CR>
+" nnoremap <M-f> :FZFBTags<CR>
+nnoremap <M-m> :FZFMarks<CR>
+" nnoremap <M-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<CR>
 nnoremap <C-f> :Unite -buffer-name=search line:all -start-insert<CR>
 
 " FZF MRU: https://github.com/tweekmonster/fzf-filemru
