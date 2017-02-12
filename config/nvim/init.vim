@@ -21,6 +21,8 @@ Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-repeat'
 " quoting/parenthesizing made simple
 Plug 'tpope/vim-surround'
+" continuously updated session files (to be used with tmux resurect)
+Plug 'tpope/vim-obsession'
 " align with ease
 Plug 'junegunn/vim-easy-align'
 " Fuzzy finder
@@ -31,7 +33,7 @@ Plug 'tweekmonster/fzf-filemru'
 " Asynchronous
 Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 " Autocompletion
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 "Improved incremental searching
 Plug 'haya14busa/incsearch.vim'
 " provides improved * motions
@@ -40,8 +42,6 @@ Plug 'haya14busa/vim-asterisk'
 Plug 'majutsushi/tagbar'
 " Ctags generator for Vim
 Plug 'szw/vim-tags'
-" Ag for vim
-Plug 'rking/ag.vim'
 " Syntax checking hacks for vim
 Plug 'scrooloose/syntastic', { 'for': ['python', 'javascript'] }
 " Syntax checking for vim
@@ -50,15 +50,11 @@ Plug 'scrooloose/syntastic', { 'for': ['python', 'javascript'] }
 Plug 'tomtom/tlib_vim'
 " Interpret a file by function and cache file automatically
 Plug 'MarcWeber/vim-addon-mw-utils'
-" Delete all the buffers except the current/named buffer
-Plug 'vim-scripts/BufOnly.vim'
 " visually select increasingly larger regions of text using the same key
 " combination
 Plug 'terryma/vim-expand-region'
 " Better Rainbow Parentheses
 Plug 'kien/rainbow_parentheses.vim'
-" continuously updated session files (to be used with tmux resurect)
-Plug 'tpope/vim-obsession'
 " help you stop repeating the basic movement keys
 Plug 'takac/vim-hardtime'
 " Lightweight easy motion
@@ -72,22 +68,16 @@ Plug 'miyakogi/conoline.vim'
 Plug 'osyo-manga/vim-over'
 
 Plug 'chouffe/tslime.vim'
-" Plug 'benmills/vimux'
-" Plug 'julienr/vimux-pyutils', {'for': 'python' }
-" Python
-Plug 'klen/python-mode', { 'for': 'python' }
 
-" Ruby, Rails
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
-Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
-Plug 'tpope/vim-bundler', { 'for': 'ruby' }
-
-" Browse ri documentation from vim
-Plug 'danchoi/ri.vim', { 'for': 'ruby' }
+" Marks
+Plug 'kshenoy/vim-signature'
 
 " Graph your Vim undo tree in style.
 Plug 'sjl/gundo.vim'
+
+" vim notes
+" Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-notes'
 
 " Nerdtree
 Plug 'scrooloose/nerdtree'
@@ -98,93 +88,13 @@ Plug 'jistr/vim-nerdtree-tabs'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 
-" vim notes
-Plug 'xolox/vim-misc'
-Plug 'xolox/vim-notes'
-
-" Elm
-Plug 'ElmCast/elm-vim', { 'for': 'elm' }
-
-" Marks
-Plug 'kshenoy/vim-signature'
-
-" Racket Plugins
-Plug 'wlangstroth/vim-racket', { 'for' : 'racket' }
-
-" Clojure Plugins
-Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'tpope/vim-classpath', { 'for': 'clojure' }
-" Plug 'honza/vim-clojure-conceal', { 'for' : 'clojure' }
-Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme'] }
-Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for' : ['clojure', 'scheme'] }
-" Extend builtin syntax highlighting to referred and aliased vars in Clojure buffers
-Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
-" Clojure runtime files
-Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-" provides a repl that supports breakpoints, documentation lookup, source code
-" navigation, and omnicompletion.
-Plug 'dgrnbrg/vim-redl', { 'for': 'clojure' }
-Plug 'dgrnbrg/redl', { 'for': 'clojure' }
-" static support for Leiningen and Boot
-Plug 'tpope/vim-salve', { 'for': 'clojure' }
-" the Clojure formatting tool.
-" Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
-" Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
-
-" Haskell Plugins
-" Syntax highlighting: vim2hs/haksyn/haskell_syntax
-" Plug 'dag/vim2hs', { 'for': 'haskell' }
-" Plug 'travitch/hasksyn', { 'for' : 'haskell' }
-" Plug 'urso/haskell_syntax.vim', { 'for' : 'haskell' }
-Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
-" Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
-Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
-Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
-" Vim plugin for Haskell development
-" Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
-" Vim plugin used to query hoogle, the haskell search engine
-Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
-" Extended Haskell Conceal feature for Vim
-" Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
-" Create ctags compatible tags files for Haskell programs
-" Plug 'bitc/lushtags', { 'for': 'haskell' }
-" Code reformatting
-Plug 'nbouscal/vim-stylish-haskell', { 'for': 'haskell' }
-
-Plug 'neomake/neomake', { 'for': 'haskell' }
-Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
-
-" Idris Plugins
-Plug 'idris-hackers/idris-vim', { 'for': 'idris' }
-
-" Html/Xml editing
-Plug 'tpope/vim-ragtag', { 'for': ['html', 'javascript'] }
-Plug 'othree/html5.vim', { 'for': 'html' }
-
-" JavaScript
-" Plug 'othree/jspc.vim', { 'for': 'javascript' }
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-" Plug 'flowtype/vim-flow', { 'for': ['javascript', 'jsx'] }
-Plug 'flowtype/vim-flow'
-Plug 'moll/vim-node', { 'for': 'javascript' }
-Plug 'mxw/vim-jsx', { 'for': 'javascript' }
-Plug 'elzr/vim-json', { 'for':  ['html', 'javascript']}
-Plug 'othree/javascript-libraries-syntax.vim', { 'for' : 'javascript' }
-Plug 'ternjs/tern_for_vim', { 'for':  'javascript', 'do': 'npm install'}
-" provides insert mode auto-completion for quotes, parens, brackets
-Plug 'Raimondi/delimitMate', { 'for': ['haskell', 'html', 'javascript', 'python', 'ruby'] }
-
-" CSS
-Plug 'JulesWang/css.vim'
-Plug 'hail2u/vim-css3-syntax'
-Plug 'cakebaker/scss-syntax.vim'
-" Plug 'gorodinskiy/vim-coloresque', { 'for': ['css', 'sass', 'scss'] }
-
+" Neomake
+Plug 'neomake/neomake'
 
 " Ctrl-P
 " Plug 'kien/ctrlp.vim'
 
-" Unite Plugins
+" Unite
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/neoyank.vim'
 " nallowing lines from current buffer
@@ -200,21 +110,12 @@ Plug 'ujihisa/unite-haskellimport', { 'for': 'haskell' }
 " Use / to search and then :Unite anzu to have a Unite buffer
 Plug 'osyo-manga/vim-anzu'
 
-" Colorschemes
-Plug 'flazz/vim-colorschemes'
-Plug 'sjl/badwolf'
-Plug 'mkarmona/colorsbox'
-Plug 'Donearm/Ubaryd'
-Plug 'joshdick/onedark.vim'
-Plug 'kristijanhusak/vim-hybrid-material'
-Plug 'Wutzara/vim-materialtheme'
-
-" Git Plugin
+" Git
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/vim-gita'
 
-" Tmux Plugin
+" Tmux
 " lean & mean status/tabline for vim that's light as air
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -252,6 +153,107 @@ Plug 'thinca/vim-textobj-function-javascript'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'bps/vim-textobj-python'
 Plug 'jasonlong/vim-textobj-css'
+
+" Colorschemes
+Plug 'flazz/vim-colorschemes'
+Plug 'sjl/badwolf'
+Plug 'mkarmona/colorsbox'
+Plug 'Donearm/Ubaryd'
+Plug 'joshdick/onedark.vim'
+Plug 'kristijanhusak/vim-hybrid-material'
+Plug 'Wutzara/vim-materialtheme'
+
+" -------------------------
+" Language specific plugins
+" -------------------------
+
+" Plug 'benmills/vimux'
+" Plug 'julienr/vimux-pyutils', {'for': 'python' }
+" Python
+Plug 'klen/python-mode', { 'for': 'python' }
+
+" Ruby
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+" Browse ri documentation from vim
+Plug 'danchoi/ri.vim', { 'for': 'ruby' }
+
+" Rails
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
+Plug 'tpope/vim-bundler', { 'for': 'ruby' }
+
+" Elm
+Plug 'ElmCast/elm-vim', { 'for': 'elm' }
+
+" Racket
+Plug 'wlangstroth/vim-racket', { 'for' : 'racket' }
+
+" Clojure
+Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'tpope/vim-classpath', { 'for': 'clojure' }
+" Plug 'honza/vim-clojure-conceal', { 'for' : 'clojure' }
+Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme'] }
+Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for' : ['clojure', 'scheme'] }
+" Extend builtin syntax highlighting to referred and aliased vars in Clojure buffers
+Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
+" Clojure runtime files
+Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+" provides a repl that supports breakpoints, documentation lookup, source code
+" navigation, and omnicompletion.
+Plug 'dgrnbrg/vim-redl', { 'for': 'clojure' }
+Plug 'dgrnbrg/redl', { 'for': 'clojure' }
+" static support for Leiningen and Boot
+Plug 'tpope/vim-salve', { 'for': 'clojure' }
+" the Clojure formatting tool.
+" Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
+" Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
+
+" Haskell
+" Syntax highlighting: vim2hs/haksyn/haskell_syntax
+" Plug 'dag/vim2hs', { 'for': 'haskell' }
+" Plug 'travitch/hasksyn', { 'for' : 'haskell' }
+" Plug 'urso/haskell_syntax.vim', { 'for' : 'haskell' }
+Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+" Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
+Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+" Vim plugin for Haskell development
+" Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
+" Vim plugin used to query hoogle, the haskell search engine
+Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
+" Extended Haskell Conceal feature for Vim
+" Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
+" Create ctags compatible tags files for Haskell programs
+" Plug 'bitc/lushtags', { 'for': 'haskell' }
+" Code reformatting
+Plug 'nbouscal/vim-stylish-haskell', { 'for': 'haskell' }
+Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
+
+" Idris
+Plug 'idris-hackers/idris-vim', { 'for': 'idris' }
+
+" Html/Xml
+Plug 'tpope/vim-ragtag', { 'for': ['html', 'javascript'] }
+Plug 'othree/html5.vim', { 'for': 'html' }
+
+" JavaScript
+" Plug 'othree/jspc.vim', { 'for': 'javascript' }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+" Plug 'flowtype/vim-flow', { 'for': ['javascript', 'jsx'] }
+Plug 'flowtype/vim-flow'
+Plug 'moll/vim-node', { 'for': 'javascript' }
+Plug 'mxw/vim-jsx', { 'for': 'javascript' }
+Plug 'elzr/vim-json', { 'for':  ['html', 'javascript']}
+Plug 'othree/javascript-libraries-syntax.vim', { 'for' : 'javascript' }
+Plug 'ternjs/tern_for_vim', { 'for':  'javascript', 'do': 'npm install'}
+" provides insert mode auto-completion for quotes, parens, brackets
+Plug 'Raimondi/delimitMate', { 'for': ['haskell', 'html', 'javascript', 'python', 'ruby'] }
+
+" CSS
+Plug 'JulesWang/css.vim'
+Plug 'hail2u/vim-css3-syntax'
+Plug 'cakebaker/scss-syntax.vim'
+" Plug 'gorodinskiy/vim-coloresque', { 'for': ['css', 'sass', 'scss'] }
 
 " Add plugins to &runtimepath
 call plug#end()
@@ -455,8 +457,6 @@ nnoremap <silent> <leader>n :set number!<CR>
 nnoremap <Leader>( :RainbowParenthesesToggle<CR>
 " Color the colorcolumn
 nnoremap <Leader>cc :call ColorColumn()<CR>
-" BufOnly
-nnoremap <Leader>bb :ls<CR>:buffer<Space>
 " Fugitive maping
 nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gc :Gcommit<CR>
