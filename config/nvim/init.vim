@@ -460,7 +460,8 @@ nmap <leader>d :call BufferDelete()<CR>
 " Scroll Off
 nnoremap <Leader>zz :let &scrolloff=999-&scrolloff<CR>
 " NERDTreeTabsToggle
-map <Leader>t <plug>NERDTreeTabsToggle<CR>
+" map <Leader>t <plug>NERDTreeTabsToggle<CR>
+map <Leader>t :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
 " Spell checking
 nnoremap <silent> <leader>s :set spell!<CR>
 " Numbers
@@ -506,11 +507,36 @@ highlight SignColumn ctermbg=16
 highlight Search ctermfg=None ctermbg=Black cterm=bold
 " }}}
 
+" Vimfiler {{{
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_tree_leaf_icon = " "
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_file_icon = '-'
+let g:vimfiler_marked_file_icon = '✓'
+let g:vimfiler_readonly_file_icon = '✗'
+let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
+let g:vimfiler_expand_jump_to_first_child = 0
+" }}}
+
 " Autocmd {{{
 " Source the vimrc file after saving it
 if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC
 endif
+
+augroup VIMFILER
+  autocmd!
+  "Config file: https://gist.github.com/mattjmorrison/6c2fff20f969237fb9fa
+  autocmd FileType vimfiler nunmap <buffer> <C-l>
+  autocmd FileType vimfiler nmap <buffer><Leader>t :q<CR>
+  autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
+  autocmd FileType vimfiler vmap <buffer> x <Plug>(vimfiler_toggle_mark_selected_lines)
+  autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
+        \ "\<Plug>(vimfiler_expand_tree)",
+        \ "\<Plug>(vimfiler_edit_file)")
+augroup END
 
 augroup OMNIFUNCS
   autocmd!
