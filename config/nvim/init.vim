@@ -264,9 +264,9 @@ call plug#end()
 " set tabstop=4       " number of visual spaces per TAB
 " set shiftwidth=4
 " set softtabstop=4   " number of spaces in tab when editing
-set expandtab       " tabs are spaces
-set autoindent      " Indentation
-set smartindent     " Indentation
+set expandtab         " tabs are spaces
+set autoindent        " Indentation
+set smartindent       " Indentation
 " }}}
 
 " UI and Layout {{{
@@ -279,22 +279,22 @@ if &term =~ '256color'
 endif
 " " let base16colorspace=256
 " let $NVIM_TUI_ENABLE_TRUE_COLOR='1'
-set spelllang=en_gb         " Set region to British English
-set mouse=a               " Enable mouse usage in terminal vim
-" set mouse=                  " Disable mouse usage in terminal vim
-set relativenumber          " Enable relative number
-set number                  " Enable hybrid mode
-" set encoding=utf-8          " UTF-8 encoding
-set scrolloff=3             " number of screen lines to show around the cursor
-set cursorline              " Highlight the line you are on
-set cursorline cursorcolumn " Highlights the column you are in
-set showmatch               " Show matches ({[
-colorscheme hybrid_material " Awesome colorscheme
-highlight Normal ctermbg=NONE      " No background color
-highlight LineNr ctermfg=242  " Set line number colors grey
+set spelllang=en_gb              " Set region to British English
+set mouse=a                      " Enable mouse usage in terminal vim
+" set mouse=                     " Disable mouse usage in terminal vim
+set relativenumber               " Enable relative number
+set number                       " Enable hybrid mode
+" set encoding=utf-8             " UTF-8 encoding
+set scrolloff=3                  " Number of screen lines to show around the cursor
+set cursorline                   " Highlight the line you are on
+set cursorline cursorcolumn      " Highlights the column you are in
+set showmatch                    " Show matches ({[
+colorscheme hybrid_material      " Awesome colorscheme
+highlight Normal ctermbg=NONE    " No background color
+highlight LineNr ctermfg=242     " Set line number colors grey
 set pastetoggle=<F2>
-" set textwidth=79          " Max text-width
-filetype plugin indent on   " Enable filetype plugins
+" set textwidth=79               " Max text-width
+filetype plugin indent on        " Enable filetype plugins
 " Tab completion on the command line
 " Wildmenu
 set wildmenu
@@ -302,11 +302,10 @@ set wildmode=longest:full,full
 " Splits
 set splitbelow
 set splitright
-" Status line always on
-set laststatus=2
+set laststatus=2                 " Status line always on
 " }}}
 
-" Status Lines {{{
+" Status Lines - Tmuxline {{{
 let g:tmuxline_theme = 'zenburn'
 let g:tmuxline_preset = {
       \'a'    : '#S',
@@ -330,24 +329,22 @@ nmap n <Plug>(anzu-n-with-echo)
 " nmap n <Plug>(anzu-mode-n)
 nmap N <Plug>(anzu-N-with-echo)
 " nmap N <Plug>(anzu-mode-N)
-
 nmap * <Plug>(anzu-star-with-echo)
 nmap # <Plug>(anzu-sharp-with-echo)
 " }}}
 
 " Movement {{{
 " Insert Mode
-" inoremap <expr> j ((pumvisible())?("\<C-n>"):("j"))
-" inoremap <expr> k ((pumvisible())?("\<C-p>"):("k"))
-" Exits INSERT mode without moving cursor (press jk)
+" Exits INSERT mode without moving cursor (press jk || jj)
 inoremap jk <ESC>l
+inoremap jj <ESC>l
 " Normal mode
 " Remap the beginning of the line
 nnoremap 0 ^
 " Move to beginning/end of the line
-nnoremap `` ^
-nnoremap \\ $
-nnoremap <BS><BS> $
+nnoremap ` ^
+nnoremap <BS> ^
+nnoremap \ $
 " nnoremap <CR> G
 " move to the search
 " Treat long lines as break lines (useful when moving around in them)
@@ -383,7 +380,7 @@ set hidden
 " Alignment/Indentation
 " nnoremap == mz=ab'z
 " Vim auto tabularize with pipes
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+inoremap <silent> <Bar> <Bar><Esc>:call <SID>align()<CR>a
 " Preventing entering Ex mode
 nnoremap Q :bd %<CR>
 " select last paste in visual mode
@@ -437,7 +434,7 @@ vmap <Leader>P "+P
 " Splits
 nnoremap <silent> <Leader>k :vsplit<CR>
 nnoremap <silent> <Leader>j :split<CR>
-" Edit vimrc
+" Edit config files
 nnoremap <leader>ev :edit $MYVIMRC<CR>
 nnoremap <leader>ez :edit ~/.zshrc<CR>
 nnoremap <leader>et :edit ~/.tmux.conf<CR>
@@ -463,7 +460,7 @@ nnoremap <Leader>gc :Gcommit<CR>
 nnoremap <Leader>gb :Gblame<CR>
 nnoremap <Leader>gl :Glog<CR>
 nnoremap <Leader>gp :Gpush<CR>
-" Key bindings for adjusting the tab/shift width.
+" Key bindings for adjusting tee tab/shift width.
 nnoremap <leader>w2 :setlocal tabstop=2<CR>:setlocal shiftwidth=2<CR>
 nnoremap <leader>w4 :setlocal tabstop=4<CR>:setlocal shiftwidth=4<CR>
 nnoremap <leader>w8 :setlocal tabstop=8<CR>:setlocal shiftwidth=8<CR>
@@ -499,35 +496,43 @@ if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
-augroup rainbows
-    " Rainbow Parentheses
-    " autocmd BufRead,BufNewFile * RainbowParenthesesToggle
-    " autocmd VimEnter * RainbowParenthesesToggle
-    " autocmd Syntax * RainbowParenthesesLoadRound
-    " autocmd Syntax * RainbowParenthesesLoadSquare
-    " autocmd Syntax * RainbowParenthesesLoadBraces
+augroup FZF
+  autocmd!
+  autocmd User FzfStatusLine call <SID>fzf_statusline()
+augroup END
+
+augroup RAINBOWS
+  autocmd!
+  " Rainbow Parentheses
+  autocmd BufRead,BufNewFile * RainbowParenthesesActivate
+  autocmd VimEnter * RainbowParenthesesActivate
+  autocmd BufEnter * RainbowParenthesesLoadRound
+  autocmd BufEnter * RainbowParenthesesLoadSquare
+  autocmd BufEnter * RainbowParenthesesLoadBraces
+augroup END
+
+augroup UNITE
+  autocmd!
+  autocmd FileType unite call s:unite_my_settings()
 augroup END
 
 " Haskell
-augroup HSK
-    " au Bufenter *.hs compiler ghc
-    autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
-    " Use tc instead
-    " autocmd BufWritePost *.hs :GhcModCheckAndLintAsync
-    autocmd FileType haskell call HaskellSettings()
-augroup END
-
-augroup NeomakeHaskell
-  " autocmd BufRead,BufWritePost,BufEnter *.hs silent! Neomake
+augroup HASKELL
+  autocmd!
+  " au Bufenter *.hs compiler ghc
+  autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
+  " Use tc instead
+  " autocmd BufWritePost *.hs :GhcModCheckAndLintAsync
+  autocmd FileType haskell call HaskellSettings()
   " TODO: Fix when opening different file types (it breaks)
   autocmd BufWritePost *.hs silent! Neomake
 augroup END
 
 " ELM
 augroup ELM
+  autocmd!
 
-  " Provides my own keybindings
-  let g:elm_setup_keybindings = 0
+  autocmd BufNewFile,BufRead,BufReadPost elm call ElmSettings()
 
   " Keybindings
   autocmd FileType elm nmap <LocalLeader>b <Plug>(elm-make)
@@ -537,89 +542,93 @@ augroup ELM
   autocmd FileType elm nmap <LocalLeader>e <Plug>(elm-error-detail)
   autocmd FileType elm nmap <LocalLeader>d <Plug>(elm-show-docs)
   autocmd FileType elm nmap <LocalLeader>w <Plug>(elm-browse-docs)
-
-  autocmd BufNewFile,BufRead,BufReadPost elm call ElmSettings()
-
-  " Requires elm-format
-  let g:elm_format_autosave = 1
-
-  " Syntastic
-  let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_auto_loc_list = 1
-
-  let g:elm_syntastic_show_warnings = 1
-  " YouCompleteMe
 augroup END
+
 " Lisp
 augroup LISP
-    " setfiletype scheme
-    " set syntax=scheme
-
-    " au filetype lisp,scheme,art call SexpSettings()
-    autocmd BufNewFile,BufRead,BufReadPost *.scm call SexpSettings()
+  autocmd!
+  autocmd BufNewFile,BufRead,BufReadPost *.scm call SexpSettings()
 augroup END
 
 augroup JS
-    autocmd BufNewFile,BufRead,BufReadPost *.js call JavaScriptSettings()
-    autocmd BufNewFile,BufRead,BufReadPost *.js call TslimeSettings()
+  autocmd!
+  " Two space indentation
+  autocmd FileType javascript set tabstop=2
+  autocmd FileType javascript set softtabstop=2
+  autocmd FileType javascript set shiftwidth=2
+  autocmd FileType javascript set expandtab
+  autocmd FileType javascript set conceallevel=1
+  autocmd FileType javascript set concealcursor=nvic
+  autocmd BufWinEnter,BufNewFile *.js silent tab
+  autocmd BufNewFile,BufRead,BufReadPost *.js call JavaScriptSettings()
+  autocmd BufNewFile,BufRead,BufReadPost *.js call TslimeSettings()
 augroup END
 
 augroup ML
-    autocmd BufNewFile,BufRead,BufReadPost *.ml call TslimeSettings()
+  autocmd!
+  autocmd BufNewFile,BufRead,BufReadPost *.ml call TslimeSettings()
 augroup END
 
 augroup RUBY
-    autocmd BufNewFile,BufRead,BufReadPost *.rb call TslimeSettings()
+  autocmd!
+  autocmd BufNewFile,BufRead,BufReadPost *.rb call TslimeSettings()
 augroup END
 
 augroup PYTHON
-    autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
-    autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()
+  autocmd!
+  autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
+  autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()
 augroup END
 
 augroup GOYO
+  autocmd!
   autocmd! User GoyoEnter Limelight
   autocmd! User GoyoLeave Limelight!
 augroup END
 
 " Clojure
 augroup CLJ
-    " Avoid defining them twice
-    autocmd BufNewFile,BufRead,BufReadPost *.clj call ClojureSettings()
-    autocmd BufNewFile,BufRead,BufReadPost *.clj call SexpSettings()
+  autocmd!
+  autocmd BufNewFile,BufRead,BufReadPost *.clj call ClojureSettings()
+  autocmd BufNewFile,BufRead,BufReadPost *.clj call SexpSettings()
+  autocmd BufEnter *.clj setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
 augroup END
 
 augroup CLJS
+  autocmd!
   " autocmd BufNewFile,BufRead,BufReadPost *.cljs call TslimeSettings()
   autocmd BufNewFile,BufRead,BufReadPost *.cljs call SexpSettings()
+  autocmd BufEnter *.cljs setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
   command! Figwheel :Piggieback! (do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/cljs-repl))
 augroup END
 
 augroup configgroup
-    " No bell
-    autocmd GUIEnter * set visualbell t_vb=
-    " Unite Settings
-    autocmd! VimEnter * call UniteSettings()
-    " Save on Focus Lost
-    " autocmd FocusLost * silent! wa
-    " Conoline
-    " autocmd FocusLost * ConoLineDisable
-    " autocmd FocusGained * ConoLineEnable
-    " autocmd BufWinLeave * ConoLineDisable
-    " autocmd BufWinEnter * ConoLineEnable
-    " Whitespace cleaning
-    autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-    autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-    autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-    autocmd BufWinLeave * call clearmatches()
-    " TrimWhiteSpaces when saving
-    autocmd BufWritePre * :call TrimWhiteSpace()
-    " Fugitive
-    " autocmd QuickFixCmdPost *grep* cwindow " all the files are open in a quickfix buffer
+  autocmd!
+  " No bell
+  autocmd GUIEnter * set visualbell t_vb=
+  " Unite Settings
+  autocmd! VimEnter * call UniteSettings()
+  " Save on Focus Lost
+  " autocmd FocusLost * silent! wa
+  " Conoline
+  " autocmd FocusLost * ConoLineDisable
+  " autocmd FocusGained * ConoLineEnable
+  " autocmd BufWinLeave * ConoLineDisable
+  " autocmd BufWinEnter * ConoLineEnable
+  " Whitespace cleaning
+  autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+  autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+  autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+  autocmd BufWinLeave * call clearmatches()
+  " TrimWhiteSpaces when saving
+  autocmd BufWritePre * :call TrimWhiteSpace()
+  " Fugitive
+  " autocmd QuickFixCmdPost *grep* cwindow " all the files are open in a quickfix buffer
 augroup END
 " }}}
 
 augroup QUICKFIX_WINDOW
+  autocmd!
   " In the quickfix window, <CR> is used to jump to the error under the
   " cursor, so undefine the mapping there.
   autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
@@ -646,15 +655,6 @@ nnoremap <Leader>gl :Glog<CR>
 nnoremap <Leader>gp :Gpush<CR>
 " }}}
 
-" Tig Integration {{{
-function! s:tig_status()
-  cd `driller --scm-root %`
-  !tig status
-endfunction
-command! TigStatus call s:tig_status()
-nnoremap <Leader>gs :silent TigStatus<CR>
-" }}}
-
 " vim-airline {{{
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
@@ -672,77 +672,58 @@ nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " }}}
 
 " YouCompleteMe {{{
-    let g:ycm_semantic_triggers = {'clojure' : ['/'], 'haskell': ['.'], 'elm': ['.']}
+    " let g:ycm_semantic_triggers = {'clojure' : ['/'], 'haskell': ['.'], 'elm': ['.']}
 " }}}
 
-" Clojure {{{
+" Clojure Settings {{{
 function! ClojureSettings()
-    setfiletype clojure
-    set syntax=clojure
-    " Highlight references
-    let g:clojure_highlight_references=1
-    let g:vimclojure#HighlightBuiltins=1
-    let g:vimclojure#ParenRainbow=1
-    let g:clojure_fuzzy_indent = 1
-    let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let', '^fact', '^facts', '^tabular', 'if', 'when', '^test-extractor', 'against-background']
-    let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
-    " Mapping
-    nnoremap cq :Require<CR>
-    nnoremap cr :Require<CR>
-    nnoremap ce :Eval<CR>
-    nnoremap cc :%Eval<CR>
-    nnoremap cl :Last<CR>
-    nnoremap cf :setf clojure<CR>
-    let g:clj_fmt_autosave = 1
-    call RedlSettings()
-endfunction
-
-function! RedlSettings()
-    nnoremap <silent><buffer> rr :ReplHere<CR>
-    imap <silent> K <Plug>clj_repl_uphist.
-    imap <silent> J <Plug>clj_repl_downhist.
-    imap <silent> <C-d> <ESC>:bd<CR>
-    imap <silent> <C-w> <ESC>:echo 'stuff'<CR>
+  setfiletype clojure
+  set syntax=clojure
+  " Highlight references
+  let g:clojure_highlight_references=1
+  let g:vimclojure#HighlightBuiltins=1
+  let g:vimclojure#ParenRainbow=1
+  let g:clojure_fuzzy_indent = 1
+  let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let', '^fact', '^facts', '^tabular', 'if', 'when', '^test-extractor', 'against-background']
+  let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-context)$']
+  " Mapping
+  nnoremap cq :Require<CR>
+  nnoremap cr :Require<CR>
+  nnoremap ce :Eval<CR>
+  nnoremap cc :%Eval<CR>
+  nnoremap cl :Last<CR>
+  nnoremap cf :setf clojure<CR>
+  let g:clj_fmt_autosave = 1
 endfunction
 
 function! SexpSettings()
-    " Disable insertion after wrapping
-    let g:sexp_insert_after_wrap = 0
-    " mapping
-    " nmap <silent><buffer> w <Plug>(sexp_round_tail_wrap_element)
-    " Slurpage & Burfage
-    nmap <silent><buffer> << <Plug>(sexp_capture_prev_element)
-    nmap <silent><buffer> >> <Plug>(sexp_capture_next_element)
+  " Disable insertion after wrapping
+  let g:sexp_insert_after_wrap = 0
+  " mapping
+  " nmap <silent><buffer> w <Plug>(sexp_round_tail_wrap_element)
+  " Slurpage & Burfage
+  nmap <silent><buffer> << <Plug>(sexp_capture_prev_element)
+  nmap <silent><buffer> >> <Plug>(sexp_capture_next_element)
 endfunction
 
 function! JavaScriptSettings()
-  " Two space indentation
-  set tabstop=2
-  set softtabstop=2
-  set shiftwidth=2
-  set expandtab
-  au BufWinEnter,BufNewFile * silent tab
 
-    " mapping
-    imap <C-j> <CR><Esc>O
-    imap <C-l> <C-o>A
+  " mapping
+  imap <buffer> <C-j> <CR><Esc>O
+  imap <buffer> <C-l> <C-o>A
 
-    " Map the conceal characters to their expanded forms.
-    " inoremap <silent> @ <C-r>=syntax_expand#expand("@", "this")<CR>
-    " inoremap <silent> # <C-r>=syntax_expand#expand("#", "prototype")<CR>
-    " inoremap <silent> < <C-r>=syntax_expand#expand_head("<", "return")<CR>
+  " Map the conceal characters to their expanded forms.
+  " inoremap <silent> @ <C-r>=syntax_expand#expand("@", "this")<CR>
+  " inoremap <silent> # <C-r>=syntax_expand#expand("#", "prototype")<CR>
+  " inoremap <silent> < <C-r>=syntax_expand#expand_head("<", "return")<CR>
 
-    " Keeps everything concealed at all times. Even when my cursor is on the word.
-    set conceallevel=1
-    set concealcursor=nvic
-
+  " Keeps everything concealed at all times. Even when my cursor is on the word.
 endfunction
 " }}}
 
-" Javascript vim-javascript
-
+" vim-javascript {{{
 " JavaScript thanks to pangloss/vim-javascript
-let g:javascript_conceal_function       = "λ"
+" let g:javascript_conceal_function       = "λ"
 " let g:javascript_conceal_null           = "ø"
 " let g:javascript_conceal_this           = "@"
 " let g:javascript_conceal_return         = "⇚"
@@ -794,8 +775,8 @@ let g:pymode_folding = 0
 
 " Python {{{
 function! PythonSettings()
-    let g:ycm_autoclose_preview_window_after_completion=1
-    map <C-f> :YcmCompleter GoToReferences<CR>
+  let g:ycm_autoclose_preview_window_after_completion=1
+  map <C-f> :YcmCompleter GoToReferences<CR>
 endfunction
 " }}}
 "
@@ -816,8 +797,8 @@ function! HaskellSettings()
   let g:haskellmode_completion_ghc = 0
   set omnifunc=necoghc#omnifunc
 
-  let g:ycm_min_num_of_chars_for_completion = 0
-  let g:ycm_auto_trigger = 1
+  " let g:ycm_min_num_of_chars_for_completion = 0
+  " let g:ycm_auto_trigger = 1
   let g:necoghc_enable_detailed_browse = 1
   let g:necoghc_debug=1
 
@@ -876,27 +857,39 @@ let g:haskell_indent_in = 0
 
 
 function! WSHighlight()
-    syn match BadWhiteSpace "^\\s*\\t\\+"
-    syn match BadWhiteSpace "\\s\\+$"
+  syn match BadWhiteSpace "^\\s*\\t\\+"
+  syn match BadWhiteSpace "\\s\\+$"
 endfunction
 " }}}
 
 function! ElmSettings()
-    " let g:elm_jump_to_error = 1
-    " let g:elm_make_output_file = "elm.js"
-    " let g:elm_make_show_warnings = 0
-    " let g:elm_browser_command = ""
-    " let g:elm_detailed_complete = 1
+  " let g:elm_jump_to_error = 1
+  " let g:elm_make_output_file = "elm.js"
+  " let g:elm_make_show_warnings = 0
+  " let g:elm_browser_command = ""
+  " let g:elm_detailed_complete = 1
 
-    let g:elm_jump_to_error = 0
-    let g:elm_make_output_file = "elm.js"
-    let g:elm_make_show_warnings = 0
-    let g:elm_syntastic_show_warnings = 0
-    let g:elm_browser_command = ""
-    let g:elm_detailed_complete = 0
-    let g:elm_format_autosave = 0
-    let g:elm_setup_keybindings = 0
-    let g:elm_classic_hightlighting = 0
+  " Provides my own keybindings
+  let g:elm_setup_keybindings = 0
+
+  " Requires elm-format
+  let g:elm_format_autosave = 1
+
+  " Syntastic
+  let g:syntastic_always_populate_loc_list = 1
+  let g:syntastic_auto_loc_list = 1
+
+  let g:elm_syntastic_show_warnings = 1
+
+  let g:elm_jump_to_error = 0
+  let g:elm_make_output_file = "elm.js"
+  let g:elm_make_show_warnings = 0
+  let g:elm_syntastic_show_warnings = 0
+  let g:elm_browser_command = ""
+  let g:elm_detailed_complete = 0
+  let g:elm_format_autosave = 0
+  let g:elm_setup_keybindings = 0
+  let g:elm_classic_hightlighting = 0
 endfunction
 
 " Tags {{{
@@ -1007,6 +1000,13 @@ function! UniteSettings()
   nnoremap <silent> <C-g> :UniteClose<CR>
   nnoremap <silent> <C-x> :UniteResume -no-start-insert<CR>
 
+  " History yank
+  let g:unite_source_history_yank_enable = 1
+  nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
+
+  " Unite grep on word under cursor
+  nnoremap <C-q> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
+
   " Uses too much CPU (Fixed in the next vim version -> Patch it)
   " nnoremap <silent> <C-p> :Unite file_mru file_rec/async<CR>
   " nnoremap <silent> <C-p> :Unite -buffer-name=files file_mru file_rec/git<CR>
@@ -1016,17 +1016,14 @@ function! UniteSettings()
   " nnoremap <silent> <M-m> :Unite -buffer-name=buffers buffer<CR>
   " nnoremap <silent> <C-b> :Unite -buffer-name=buffers buffer<CR>
   " nnoremap <silent> <leader>m :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
-  nnoremap <silent> <C-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
-  let g:unite_source_history_yank_enable = 1
-  nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
+  " nnoremap <silent> <C-m> :<C-u>Unite mark -buffer-name=marks -no-start-insert<cr>
   " nnoremap <C-f><Space> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr>
   " nnoremap <C-f><C-f> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
-  nnoremap <C-q> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
   " nnoremap <C-f><C-b> :execute 'Unite grep:$buffers::' . expand("<cword>") . '  -start-insert'<cr>
 
   " nnoremap <C-b> :<C-u>Unite -buffer-name=mru file_mru -start-insert<CR>
 
-  " Search / search
+  " Anzu - Search with /
   nnoremap <M-/> :Unite anzu -no-start-insert<CR>
   nnoremap <C-/> :Unite anzu -no-start-insert<CR>
 
@@ -1040,8 +1037,6 @@ function! UniteSettings()
   " nnoremap <silent> <leader>[ :Unite -buffer-name=search line:forward -start-insert<CR>
   " nnoremap <silent> <M-[> :Unite -buffer-name=search line:forward -start-insert<CR>
   " nnoremap <silent> <leader>] :Unite -buffer-name=search line:forward -start-insert<CR>
-
-  autocmd FileType unite call s:unite_my_settings()
 
   " FIXME
   nnoremap <ESC> <Nop>
@@ -1058,8 +1053,8 @@ endfunction
 " CtrlP {{{
 " let g:ctrlp_map = '<c-]>'
 " nnoremap <C-b> :CtrlPMRU<CR>
-let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
-let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you type fast searches don't pile up
+" let g:ctrlp_cache_dir = $HOME . '/.cache/ctrlp'
+" let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you type fast searches don't pile up
 " let g:ctrlp_user_command = 'find %s -type f | ag -iv "(\.(eot|gif|gz|ico|jpg|jpeg|otf|png|psd|pyc|svg|ttf|woff|zip)$)|(/\.)|((^|\/)tmp\/)"' "Quicker indexing
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 " }}}
@@ -1111,7 +1106,7 @@ let g:syntastic_vim_checkers           = ['vint']
  let g:jsx_ext_required = 0 " Allow JSX in normal JS files
 " }}}
 
-" Vim Sneak {{{
+" Vim-Sneak {{{
 nmap s <Plug>Sneak_s
 nmap S <Plug>Sneak_S
 xmap s <Plug>Sneak_s
@@ -1169,13 +1164,11 @@ function! s:fzf_statusline()
   highlight fzf3 ctermfg=237 ctermbg=251
   setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
 endfunction
-
-autocmd! User FzfStatusLine call <SID>fzf_statusline()
-
 " Narrow ag results within vim
 
 " CTRL-X, CTRL-V, CTRL-T to open in a new split, vertical split, tab respectively.
 " CTRL-A to select all matches and list them in quickfix window
+" TAB to select one
 " CTRL-D to deselect all
 " Ag without argument will list all the lines
 
@@ -1358,23 +1351,6 @@ function! BufferDelete()
         endif
     endif
 endfunction
-function! MyAgSearch()
-    let l:defaultFileType = expand("%:e")
-
-    call inputsave()
-    let l:pattern = input('>> ')
-    call inputrestore()
-
-    " execute "Ag" l:pattern
-    call inputsave()
-    let l:fileType=input('File Type [default=' . l:defaultFileType .'] >>> ')
-    call inputrestore()
-    if empty(l:fileType)
-        execute "Ag" l:pattern "**/*." . l:defaultFileType
-    else
-        execute "Ag" l:pattern "**/*." . l:fileType
-    endif
-endfunction
 " }}}
 
 " Easy Align {{{
@@ -1413,11 +1389,6 @@ endfunction
 " }}}
 
 " Rainbow parentheses {{{
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesActivate
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadRound
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadSquare
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl RainbowParenthesesLoadBraces
-autocmd BufEnter *.cljs,*.clj,*.cljs.hl setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
 " -- Rainbow parenthesis options
 let g:rbpt_colorpairs = [
 	\ ['darkyellow',  'RoyalBlue3'],
@@ -1439,6 +1410,10 @@ let g:rbpt_colorpairs = [
 	\ ]
 " }}}
 
+
+" Syntax highlighting
+syntax enable
+
 " Todo: move to appropriate location
 highlight Search ctermfg=white ctermbg=red
 
@@ -1458,9 +1433,7 @@ let g:conoline_color_normal_nr_light = 'ctermbg=23'
 let g:conoline_color_insert_light = 'ctermbg=black'
 let g:conoline_color_insert_nr_light = 'ctermbg=black'
 " }}}
-
-syntax enable
-
+"
 " Autocomplete color
 " highlight Pmenu ctermfg=DarkRed ctermbg=Black
 highlight Pmenu ctermfg=15 ctermbg=23
