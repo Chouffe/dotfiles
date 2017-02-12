@@ -84,12 +84,27 @@ Plug 'scrooloose/nerdtree'
 " NERDTree and tabs together in Vim, painlessly
 Plug 'jistr/vim-nerdtree-tabs'
 
+Plug 'Shougo/vimfiler.vim'
+
 " Goyo: Distraction free writing in vim
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
 
 " Neomake
 Plug 'neomake/neomake'
+
+" Neoformat
+Plug 'sbdchd/neoformat'
+
+" Dark powered asynchronous completion framework for neovim
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
+Plug 'clojure-vim/async-clj-omni'
+Plug 'Shougo/neoinclude.vim'
+" Plug 'fishbullet/deoplete-ruby'
+Plug 'Shougo/neco-vim'
+Plug 'wellle/tmux-complete.vim'
+" intellij completion: https://github.com/vhakulinen/neovim-intellij-complete
 
 " Ctrl-P
 " Plug 'kien/ctrlp.vim'
@@ -226,7 +241,7 @@ Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 " Create ctags compatible tags files for Haskell programs
 " Plug 'bitc/lushtags', { 'for': 'haskell' }
 " Code reformatting
-Plug 'nbouscal/vim-stylish-haskell', { 'for': 'haskell' }
+" Plug 'nbouscal/vim-stylish-haskell', { 'for': 'haskell' }
 Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
 
 " Idris
@@ -451,7 +466,8 @@ nnoremap <silent> <leader>s :set spell!<CR>
 " Numbers
 nnoremap <silent> <leader>n :set number!<CR>
 " RainbowParenthesesToggle
-nnoremap <Leader>( :RainbowParenthesesToggle<CR>
+nnoremap <Leader>( :call RainbowAll()<CR>
+" nnoremap <Leader>( :RainbowParenthesesToggle<CR>
 " Color the colorcolumn
 nnoremap <Leader>cc :call ColorColumn()<CR>
 " Fugitive maping
@@ -496,20 +512,47 @@ if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
+augroup OMNIFUNCS
+  autocmd!
+  autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+  autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+  autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+augroup END
+
+augroup FMT
+  autocmd!
+  " autocmd BufWritePre * Neoformat
+augroup END
+
 augroup FZF
   autocmd!
   autocmd User FzfStatusLine call <SID>fzf_statusline()
 augroup END
 
 augroup RAINBOWS
-  autocmd!
-  " Rainbow Parentheses
+  autocmd VimEnter * RainbowParenthesesActivate
+  autocmd Syntax * RainbowParenthesesLoadRound
+  autocmd Syntax * RainbowParenthesesLoadSquare
+  autocmd Syntax * RainbowParenthesesLoadBraces
   autocmd BufRead,BufNewFile * RainbowParenthesesActivate
   autocmd VimEnter * RainbowParenthesesActivate
   autocmd BufEnter * RainbowParenthesesLoadRound
   autocmd BufEnter * RainbowParenthesesLoadSquare
   autocmd BufEnter * RainbowParenthesesLoadBraces
+  " Rainbow Parentheses
 augroup END
+
+function! RainbowAll()
+  RainbowParenthesesActivate
+  RainbowParenthesesLoadBraces
+  RainbowParenthesesLoadRound
+  RainbowParenthesesLoadSquare
+endfunction
+
+" Neoformat
+nnoremap <Leader>f :Neoformat<CR>:call RainbowAll(<CR>
 
 augroup UNITE
   autocmd!
@@ -671,6 +714,39 @@ let g:multi_cursor_quit_key='<C-d>'
 nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " }}}
 
+" Deoplete {{{
+
+let g:deoplete#enable_at_startup = 1
+" Make sure the autocompletion will actually trigger using the omnifuncs
+"https://www.gregjs.com/vim/2016/configuring-the-deoplete-asynchronous-keyword-completion-plugin-with-tern-for-vim/
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+
+" Automatically closing the scratch window
+autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+
+" Use tern_for_vim.
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
+
+" deoplete tab-complete
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+
+let g:deoplete#keyword_patterns = {}
+let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+" }}}
+
+" tern {{{
+if exists('g:plugs["tern_for_vim"]')
+  let g:tern_show_argument_hints = 'on_hold'
+  let g:tern_show_signature_in_pum = 1
+  autocmd FileType javascript setlocal omnifunc=tern#Complete
+  " tern
+  autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
+endif
+" }}}
+
 " YouCompleteMe {{{
     " let g:ycm_semantic_triggers = {'clojure' : ['/'], 'haskell': ['.'], 'elm': ['.']}
 " }}}
@@ -790,11 +866,14 @@ function! HaskellSettings()
   " Neomake
   let g:neomake_open_list=2  " Conserves the cursor position + open the quickfix
   let g:neomake_highlight_lines=0
-  let g:neomake_haskell_enabled_makers = ['hlint', 'ghcmod']
+  " let g:neomake_haskell_enabled_makers = ['hlint', 'ghcmod']
+  let g:neomake_haskell_enabled_makers = ['ghcmod']
 
   " YouCompleteMe and NecoGHC
   " Disable haskell-vim omnifunc
   let g:haskellmode_completion_ghc = 0
+" Disable haskell-vim omnifunc
+  autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
   set omnifunc=necoghc#omnifunc
 
   " let g:ycm_min_num_of_chars_for_completion = 0
@@ -992,7 +1071,18 @@ function! UniteSettings()
   " Use ag for search
   if executable('ag')
     let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+    " let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
+    let g:unite_source_grep_default_opts =
+          \ '-i --line-numbers --nocolor --column' .
+          \ '--nogroup --hidden --ignore ' .
+          \ '''.hg'' --ignore ''.svn'' --ignore' .
+          \ ' ''.git'' --ignore ''.bzr'''
+    let g:unite_source_grep_recursive_opt = ''
+  elseif executable('pt')
+    " Use pt (the platinum searcher)
+    " https://github.com/monochromegane/the_platinum_searcher
+    let g:unite_source_grep_command = 'pt'
+    let g:unite_source_grep_default_opts = '--nogroup --nocolor'
     let g:unite_source_grep_recursive_opt = ''
   endif
 
@@ -1040,7 +1130,7 @@ function! UniteSettings()
 
   " FIXME
   nnoremap <ESC> <Nop>
-  unmap <CR>
+  " unmap <CR>
   " nnoremap <CR> G
 endfunction
 
@@ -1113,6 +1203,20 @@ xmap s <Plug>Sneak_s
 xmap S <Plug>Sneak_S
 omap s <Plug>Sneak_s
 omap S <Plug>Sneak_S
+" }}}
+
+" deoplete {{{
+" Use deoplete.
+let g:tern_request_timeout = 1
+let g:tern_show_signature_in_pum = '0'  " This do disable full signature type on autocomplete
+
+"Add extra filetypes
+let g:tern#filetypes = [
+                \ 'jsx',
+                \ 'javascript.jsx',
+                \ 'vue',
+                \ '...'
+                \ ]
 " }}}
 
 " IndentLine {{{
