@@ -102,6 +102,10 @@ Plug 'junegunn/limelight.vim'
 Plug 'xolox/vim-misc'
 Plug 'xolox/vim-notes'
 
+" SQL
+" Send a vim buffer through a command and instantly see the output.
+Plug 'krisajenkins/vim-pipe'
+
 " Elm
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
 
@@ -521,6 +525,10 @@ augroup NeomakeHaskell
   " autocmd BufRead,BufWritePost,BufEnter *.hs silent! Neomake
   " TODO: Fix when opening different file types (it breaks)
   autocmd BufWritePost *.hs silent! Neomake
+augroup END
+
+augroup PIPES
+  autocmd FileType sql let b:vimpipe_command="ssh silver10 'presto'"
 augroup END
 
 " ELM
@@ -1063,6 +1071,7 @@ let g:ctrlp_lazy_update = 100 "Only refreshes the results every 100ms so if you 
 " let g:ctrlp_user_command = 'find %s -type f | ag -iv "(\.(eot|gif|gz|ico|jpg|jpeg|otf|png|psd|pyc|svg|ttf|woff|zip)$)|(/\.)|((^|\/)tmp\/)"' "Quicker indexing
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 " }}}
+
 
 " Syntastic Linter {{{
 scriptencoding utf-8
