@@ -95,6 +95,7 @@
 * Clojure
   * Leiningen
   * Java
+* Install nodejs and npm
 * Install Anaconda for ML
 * Haskell
   * cabal
