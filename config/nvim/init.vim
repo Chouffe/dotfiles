@@ -39,7 +39,7 @@ Plug 'haya14busa/incsearch.vim'
 " provides improved * motions
 Plug 'haya14busa/vim-asterisk'
 " displays tags in a window, ordered by scope
-Plug 'majutsushi/tagbar'
+" Plug 'majutsushi/tagbar'
 " Ctags generator for Vim
 Plug 'szw/vim-tags'
 " Syntax checking hacks for vim
@@ -82,9 +82,9 @@ Plug 'sjl/gundo.vim'
 " Plug 'xolox/vim-notes'
 
 " Nerdtree
-Plug 'scrooloose/nerdtree'
+" Plug 'scrooloose/nerdtree'
 " NERDTree and tabs together in Vim, painlessly
-Plug 'jistr/vim-nerdtree-tabs'
+" Plug 'jistr/vim-nerdtree-tabs'
 
 Plug 'Shougo/vimfiler.vim'
 
@@ -98,14 +98,20 @@ Plug 'neomake/neomake'
 " Neoformat
 Plug 'sbdchd/neoformat'
 
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
+
 " Dark powered asynchronous completion framework for neovim
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
-Plug 'clojure-vim/async-clj-omni'
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'Shougo/neoinclude.vim'
-" Plug 'fishbullet/deoplete-ruby'
 Plug 'Shougo/neco-vim'
 Plug 'wellle/tmux-complete.vim'
+Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for' : ['javascript'] }
+Plug 'clojure-vim/async-clj-omni', { 'for' : ['clojure'] }
+Plug 'fishbullet/deoplete-ruby', { 'for' : ['ruby'] }
+Plug 'Shougo/deoplete-rct', { 'for' : ['ruby'] }
+Plug 'zchee/deoplete-jedi', { 'for' : ['python'] }
 " intellij completion: https://github.com/vhakulinen/neovim-intellij-complete
 
 " Ctrl-P
@@ -187,7 +193,10 @@ Plug 'Wutzara/vim-materialtheme'
 " Plug 'benmills/vimux'
 " Plug 'julienr/vimux-pyutils', {'for': 'python' }
 " Python
-Plug 'klen/python-mode', { 'for': 'python' }
+" Plug 'klen/python-mode', { 'for': 'python' }
+
+" Scala
+Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
 
 " Ruby
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
@@ -198,6 +207,10 @@ Plug 'danchoi/ri.vim', { 'for': 'ruby' }
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-rbenv', { 'for': 'ruby' }
 Plug 'tpope/vim-bundler', { 'for': 'ruby' }
+
+" SQL
+" Send a vim buffer through a command and instantly see the output.
+Plug 'krisajenkins/vim-pipe'
 
 " Elm
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
@@ -601,6 +614,10 @@ augroup HASKELL
   autocmd BufWritePost *.hs silent! Neomake
 augroup END
 
+augroup PIPES
+  autocmd FileType sql let b:vimpipe_command="ssh silver10 'presto'"
+augroup END
+
 " ELM
 augroup ELM
   autocmd!
@@ -766,6 +783,8 @@ inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 
 let g:deoplete#keyword_patterns = {}
+let g:deoplete#omni_patterns = {}
+let g:deoplete#omni_patterns.scala='[^. *\t]\.\w*'
 let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 " }}}
 
@@ -1181,6 +1200,7 @@ endfunction
 let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
 " }}}
 
+
 " Syntastic Linter {{{
 scriptencoding utf-8
 " Always add any detected errors into the location list
@@ -1576,3 +1596,9 @@ let g:conoline_color_insert_nr_light = 'ctermbg=black'
 highlight Pmenu ctermfg=15 ctermbg=23
 highlight PmenuSel ctermfg=Blue ctermbg=Grey
 highlight Visual ctermfg=18 ctermbg=110 gui=none
+
+" Make sure echo has('python') and echo has('ruby') both return 1 for deoplete
+" to work
+" let g:python3_host_prog = '/Users/arthur_caillau/.virtualenvs/neovim3/bin/python'
+let g:python3_host_prog = '/Users/arthur_caillau/.pyenv/shims/python'
+" let g:python3_host_prog = '/usr/local/bin/python3.6'
