@@ -63,6 +63,8 @@ Plug 'justinmk/vim-sneak'
 Plug 'Yggdroot/indentLine'
 " Cursor color
 Plug 'miyakogi/conoline.vim'
+" Displays documentation when auto completing
+" Plug 'Shougo/echodoc.vim'
 
 " vim over: :substitute preview
 Plug 'osyo-manga/vim-over'
@@ -231,6 +233,7 @@ Plug 'tpope/vim-salve', { 'for': 'clojure' }
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 " Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+" Plug 'mkasa/neco-ghc-lushtags', { 'for' : 'haskell' }
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " Vim plugin for Haskell development
 " Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
@@ -545,6 +548,7 @@ augroup OMNIFUNCS
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+  autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 augroup END
 
 augroup FMT
@@ -578,7 +582,7 @@ function! RainbowAll()
 endfunction
 
 " Neoformat
-nnoremap <Leader>f :Neoformat<CR>:call RainbowAll(<CR>
+nnoremap <Leader>f :Neoformat<CR>
 
 augroup UNITE
   autocmd!
@@ -757,7 +761,9 @@ let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
 
 " deoplete tab-complete
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" use shift-tab to backward cycle
+inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 
 let g:deoplete#keyword_patterns = {}
 let g:deoplete#keyword_patterns.clojure = '[\w!$%&*+/:<=>?@\^_~\-\.#]*'
@@ -1099,7 +1105,7 @@ function! UniteSettings()
     let g:unite_source_grep_command = 'ag'
     " let g:unite_source_grep_default_opts = '--nogroup --nocolor --column'
     let g:unite_source_grep_default_opts =
-          \ '-i --line-numbers --nocolor --column' .
+          \ '-i --line-numbers --nocolor --column ' .
           \ '--nogroup --hidden --ignore ' .
           \ '''.hg'' --ignore ''.svn'' --ignore' .
           \ ' ''.git'' --ignore ''.bzr'''
@@ -1388,7 +1394,8 @@ nnoremap <M-o> :FZFMru<CR>
 nnoremap <M-t> :Unite -buffer-name=tags tag -start-insert<CR>
 " nnoremap <M-t> :FZFTags<CR>'
 " nnoremap <M-f> :FZFLines<CR>
-nnoremap <M-f> :Unite lines<CR>
+nnoremap <M-f> :Unite -buffer-name=buffer-tags tag:% -start-insert<CR>
+" nnoremap <M-f> :Unite lines<CR>
 nnoremap <M-o> :FZFLines<CR>
 " nnoremap <M-f> :FZFBTags<CR>
 nnoremap <M-m> :FZFMarks<CR>
