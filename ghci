@@ -10,9 +10,14 @@ import Data.Monoid
 :set prompt "λ> "
 :set editor nvim
 
-:def hlint const . return $ ":! hlint \"src\""
-:def hoogle \s -> return $ ":! hoogle --count=15 \"" ++ s ++ "\""
-:def pl \s -> return $ ":! pointfree \"" ++ s ++ "\""
+let ghciEscapeShellArg arg = "'" ++ concatMap (\c -> if c == '\'' then "'\"'\"'" else [c]) arg ++ "'"
+
+:def! hlint const . return $ ":! hlint \"src\""
+:def! pl \s -> return $ ":! pointfree \"" ++ s ++ "\""
+
+:def! hoogle \s -> return $ ":! hoogle --count=15 \"" ++ s ++ "\""
+:def! search return . (":! hoogle --color --count=15 " ++) . ghciEscapeShellArg
+:def! doc return . (":! hoogle --info " ++) . ghciEscapeShellArg
 
 :set +t
 
