@@ -12,8 +12,9 @@ Config {
        , position    = TopW L 100
        , sepChar     = "%"
        , alignSep    = "}{"
-       -- , template    = "%StdinReader% | %memory% * %swap% | %dynnetwork% }{ %multicpu% | <fc=#cccccc>%date%</fc> | %battery% "
-       , template    = "<fc=#9a875f> %StdinReader% </fc> }{ <fc=#9a875f> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
+       -- -- , template    = "%StdinReader% | %memory% * %swap% | %dynnetwork% }{ %multicpu% | <fc=#cccccc>%date%</fc> | %battery% "
+       -- , template    = "<fc=#9a875f> %StdinReader% </fc> }{ <fc=#9a875f> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
+       , template    = "<fc=#556d70> %StdinReader% </fc> }{ <fc=#556d70> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
        -- , template    = "}{ %dynnetwork% | %multicpu% | %date% | %battery% "
 
        -- Commands

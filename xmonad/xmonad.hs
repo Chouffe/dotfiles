@@ -44,10 +44,10 @@ myLayout = workSpace0 $ workSpace1 $ defaultWorkspace
 
      workSpace1       = onWorkspace (myWorkspaces !! 1) $
        toggleLayouts fullScreen $
-         avoidStruts (tiledSpace ||| fullTile) ||| fullScreen
+         avoidStruts (fullTile ||| tiledSpace) ||| fullScreen
 
      defaultWorkspace = toggleLayouts fullScreen $
-       avoidStruts (tiledSpace ||| tiled ||| fullTile)
+       avoidStruts (fullTile ||| tiled ||| tiledSpace)
 
 myLayoutPrinter :: String -> String
 myLayoutPrinter layout =
