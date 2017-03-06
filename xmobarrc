@@ -1,3 +1,4 @@
+-- TODO: get better colors
 Config {
        -- Appearance
          font        = "xft:Inconsolata:size=14"
@@ -11,7 +12,9 @@ Config {
        , position    = TopW L 100
        , sepChar     = "%"
        , alignSep    = "}{"
-       , template    = " %memory% * %swap% | %dynnetwork% }{ %multicpu% | <fc=#cccccc>%date%</fc> | %battery% "
+       -- , template    = "%StdinReader% | %memory% * %swap% | %dynnetwork% }{ %multicpu% | <fc=#cccccc>%date%</fc> | %battery% "
+       , template    = "<fc=#9a875f> %StdinReader% </fc> }{ <fc=#9a875f> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
+       -- , template    = "}{ %dynnetwork% | %multicpu% | %date% | %battery% "
 
        -- Commands
        -- TODO: update colors to match theme
@@ -19,7 +22,7 @@ Config {
                        , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
                        , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 10
                        -- network activity monitor (dynamic interface resolution)
-                       , Run DynNetwork     [ "--template" , "<dev>: <tx>kB/s|<rx>kB/s"
+                       , Run DynNetwork     [ "--template" , "<icon=/home/chouffe/.xmonad/icons/wifi.xbm/> <tx>↑ <rx>↓ [<dev>]"
                                             , "--Low"      , "1000"       -- units: kB/s
                                             , "--High"     , "5000"       -- units: kB/s
                                             , "--low"      , "darkgreen"
@@ -28,7 +31,7 @@ Config {
                                             ] 10
                        , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
                        -- cpu activity monitor
-                       , Run MultiCpu   [ "--template" , "Cpu: <total0>% - <total1>% - <total2>% - <total3>%"
+                       , Run MultiCpu   [ "--template" , "<icon=/home/chouffe/.xmonad/icons/cpu.xbm/> <total0>% • <total1>% • <total2>% • <total3>%"
                                         , "--Low"      , "50"         -- units: %
                                         , "--High"     , "85"         -- units: %
                                         , "--low"      , "darkgreen"
@@ -45,11 +48,12 @@ Config {
                                         ] 10
                        , Run Swap [] 10
                        , Run Com "uname" ["-s","-r"] "" 36000
-                       , Run Date "%a %b %_d %Y %H:%M" "date" 10
+                       -- , Run Date "%a %b %_d %Y %H:%M" "date" 10
+                       , Run Date "<icon=/home/chouffe/.xmonad/icons/clock.xbm/> %H:%M" "date" 10
                        , Run StdinReader
 
                        -- battery monitor
-                       , Run Battery [ "--template" , "Batt: <acstatus>"
+                       , Run Battery [ "--template" , "<icon=/home/chouffe/.xmonad/icons/battery.xbm/> <acstatus>: <left>% - <timeleft>"
                                      , "--Low"      , "10"        -- units: %
                                      , "--High"     , "80"        -- units: %
                                      , "--low"      , "darkred"

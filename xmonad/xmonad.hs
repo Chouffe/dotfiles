@@ -19,6 +19,7 @@ import           XMonad.Util.Run              (spawnPipe)
 -- Use urxvt as terminal
 myTerm        = "urxvt"
 myBorderWidth = 2
+xmonadPath    = "/home/chouffe/.xmonad/"
 
 myLayout = workSpace0 $ workSpace1 $ defaultWorkspace
   where
@@ -48,6 +49,17 @@ myLayout = workSpace0 $ workSpace1 $ defaultWorkspace
      defaultWorkspace = toggleLayouts fullScreen $
        avoidStruts (tiledSpace ||| tiled ||| fullTile)
 
+myLayoutPrinter :: String -> String
+myLayoutPrinter layout =
+  case layout of
+    "ResizableTall"                 -> icon "tall.xbm"
+    "Full"                          -> icon "layout_full.xbm"
+    "SmartSpacing 5 ResizableTall"  -> icon "layout_tall.xbm"
+    "SmartSpacing 60 ResizableTall" -> icon "layout_tall.xbm"
+    -- x                         -> x
+    _                         -> icon "grid.xbm"
+  where icon i = "<icon=" ++ iconPath i ++ "/>"
+        iconPath s = xmonadPath ++ "/icons/" ++ s
 
 myLogHook h =
   dynamicLogWithPP xmobarPP
@@ -57,6 +69,12 @@ myLogHook h =
     , ppHidden          = xmobarColor color14 background    . pad
     , ppHiddenNoWindows = xmobarColor background background . pad
     , ppTitle           = xmobarColor color15 background    . shorten 40 . pad
+    , ppLayout          = xmobarColor color14 background    . pad . myLayoutPrinter
+    , ppUrgent          = xmobarColor urgentColor background . pad
+    -- ws: workspaces, l: layout, t: title and rest
+    , ppOrder           = \(ws:l:t:_) -> [ws, l, t]
+    -- , ppWsSep          = "•"
+    , ppWsSep          = ""
     }
     -- Follow mouse to selected buffer
     >> updatePointer (0.5, 0.5) (0.5,0.5)
@@ -66,14 +84,33 @@ myLogHook h =
 -- ------------------------------------------------
 
 -- myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-myWorkspaces = ["i", "ii", "iii", "iv", "v", "vi"]
+-- myWorkspaces = ["i", "ii", "iii", "iv", "v", "vi"]
+myWorkspaces = ["i", "ii", "iii", "iv"]
 
 myManageHook =
-  composeAll [resource =? "spotify" --> doShift (myWorkspaces !! 3)
+  composeAll [ resource =? "spotify" --> doShift (myWorkspaces !! 3)
              , resource =? "dmenu" --> doFloat
+             , resource =? "transmission" --> doShift (myWorkspaces !! 2)
+             , resource =? "transmission-gtk" --> doShift (myWorkspaces !! 2)
              , manageDocks
              ]
 newManageHook = myManageHook <+> manageHook defaultConfig
+
+dmenuRunCmd :: String
+dmenuRunCmd = unwords
+  [ "dmenu_run"
+  , "-i"
+  , "-nb", quote background
+  , "-nf", quote color2
+  , "-sb", quote color1
+  , "-sf", quote foreground
+  , "-fn", quote font
+  , "-p",  quote "Run Program:"
+  ]
+  where quote s = "'" ++ s ++ "'"
+
+musicPlayerCmd :: String -> String
+musicPlayerCmd cmd = xmonadPath ++ "/scripts/spotify-cli" ++ cmd
 
 main = do
 
@@ -104,12 +141,14 @@ main = do
         -- Browser
         , ((mod4Mask .|. shiftMask, xK_b), spawn "chromium-browser")
 
+        -- Dmenu
+        , ((mod4Mask, xK_p), spawn dmenuRunCmd)
 
         -- Media
         -- FIXME
-        , ((mod4Mask, xK_F7), spawn "~/.xmonad/scripts/spotify-cli previous")
-        , ((mod4Mask, xK_F8), spawn "~/.xmonad/scripts/spotify-cli play-pause")
-        , ((mod4Mask, xK_F9), spawn "~/.xmonad/scripts/spotify-cli next")
+        , ((mod4Mask, xK_F7), spawn $ musicPlayerCmd "previous")
+        , ((mod4Mask, xK_F8), spawn $ musicPlayerCmd "play-pause")
+        , ((mod4Mask, xK_F9), spawn $ musicPlayerCmd "next")
         -- , ((0, 0x1008ff16),   spawn "~/.xmonad/scripts/spotify-cli previous")
         -- , ((0, 0x1008ff14),   spawn "~/.xmonad/scripts/spotify-cli play-pause")
         -- , ((0, 0x1008ff17),   spawn "~/.xmonad/scripts/spotify-cli next")
@@ -142,21 +181,23 @@ main = do
         ]
 
 -- Color Theme
-color0     = "#332d29"
-color1     = "#8c644c"
-color2     = "#746C48"
-color3     = "#bfba92"
-color4     = "#646a6d"
-color5     = "#766782"
-color6     = "#4B5C5E"
-color7     = "#504339"
-color8     = "#817267"
-color9     = "#9f7155"
-color10    = "#9f7155"
-color11    = "#E0DAAC"
-color12    = "#777E82"
-color13    = "#897796"
-color14    = "#556D70"
-color15    = "#9a875f"
-background = "#181512"
-foreground = "#D6C3B6"
+color0      = "#332d29"
+color1      = "#8c644c"
+color2      = "#746C48"
+color3      = "#bfba92"
+color4      = "#646a6d"
+color5      = "#766782"
+color6      = "#4B5C5E"
+color7      = "#504339"
+color8      = "#817267"
+color9      = "#9f7155"
+color10     = "#9f7155"
+color11     = "#E0DAAC"
+color12     = "#777E82"
+color13     = "#897796"
+color14     = "#556D70"
+color15     = "#9a875f"
+urgentColor = "#ff0000"
+background  = "#181512"
+foreground  = "#D6C3B6"
+font        = "Inconsolata-14"
