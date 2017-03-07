@@ -15,11 +15,13 @@ import           XMonad.ManageHook            (composeAll, doShift, resource,
                                                (-->), (=?))
 import           XMonad.Util.EZConfig         (additionalKeys)
 import           XMonad.Util.Run              (spawnPipe)
+import           Data.Default                 (def)
 
 -- Use urxvt as terminal
 myTerm        = "urxvt"
 myBorderWidth = 2
 xmonadPath    = "/home/chouffe/.xmonad/"
+scripts       = xmonadPath ++ "scripts/"
 
 myLayout = workSpace0 $ workSpace1 $ defaultWorkspace
   where
@@ -35,7 +37,7 @@ myLayout = workSpace0 $ workSpace1 $ defaultWorkspace
      -- Golden ratio
      ratio          = toRational (2/(1 + sqrt 5 :: Double))
      -- Percent of screen to increment by when resizing panes
-     delta          = 5/100
+     delta          = 3/100
 
      -- Workspace layouts
      workSpace0       = onWorkspace (myWorkspaces !! 0) $
@@ -56,25 +58,24 @@ myLayoutPrinter layout =
     "Full"                          -> icon "layout_full.xbm"
     "SmartSpacing 5 ResizableTall"  -> icon "layout_tall.xbm"
     "SmartSpacing 60 ResizableTall" -> icon "layout_tall.xbm"
-    -- x                         -> x
-    _                         -> icon "grid.xbm"
+    _                               -> icon "grid.xbm"
   where icon i = "<icon=" ++ iconPath i ++ "/>"
         iconPath s = xmonadPath ++ "/icons/" ++ s
 
 myLogHook h =
   dynamicLogWithPP xmobarPP
     { ppOutput          = hPutStrLn h
-    , ppCurrent         = xmobarColor color15 background    . pad
-    , ppVisible         = xmobarColor color14 background    . pad
+    , ppCurrent         = xmobarColor color15 background    . pad . wrap "[" "]"
+    , ppVisible         = xmobarColor color14 background    . pad . wrap "(" ")"
     , ppHidden          = xmobarColor color14 background    . pad
     , ppHiddenNoWindows = xmobarColor background background . pad
-    , ppTitle           = xmobarColor color15 background    . shorten 40 . pad
-    , ppLayout          = xmobarColor color14 background    . pad . myLayoutPrinter
+    , ppTitle           = xmobarColor color10 background     . shorten 40 . pad
+    , ppLayout          = xmobarColor color1 background     . pad . myLayoutPrinter
     , ppUrgent          = xmobarColor urgentColor background . pad
     -- ws: workspaces, l: layout, t: title and rest
-    , ppOrder           = \(ws:l:t:_) -> [ws, l, t]
-    -- , ppWsSep          = "•"
-    , ppWsSep          = ""
+    , ppOrder           = \(ws:l:t:_) -> [l, ws, t]
+    , ppWsSep           = "<fc=" ++ color8 ++ ">•</fc>"
+    , ppSep             = "<fc=" ++ color8 ++ ">|</fc>"
     }
     -- Follow mouse to selected buffer
     >> updatePointer (0.5, 0.5) (0.5,0.5)
@@ -94,7 +95,7 @@ myManageHook =
              , resource =? "transmission-gtk" --> doShift (myWorkspaces !! 2)
              , manageDocks
              ]
-newManageHook = myManageHook <+> manageHook defaultConfig
+newManageHook = myManageHook <+> manageHook def
 
 dmenuRunCmd :: String
 dmenuRunCmd = unwords
@@ -110,14 +111,14 @@ dmenuRunCmd = unwords
   where quote s = "'" ++ s ++ "'"
 
 musicPlayerCmd :: String -> String
-musicPlayerCmd cmd = xmonadPath ++ "/scripts/spotify-cli" ++ cmd
+musicPlayerCmd cmd = scripts ++ "shpotify " ++ cmd
 
 main = do
 
     -- Starts xmobar
     xmproc <- spawnPipe "xmobar"
 
-    xmonad $ defaultConfig
+    xmonad $ def
       { manageHook         = newManageHook
       , layoutHook         = smartBorders myLayout
       , logHook            = myLogHook xmproc
@@ -144,14 +145,14 @@ main = do
         -- Dmenu
         , ((mod4Mask, xK_p), spawn dmenuRunCmd)
 
+        -- Gmrun
+        , ((mod4Mask, xK_P), spawn "gmrun")
+
         -- Media
-        -- FIXME
-        , ((mod4Mask, xK_F7), spawn $ musicPlayerCmd "previous")
-        , ((mod4Mask, xK_F8), spawn $ musicPlayerCmd "play-pause")
-        , ((mod4Mask, xK_F9), spawn $ musicPlayerCmd "next")
-        -- , ((0, 0x1008ff16),   spawn "~/.xmonad/scripts/spotify-cli previous")
-        -- , ((0, 0x1008ff14),   spawn "~/.xmonad/scripts/spotify-cli play-pause")
-        -- , ((0, 0x1008ff17),   spawn "~/.xmonad/scripts/spotify-cli next")
+        , ((0, xF86XK_AudioPrev),  spawn $ musicPlayerCmd "prev")
+        , ((0, xF86XK_AudioNext),  spawn $ musicPlayerCmd "next")
+        , ((0, xF86XK_AudioPlay),  spawn $ musicPlayerCmd "play")
+        , ((0, xF86XK_AudioPause), spawn $ musicPlayerCmd "pause")
 
         -- Music
         , ((mod4Mask .|. shiftMask, xK_s), spawn "spotify")
@@ -201,3 +202,8 @@ urgentColor = "#ff0000"
 background  = "#181512"
 foreground  = "#D6C3B6"
 font        = "Inconsolata-14"
+
+-- Xmobar Specific
+lowColor    = color2
+normalColor = color15
+highColor   = color10

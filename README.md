@@ -77,6 +77,8 @@
 
 * xmonad
 * xmobar
+  * trayer
+    * nm-applet
 
 ## Browsers
 

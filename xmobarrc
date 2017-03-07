@@ -1,7 +1,8 @@
--- TODO: get better colors
+-- TODO: get better colors and better icons
 Config {
        -- Appearance
          font        = "xft:Inconsolata:size=14"
+       , alpha       = 255
        , borderColor = "#332d29"
        , border      = BottomB
        , bgColor     = "#181512"
@@ -14,38 +15,37 @@ Config {
        , alignSep    = "}{"
        -- -- , template    = "%StdinReader% | %memory% * %swap% | %dynnetwork% }{ %multicpu% | <fc=#cccccc>%date%</fc> | %battery% "
        -- , template    = "<fc=#9a875f> %StdinReader% </fc> }{ <fc=#9a875f> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
-       , template    = "<fc=#556d70> %StdinReader% </fc> }{ <fc=#556d70> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
+       , template    = " %StdinReader% }{ <fc=#746C48> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
        -- , template    = "}{ %dynnetwork% | %multicpu% | %date% | %battery% "
 
        -- Commands
        -- TODO: update colors to match theme
-       , commands    = [ Run Weather "CYVR" ["-t","<tempC>C","-L","18","-H","25","--normal","green","--high","red","--low","lightblue"] 36000
-                       , Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+       , commands    = [ Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
                        , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 10
                        -- network activity monitor (dynamic interface resolution)
                        , Run DynNetwork     [ "--template" , "<icon=/home/chouffe/.xmonad/icons/wifi.xbm/> <tx>↑ <rx>↓ [<dev>]"
                                             , "--Low"      , "1000"       -- units: kB/s
                                             , "--High"     , "5000"       -- units: kB/s
-                                            , "--low"      , "darkgreen"
-                                            , "--normal"   , "darkorange"
-                                            , "--high"     , "darkred"
+                                            , "--low"      , "#556D70"
+                                            , "--normal"   , "#9a875f"
+                                            , "--high"     , "#9f7155"
                                             ] 10
                        , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
                        -- cpu activity monitor
                        , Run MultiCpu   [ "--template" , "<icon=/home/chouffe/.xmonad/icons/cpu.xbm/> <total0>% • <total1>% • <total2>% • <total3>%"
                                         , "--Low"      , "50"         -- units: %
                                         , "--High"     , "85"         -- units: %
-                                        , "--low"      , "darkgreen"
-                                        , "--normal"   , "darkorange"
-                                        , "--high"     , "darkred"
+                                        , "--low"      , "#556D70"
+                                        , "--normal"   , "#9a875f"
+                                        , "--high"     , "#9f7155"
                                         ] 10
                        -- memory usage monitor
                        , Run Memory     [ "--template" ,"Mem: <usedratio>%"
                                         , "--Low"      , "20"        -- units: %
                                         , "--High"     , "90"        -- units: %
-                                        , "--low"      , "darkgreen"
-                                        , "--normal"   , "darkorange"
-                                        , "--high"     , "darkred"
+                                        , "--low"      , "#556D70"
+                                        , "--normal"   , "#9a875f"
+                                        , "--high"     , "#9f7155"
                                         ] 10
                        , Run Swap [] 10
                        , Run Com "uname" ["-s","-r"] "" 36000
@@ -57,17 +57,17 @@ Config {
                        , Run Battery [ "--template" , "<icon=/home/chouffe/.xmonad/icons/battery.xbm/> <acstatus>: <left>% - <timeleft>"
                                      , "--Low"      , "10"        -- units: %
                                      , "--High"     , "80"        -- units: %
-                                     , "--low"      , "darkred"
-                                     , "--normal"   , "darkorange"
-                                     , "--high"     , "darkgreen"
+                                     , "--low"      , "#556D70"
+                                     , "--normal"   , "#9a875f"
+                                     , "--high"     , "#9f7155"
 
                                      , "--" -- battery specific options
                                      -- discharging status
                                      , "-o"	, "<left>% (<timeleft>)"
                                      -- AC "on" status
-                                     , "-O"	, "<fc=#dAA520>Charging</fc>"
+                                     , "-O"	, "<fc=#09f7155>Charging</fc>"
                                      -- charged status
-                                     , "-i"	, "<fc=#006000>Charged</fc>"
+                                     , "-i"	, "<fc=#556D70>Charged</fc>"
                                      ] 50
                        ]
        }
