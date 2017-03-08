@@ -1,8 +1,7 @@
 -- TODO: get better colors and better icons
 Config {
        -- Appearance
-         font        = "xft:Inconsolata:size=14"
-       , alpha       = 255
+         font        = "xft:Inconsolata:size=12"
        , borderColor = "#332d29"
        , border      = BottomB
        , bgColor     = "#181512"
@@ -13,17 +12,32 @@ Config {
        , position    = TopW L 100
        , sepChar     = "%"
        , alignSep    = "}{"
-       -- -- , template    = "%StdinReader% | %memory% * %swap% | %dynnetwork% }{ %multicpu% | <fc=#cccccc>%date%</fc> | %battery% "
-       -- , template    = "<fc=#9a875f> %StdinReader% </fc> }{ <fc=#9a875f> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
-       , template    = " %StdinReader% }{ <fc=#746C48> %multicpu% | %dynnetwork% | %date% | %battery% </fc>"
-       -- , template    = "}{ %dynnetwork% | %multicpu% | %date% | %battery% "
+
+       -- Main bar template
+       , template    = " %StdinReader% \
+                        \}{ \
+                        \<fc=#746C48>\
+                        \ %multicpu% \
+                        \| <icon=/home/chouffe/.xmonad/icons/music.xbm/>\
+                        \ %music% \
+                        \| %dynnetwork% \
+                        \<icon=/home/chouffe/.xmonad/icons/wifi.xbm/> \
+                        \| %volume% \
+                        \<icon=/home/chouffe/.xmonad/icons/volume100.xbm/> \
+                        \| %battery% \
+                        \<icon=/home/chouffe/.xmonad/icons/battery.xbm/> \
+                        \| %date% \
+                        \|<fc=#9f7155>\
+                        \ %whoami% \
+                        \<icon=/home/chouffe/.xmonad/icons/fox.xbm/> \
+                        \</fc>\
+                        \</fc>"
 
        -- Commands
-       -- TODO: update colors to match theme
        , commands    = [ Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
                        , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 10
                        -- network activity monitor (dynamic interface resolution)
-                       , Run DynNetwork     [ "--template" , "<icon=/home/chouffe/.xmonad/icons/wifi.xbm/> <tx>↑ <rx>↓ [<dev>]"
+                       , Run DynNetwork     [ "--template" , "<tx><icon=/home/chouffe/.xmonad/icons/arrow_up.xbm/> <rx><icon=/home/chouffe/.xmonad/icons/arrow_down.xbm/> [<dev>]"
                                             , "--Low"      , "1000"       -- units: kB/s
                                             , "--High"     , "5000"       -- units: kB/s
                                             , "--low"      , "#556D70"
@@ -32,8 +46,8 @@ Config {
                                             ] 10
                        , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
                        -- cpu activity monitor
-                       , Run MultiCpu   [ "--template" , "<icon=/home/chouffe/.xmonad/icons/cpu.xbm/> <total0>% • <total1>% • <total2>% • <total3>%"
-                                        , "--Low"      , "50"         -- units: %
+                       , Run MultiCpu   [ "--template" , "<total0>% <total1>% <total2>% <total3>%"
+                                        , "--Low"      , "20"         -- units: %
                                         , "--High"     , "85"         -- units: %
                                         , "--low"      , "#556D70"
                                         , "--normal"   , "#9a875f"
@@ -42,32 +56,35 @@ Config {
                        -- memory usage monitor
                        , Run Memory     [ "--template" ,"Mem: <usedratio>%"
                                         , "--Low"      , "20"        -- units: %
-                                        , "--High"     , "90"        -- units: %
+                                        , "--High"     , "85"        -- units: %
                                         , "--low"      , "#556D70"
                                         , "--normal"   , "#9a875f"
                                         , "--high"     , "#9f7155"
                                         ] 10
                        , Run Swap [] 10
-                       , Run Com "uname" ["-s","-r"] "" 36000
-                       -- , Run Date "%a %b %_d %Y %H:%M" "date" 10
-                       , Run Date "<icon=/home/chouffe/.xmonad/icons/clock.xbm/> %H:%M" "date" 10
+                       , Run Date "%H:%M" "date" 10
                        , Run StdinReader
+                       , Run BatteryP ["BAT0"]
+                                      [ "--template" , "<acstatus>"
+                                      , "--Low"      , "10"        -- units: %
+                                      , "--High"     , "80"        -- units: %
+                                      , "--low"      , "#556D70"
+                                      , "--normal"   , "#9a875f"
+                                      , "--high"     , "#9f7155"
 
-                       -- battery monitor
-                       , Run Battery [ "--template" , "<icon=/home/chouffe/.xmonad/icons/battery.xbm/> <acstatus>: <left>% - <timeleft>"
-                                     , "--Low"      , "10"        -- units: %
-                                     , "--High"     , "80"        -- units: %
-                                     , "--low"      , "#556D70"
-                                     , "--normal"   , "#9a875f"
-                                     , "--high"     , "#9f7155"
+                                      , "--" -- battery specific options
+                                      -- discharging status
+                                      , "-o"	, "<left>% [<timeleft>]"
+                                      -- AC "on" status
+                                      , "-O"	, "<fc=#9f7155>Charging</fc>"
+                                      -- charged status
+                                      , "-i"	, "<fc=#556D70>Full</fc>"
+                                     ] 10
 
-                                     , "--" -- battery specific options
-                                     -- discharging status
-                                     , "-o"	, "<left>% (<timeleft>)"
-                                     -- AC "on" status
-                                     , "-O"	, "<fc=#09f7155>Charging</fc>"
-                                     -- charged status
-                                     , "-i"	, "<fc=#556D70>Charged</fc>"
-                                     ] 50
+                       -- External Commands
+                       , Run Com "uname" ["-s","-r"] "" 36000
+                       , Run Com "/home/chouffe/.xmonad/scripts/volume.sh" [] "volume" 10
+                       , Run Com "/home/chouffe/.xmonad/scripts/music.sh" [] "music" 15
+                       , Run Com "whoami" [] "whoami" 36000
                        ]
        }
