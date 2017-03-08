@@ -17,7 +17,9 @@ import           XMonad.Util.EZConfig         (additionalKeys)
 import           XMonad.Util.Run              (spawnPipe)
 import           Data.Default                 (def)
 
--- Use urxvt as terminal
+-- ------------------------
+-- Config
+-- ------------------------
 myTerm        = "urxvt"
 myBorderWidth = 2
 xmonadPath    = "/home/chouffe/.xmonad/"
@@ -51,17 +53,6 @@ myLayout = workSpace0 $ workSpace1 $ defaultWorkspace
      defaultWorkspace = toggleLayouts fullScreen $
        avoidStruts (fullTile ||| tiled ||| tiledSpace)
 
-myLayoutPrinter :: String -> String
-myLayoutPrinter layout =
-  case layout of
-    "ResizableTall"                 -> icon "tall.xbm"
-    "Full"                          -> icon "layout_full.xbm"
-    "SmartSpacing 5 ResizableTall"  -> icon "layout_tall.xbm"
-    "SmartSpacing 60 ResizableTall" -> icon "layout_tall.xbm"
-    _                               -> icon "grid.xbm"
-  where icon i = "<icon=" ++ iconPath i ++ "/>"
-        iconPath s = xmonadPath ++ "/icons/" ++ s
-
 myLogHook h =
   dynamicLogWithPP xmobarPP
     { ppOutput          = hPutStrLn h
@@ -80,13 +71,24 @@ myLogHook h =
     -- Follow mouse to selected buffer
     >> updatePointer (0.5, 0.5) (0.5,0.5)
 
+myLayoutPrinter :: String -> String
+myLayoutPrinter layout =
+  case layout of
+    "ResizableTall"                 -> icon "tall.xbm"
+    "Full"                          -> icon "layout_full.xbm"
+    "SmartSpacing 5 ResizableTall"  -> icon "layout_tall.xbm"
+    "SmartSpacing 60 ResizableTall" -> icon "layout_tall.xbm"
+    _                               -> icon "grid.xbm"
+  where icon i = "<icon=" ++ iconPath i ++ "/>"
+        iconPath s = xmonadPath ++ "/icons/" ++ s
+
+
 -- ------------------------------------------------
 -- Application Specific Rules
 -- ------------------------------------------------
-
+myWorkspaces = ["i", "ii", "iii", "iv"]
 -- myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 -- myWorkspaces = ["i", "ii", "iii", "iv", "v", "vi"]
-myWorkspaces = ["i", "ii", "iii", "iv"]
 
 myManageHook =
   composeAll [ resource =? "spotify" --> doShift (myWorkspaces !! 3)
@@ -95,8 +97,12 @@ myManageHook =
              , resource =? "transmission-gtk" --> doShift (myWorkspaces !! 2)
              , manageDocks
              ]
+
 newManageHook = myManageHook <+> manageHook def
 
+-- ------------------------------------------------
+-- External Commands
+-- ------------------------------------------------
 dmenuRunCmd :: String
 dmenuRunCmd = unwords
   [ "dmenu_run"
@@ -113,75 +119,61 @@ dmenuRunCmd = unwords
 musicPlayerCmd :: String -> String
 musicPlayerCmd cmd = scripts ++ "shpotify " ++ cmd
 
-main = do
+screenshotCmd :: String
+screenshotCmd = "scrot"
 
-    -- Starts xmobar
-    xmproc <- spawnPipe "xmobar"
-
-    xmonad $ def
-      { manageHook         = newManageHook
-      , layoutHook         = smartBorders myLayout
-      , logHook            = myLogHook xmproc
-      , modMask            = mod4Mask
-      , terminal           = myTerm
-      , workspaces         = myWorkspaces
-      , borderWidth        = myBorderWidth
-      , focusedBorderColor = color8
-      , normalBorderColor  = color0
-      }
+screenshotFolder :: String
+screenshotFolder = "~/Pictures/"
 
 ----------------------------------------
 -- Keyboard Options
 ----------------------------------------
+myKeys =
+  [ -- Screensaver
+    ((mod4Mask .|. shiftMask, xK_l), spawn "gnome-screensaver-command -l")
+  -- Browser
+  , ((mod4Mask .|. shiftMask, xK_b), spawn "chromium-browser")
 
-      `additionalKeys`
+  -- Dmenu
+  , ((mod4Mask, xK_p), spawn dmenuRunCmd)
 
-        -- Screensaver
-        [ ((mod4Mask .|. shiftMask, xK_l), spawn "gnome-screensaver-command -l")
+  -- Gmrun
+  , ((mod4Mask, xK_P), spawn "gmrun")
 
-        -- Browser
-        , ((mod4Mask .|. shiftMask, xK_b), spawn "chromium-browser")
+  -- Media
+  , ((0, xF86XK_AudioPrev),  spawn $ musicPlayerCmd "prev")
+  , ((0, xF86XK_AudioNext),  spawn $ musicPlayerCmd "next")
+  , ((0, xF86XK_AudioPlay),  spawn $ musicPlayerCmd "play")
+  , ((0, xF86XK_AudioPause), spawn $ musicPlayerCmd "pause")
 
-        -- Dmenu
-        , ((mod4Mask, xK_p), spawn dmenuRunCmd)
+  -- Music
+  , ((mod4Mask .|. shiftMask, xK_m), spawn "spotify")
 
-        -- Gmrun
-        , ((mod4Mask, xK_P), spawn "gmrun")
+  -- Terminal
+  , ((mod4Mask, xK_Return), spawn myTerm)
 
-        -- Media
-        , ((0, xF86XK_AudioPrev),  spawn $ musicPlayerCmd "prev")
-        , ((0, xF86XK_AudioNext),  spawn $ musicPlayerCmd "next")
-        , ((0, xF86XK_AudioPlay),  spawn $ musicPlayerCmd "play")
-        , ((0, xF86XK_AudioPause), spawn $ musicPlayerCmd "pause")
+  -- Layout toggle
+  , ((mod4Mask .|. controlMask, xK_space), sendMessage ToggleLayout)
+  , ((mod4Mask, xK_z),                     sendMessage (Toggle "Full"))
 
-        -- Music
-        , ((mod4Mask .|. shiftMask, xK_s), spawn "spotify")
+  -- Screenshots
+  , ((mod4Mask .|. shiftMask, xK_s), spawn $ screenshotCmd ++ " " ++ screenshotFolder ++ "screen_%Y-%m-%d-%H-%M-%S.png -d 1")
+  , ((mod4Mask, xK_s),               spawn $ screenshotCmd ++ " " ++ screenshotFolder ++ "screen_%Y-%m-%d-%H-%M-%S.png -d 1")
+  , ((0, xK_Print),                  spawn $ screenshotCmd ++ " " ++ screenshotFolder ++ "selection_%Y-%m-%d-%H-%M-%S.png -s")
 
-        -- Terminal
-        , ((mod4Mask, xK_Return), spawn myTerm)
+  -- Backlight
+  , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 10")
+  , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10")
 
-        -- Layout toggle
-        , ((mod4Mask .|. controlMask, xK_space), sendMessage ToggleLayout)
-        , ((mod4Mask, xK_z),                     sendMessage (Toggle "Full"))
+  -- Sound
+  , ((0, xF86XK_AudioLowerVolume), spawn "amixer -D pulse sset Master 5%-")
+  , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -D pulse sset Master 5%+")
+  , ((0, xF86XK_AudioMute),        spawn "amixer -D pulse sset Master toggle")
+  ]
 
-        -- Screenshots
-        -- , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
-        -- , ((mod4Mask, xK_Print), spawn "sleep 0.2; scrot -s")
-        , ((mod4Mask .|. shiftMask, xK_s), spawn "scrot ~/Pictures/screen_%Y-%m-%d-%H-%M-%S.png -d 1") -- with a delay of 1 second
-        , ((mod4Mask, xK_s),               spawn "scrot ~/Pictures/screen_%Y-%m-%d-%H-%M-%S.png -d 1") -- with a delay of 1 second
-        -- , ((0, xK_Print), spawn "scrot")
-
-        -- Backlight
-        , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 10")
-        , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10")
-
-        -- Sound
-        , ((0, xF86XK_AudioLowerVolume), spawn "amixer -D pulse sset Master 5%-")
-        , ((0, xF86XK_AudioRaiseVolume), spawn "amixer -D pulse sset Master 5%+")
-        , ((0, xF86XK_AudioMute),        spawn "amixer -D pulse sset Master toggle")
-        ]
-
+-- ------------------------
 -- Color Theme
+-- ------------------------
 color0      = "#332d29"
 color1      = "#8c644c"
 color2      = "#746C48"
@@ -201,9 +193,26 @@ color15     = "#9a875f"
 urgentColor = "#ff0000"
 background  = "#181512"
 foreground  = "#D6C3B6"
-font        = "Inconsolata-14"
+font        = "Inconsolata-13"
 
 -- Xmobar Specific
 lowColor    = color2
 normalColor = color15
 highColor   = color10
+
+-- ------------------------
+-- Xmonad entry point
+-- ------------------------
+main = do
+    xmproc <- spawnPipe "xmobar"
+    xmonad $ def
+      { manageHook         = newManageHook
+      , layoutHook         = smartBorders myLayout
+      , logHook            = myLogHook xmproc
+      , modMask            = mod4Mask
+      , terminal           = myTerm
+      , workspaces         = myWorkspaces
+      , borderWidth        = myBorderWidth
+      , focusedBorderColor = color8
+      , normalBorderColor  = color0
+      } `additionalKeys` myKeys
