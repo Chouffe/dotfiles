@@ -213,6 +213,6 @@ main = do
       , terminal           = myTerm
       , workspaces         = myWorkspaces
       , borderWidth        = myBorderWidth
-      , focusedBorderColor = color8
+      , focusedBorderColor = color3
       , normalBorderColor  = color0
       } `additionalKeys` myKeys

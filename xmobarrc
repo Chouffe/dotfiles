@@ -1,4 +1,3 @@
--- TODO: get better colors and better icons
 Config {
        -- Appearance
          font        = "xft:Inconsolata:size=12"
