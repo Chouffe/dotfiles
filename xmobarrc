@@ -33,17 +33,18 @@ Config {
                         \</fc>"
 
        -- Commands
-       , commands    = [ Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
-                       , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 10
+       , commands    = [
+                       -- Run Network "eth0" ["-L","0","-H","32","--normal","green","--high","red"] 10
+                       -- , Run Network "eth1" ["-L","0","-H","32","--normal","green","--high","red"] 10
                        -- network activity monitor (dynamic interface resolution)
-                       , Run DynNetwork     [ "--template" , "<tx><icon=/home/chouffe/.xmonad/icons/arrow_up.xbm/> <rx><icon=/home/chouffe/.xmonad/icons/arrow_down.xbm/> [<dev>]"
-                                            , "--Low"      , "1000"       -- units: kB/s
-                                            , "--High"     , "5000"       -- units: kB/s
+                         Run DynNetwork     [ "--template" , "<tx><icon=/home/chouffe/.xmonad/icons/arrow_up.xbm/> <rx><icon=/home/chouffe/.xmonad/icons/arrow_down.xbm/> [<dev>]"
+                                            , "--Low"      , "3000"        -- units: kB/s
+                                            , "--High"     , "10000"       -- units: kB/s
                                             , "--low"      , "#556D70"
                                             , "--normal"   , "#9a875f"
                                             , "--high"     , "#9f7155"
                                             ] 10
-                       , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
+                       -- , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
                        -- cpu activity monitor
                        , Run MultiCpu   [ "--template" , "<total0>% <total1>% <total2>% <total3>%"
                                         , "--Low"      , "20"         -- units: %
@@ -53,14 +54,14 @@ Config {
                                         , "--high"     , "#9f7155"
                                         ] 10
                        -- memory usage monitor
-                       , Run Memory     [ "--template" ,"Mem: <usedratio>%"
-                                        , "--Low"      , "20"        -- units: %
-                                        , "--High"     , "85"        -- units: %
-                                        , "--low"      , "#556D70"
-                                        , "--normal"   , "#9a875f"
-                                        , "--high"     , "#9f7155"
-                                        ] 10
-                       , Run Swap [] 10
+                       -- , Run Memory     [ "--template" ,"Mem: <usedratio>%"
+                       --                  , "--Low"      , "20"        -- units: %
+                       --                  , "--High"     , "85"        -- units: %
+                       --                  , "--low"      , "#556D70"
+                       --                  , "--normal"   , "#9a875f"
+                       --                  , "--high"     , "#9f7155"
+                       --                  ] 10
+                       -- , Run Swap [] 10
                        , Run Date "%H:%M" "date" 10
                        , Run StdinReader
                        , Run BatteryP ["BAT0"]
@@ -81,9 +82,9 @@ Config {
                                      ] 10
 
                        -- External Commands
-                       , Run Com "uname" ["-s","-r"] "" 36000
                        , Run Com "/home/chouffe/.xmonad/scripts/volume.sh" [] "volume" 10
                        , Run Com "/home/chouffe/.xmonad/scripts/music.sh" [] "music" 15
                        , Run Com "whoami" [] "whoami" 36000
+                       -- , Run Com "uname" ["-s","-r"] "" 36000
                        ]
        }
