@@ -318,7 +318,7 @@ let g:vimfiler_file_icon = '-'
 let g:vimfiler_marked_file_icon = '✓'
 let g:vimfiler_readonly_file_icon = '✗'
 let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
-let g:vimfiler_expand_jump_to_first_child = 0
+let g:vimfiler_expand_jump_to_first_child = 1
 " }}}
 
 
@@ -747,7 +747,7 @@ endif
 set spelllang=en_us              " Set region to American English
 " set mouse=a                      " Enable mouse usage in terminal vim
 set mouse=                       " Disable mouse usage in terminal vim
-set termguicolors                " true color support
+set termguicolors                " true color support (will work only in tmux)
 set relativenumber               " Enable relative number
 set number                       " Enable hybrid mode
 " set encoding=utf-8             " UTF-8 encoding
@@ -890,7 +890,7 @@ nmap <leader>d :call BufferDelete()<CR>
 nnoremap <Leader>zz :let &scrolloff=999-&scrolloff<CR>
 " NERDTreeTabsToggle
 " map <Leader>t <plug>NERDTreeTabsToggle<CR>
-map <silent><Leader>t :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -toggle -no-quit<CR>
+map <silent><Leader>t :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -auto-expand -toggle -no-quit<CR>
 " Spell checking
 nnoremap <silent> <leader>s :set spell!<CR>
 " Numbers
@@ -910,7 +910,7 @@ nnoremap <Leader>g :echo expand('%:p')<CR>
 
 " Terminal {{{
 tnoremap <Esc> <C-\><C-n>
-tnoremap <C-g> <C-\><C-n>
+tnoremap <silent><C-g> <C-\><C-n>:close<CR>
 tnoremap jk <C-\><C-n>
 tnoremap jj <C-\><C-n>
 " }}}
@@ -922,8 +922,8 @@ nnoremap <Leader>h :bprevious<CR>
 
 " Highlightings {{{
 " Highlights trailing whitespaces
-highlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
+" highlight ExtraWhitespace ctermbg=red guibg=red
+" match ExtraWhitespace /\s\+$/
 highlight clear SignColumn
 " Change Highlights colors
 " highlight SignColumn ctermbg=16
@@ -937,11 +937,15 @@ endif
 
 augroup VIMFILER
   autocmd!
+
   "Config file: https://gist.github.com/mattjmorrison/6c2fff20f969237fb9fa
   autocmd FileType vimfiler nunmap <buffer> <C-l>
   autocmd FileType vimfiler nmap <buffer><Leader>t :q<CR>
+  autocmd FileType vimfiler nmap <silent><buffer><expr> v vimfiler#do_switch_action('vsplit')
+  autocmd FileType vimfiler nmap <silent><buffer><expr> s vimfiler#do_switch_action('split')
   autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
   autocmd FileType vimfiler vmap <buffer> x <Plug>(vimfiler_toggle_mark_selected_lines)
+  autocmd FileType vimfiler nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
   autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
         \ "\<Plug>(vimfiler_expand_tree)",
         \ "\<Plug>(vimfiler_edit_file)")
@@ -1098,9 +1102,9 @@ augroup configgroup
   " autocmd BufWinLeave * ConoLineDisable
   " autocmd BufWinEnter * ConoLineEnable
   " Whitespace cleaning
-  autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-  autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-  autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+  " autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+  " autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+  " autocmd InsertLeave * match ExtraWhitespace /\s\+$/
   autocmd BufWinLeave * call clearmatches()
   " TrimWhiteSpaces when saving
   autocmd BufWritePre * :call TrimWhiteSpace()
@@ -1366,3 +1370,6 @@ function! BufferDelete()
     endif
 endfunction
 " }}}
+
+" FIXME
+nnoremap <silent> <Leader>b :TagbarToggle<CR>
