@@ -1,3 +1,7 @@
+" TODO: move things here
+let mapleader="\<Space>"
+let maplocalleader=","
+
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
 
@@ -23,16 +27,18 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 " continuously updated session files (to be used with tmux resurect)
 Plug 'tpope/vim-obsession'
+" The fancy start screen for Vim
+Plug 'mhinz/vim-startify'
 
 " vim-easy-align {{{
 " align with ease
 Plug 'junegunn/vim-easy-align'
 
-vmap <Enter> <Plug>(EasyAlign)
+vnoremap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign in visual mode (e.g. vipga)
-xmap ga <Plug>(EasyAlign)
+xnoremap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+nnoremap ga <Plug>(EasyAlign)
 " }}}
 
 " FZF {{{
@@ -172,56 +178,6 @@ Plug 'haya14busa/incsearch.vim'
 " provides improved * motions
 Plug 'haya14busa/vim-asterisk'
 
-" Tags {{{
-Plug 'majutsushi/tagbar', { 'for': ['haskell'] }
-Plug 'szw/vim-tags'  " Ctags generator for Vim
-
-set tags=tags;/,codex.tags;/
-let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-        \ 'm:modules',
-        \ 'c:classes',
-        \ 'd:describes',
-        \ 'C:contexts',
-        \ 'f:methods',
-        \ 'F:singleton methods'
-    \ ]
-\ }
-let g:tagbar_type_haskell = {
-    \ 'ctagsbin'  : 'hasktags',
-    \ 'ctagsargs' : '-x -c -o-',
-    \ 'kinds'     : [
-        \  'm:modules:0:1',
-        \  'd:data: 0:1',
-        \  'd_gadt: data gadt:0:1',
-        \  't:type names:0:1',
-        \  'nt:new types:0:1',
-        \  'c:classes:0:1',
-        \  'cons:constructors:1:1',
-        \  'c_gadt:constructor gadt:1:1',
-        \  'c_a:constructor accessors:1:1',
-        \  'ft:function types:1:1',
-        \  'fi:function implementations:0:1',
-        \  'o:others:0:1'
-    \ ],
-    \ 'sro'        : '.',
-    \ 'kind2scope' : {
-        \ 'm' : 'module',
-        \ 'c' : 'class',
-        \ 'd' : 'data',
-        \ 't' : 'type'
-    \ },
-    \ 'scope2kind' : {
-        \ 'module' : 'm',
-        \ 'class'  : 'c',
-        \ 'data'   : 'd',
-        \ 'type'   : 't'
-    \ }
-\ }
-
-nnoremap <silent> <Leader>b :TagbarToggle<CR>
-" }}}
-
 " Some utility functions for vim
 Plug 'tomtom/tlib_vim'
 " Interpret a file by function and cache file automatically
@@ -232,31 +188,12 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 " vim-expand-region {{{
 Plug 'terryma/vim-expand-region'
 
-vmap v <Plug>(expand_region_expand)
-vmap <C-V> <Plug>(expand_region_shrink)
+vnoremap v <Plug>(expand_region_expand)
+vnoremap <C-V> <Plug>(expand_region_shrink)
 " }}}
 
 " Rainbow Parentheses {{{
 Plug 'kien/rainbow_parentheses.vim'
-
-" let g:rbpt_colorpairs = [
-" 	\ ['darkyellow',  'RoyalBlue3'],
-" 	\ ['darkgreen',   'SeaGreen3'],
-" 	\ ['darkcyan',    'DarkOrchid3'],
-" 	\ ['Darkblue',    'firebrick3'],
-" 	\ ['DarkMagenta', 'RoyalBlue3'],
-" 	\ ['darkred',     'SeaGreen3'],
-" 	\ ['darkyellow',  'DarkOrchid3'],
-" 	\ ['darkgreen',   'firebrick3'],
-" 	\ ['darkcyan',    'RoyalBlue3'],
-" 	\ ['Darkblue',    'SeaGreen3'],
-" 	\ ['DarkMagenta', 'DarkOrchid3'],
-" 	\ ['Darkblue',    'firebrick3'],
-" 	\ ['darkcyan',    'SeaGreen3'],
-" 	\ ['darkgreen',   'RoyalBlue3'],
-" 	\ ['darkyellow',  'DarkOrchid3'],
-" 	\ ['darkred',     'firebrick3'],
-" 	\ ]
 " }}}
 
 " IndentLine {{{
@@ -271,15 +208,15 @@ let g:indentLine_char = '┆'
 " Conoline: Cursor Color {{{
 Plug 'miyakogi/conoline.vim'
 
-let g:conoline_auto_enable = 1
-let g:conoline_color_normal_dark = 'ctermbg=23'
-let g:conoline_color_normal_nr_dark = 'ctermbg=23'
-let g:conoline_color_insert_dark = 'ctermbg=black'
-let g:conoline_color_insert_nr_dark = 'ctermbg=black'
-let g:conoline_color_normal_light = 'ctermbg=23'
-let g:conoline_color_normal_nr_light = 'ctermbg=23'
-let g:conoline_color_insert_light = 'ctermbg=black'
-let g:conoline_color_insert_nr_light = 'ctermbg=black'
+" let g:conoline_auto_enable = 1
+" let g:conoline_color_normal_dark = 'ctermbg=23'
+" let g:conoline_color_normal_nr_dark = 'ctermbg=23'
+" let g:conoline_color_insert_dark = 'ctermbg=black'
+" let g:conoline_color_insert_nr_dark = 'ctermbg=black'
+" let g:conoline_color_normal_light = 'ctermbg=23'
+" let g:conoline_color_normal_nr_light = 'ctermbg=23'
+" let g:conoline_color_insert_light = 'ctermbg=black'
+" let g:conoline_color_insert_nr_light = 'ctermbg=black'
 " }}}
 
 " Displays documentation when auto completing
@@ -294,6 +231,13 @@ Plug 'chouffe/tslime.vim'
 let g:tslime_always_current_session = 1
 let g:tslime_always_current_window = 1
 let g:tslime_ensure_trailing_newlines = 1
+
+" let g:tslime_normal_mapping = rs
+" let g:tslime_visual_mapping = rs
+" let g:tslime_vars_mapping = rv
+" let g:tslime_normal_mapping = '<localleader>s'
+" let g:tslime_visual_mapping = '<localleader>s'
+" let g:tslime_vars_mapping = '<localleader>v'
 " }}}
 
 " Marks {{{
@@ -322,16 +266,18 @@ let g:vimfiler_expand_jump_to_first_child = 1
 " }}}
 
 
-" Goyo: Distraction free writing in vim
+" Goyo: Distraction free writing in vim {{{
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/limelight.vim'
+" }}}
 
 " Neomake {{{
 Plug 'neomake/neomake'
 
-let g:neomake_open_list=2        " Conserves the cursor position + open the quickfix
-let g:neomake_highlight_lines=0
+let g:neomake_open_list = 2        " Conserves the cursor position + open the quickfix
+let g:neomake_highlight_lines = 0
 let g:neomake_haskell_enabled_makers = ['ghcmod']
+let g:neomake_javascript_enabled_makers = ['eslint']
 " }}}
 
 
@@ -378,7 +324,6 @@ let g:deoplete#omni_patterns.scala='[^. *\t]\.\w*'
 let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 
 " Tern {{{
-
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
 
@@ -489,9 +434,7 @@ let g:airline#extensions#tabline#buffer_min_count= 2
 " }}}
 
 " Tmux {{{
-" vim-tmux {{{
 Plug 'tmux-plugins/vim-tmux'
-" }}}
 " TmuxNavigator {{{
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -507,19 +450,11 @@ nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
 " }}}
 
 " TmuxLine {{{
-" Plug 'edkolev/tmuxline.vim'
+Plug 'edkolev/tmuxline.vim'
 
-let g:tmuxline_theme = 'zenburn'
-let g:tmuxline_powerline_separators = 0
-let g:tmuxline_preset = {
-      \'a'    : '#S',
-      \'b'    : ['#H', '#(whoami)'],
-      \'c'    : '{prefix}',
-      \'win'  : ['#I', '#W'],
-      \'cwin' : ['#I', '#W'],
-      \'x'    : '{online status}',
-      \'y'    : '{cpu_status}',
-      \'z'    : '{battery_icon}'}
+let g:tmuxline_powerline_separators = 1
+let g:tmuxline_theme = 'iceberg'
+let g:tmuxline_preset = 'nightly_fox'
 " }}}
 " Plug 'itchyny/lightline.vim'
 " vim plugin for tmux.conf
@@ -567,6 +502,56 @@ Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'Wutzara/vim-materialtheme'
 
 let g:gruvbox_contrast_dark="hard"
+" }}}
+
+" Tags {{{
+Plug 'majutsushi/tagbar', { 'for': ['haskell'] }
+Plug 'szw/vim-tags'  " Ctags generator for Vim
+
+set tags=tags;/,codex.tags;/
+let g:tagbar_type_ruby = {
+    \ 'kinds' : [
+        \ 'm:modules',
+        \ 'c:classes',
+        \ 'd:describes',
+        \ 'C:contexts',
+        \ 'f:methods',
+        \ 'F:singleton methods'
+    \ ]
+\ }
+let g:tagbar_type_haskell = {
+    \ 'ctagsbin'  : 'hasktags',
+    \ 'ctagsargs' : '-x -c -o-',
+    \ 'kinds'     : [
+        \  'm:modules:0:1',
+        \  'd:data: 0:1',
+        \  'd_gadt: data gadt:0:1',
+        \  't:type names:0:1',
+        \  'nt:new types:0:1',
+        \  'c:classes:0:1',
+        \  'cons:constructors:1:1',
+        \  'c_gadt:constructor gadt:1:1',
+        \  'c_a:constructor accessors:1:1',
+        \  'ft:function types:1:1',
+        \  'fi:function implementations:0:1',
+        \  'o:others:0:1'
+    \ ],
+    \ 'sro'        : '.',
+    \ 'kind2scope' : {
+        \ 'm' : 'module',
+        \ 'c' : 'class',
+        \ 'd' : 'data',
+        \ 't' : 'type'
+    \ },
+    \ 'scope2kind' : {
+        \ 'module' : 'm',
+        \ 'class'  : 'c',
+        \ 'data'   : 'd',
+        \ 'type'   : 't'
+    \ }
+\ }
+
+nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " }}}
 
 " -------------------------
@@ -623,6 +608,18 @@ Plug 'tpope/vim-bundler', { 'for': 'ruby' }
 
 " Elm {{{
 Plug 'ElmCast/elm-vim', { 'for': 'elm' }
+
+let g:elm_setup_keybindings = 0
+let g:elm_format_autosave = 1  " Requires elm-format
+let g:elm_jump_to_error = 0
+let g:elm_make_output_file = "elm.js"
+let g:elm_make_show_warnings = 0
+let g:elm_syntastic_show_warnings = 0
+let g:elm_browser_command = ""
+let g:elm_detailed_complete = 0
+let g:elm_format_autosave = 0
+let g:elm_setup_keybindings = 0
+let g:elm_classic_hightlighting = 0
 " }}}
 
 " Racket {{{
@@ -684,6 +681,21 @@ Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 " Plug 'nbouscal/vim-stylish-haskell', { 'for': 'haskell' }
 Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
 Plug 'ujihisa/unite-haskellimport', { 'for': 'haskell' }
+
+" haskell-vim: Syntax highlighting (https://github.com/neovimhaskell/haskell-vim) {{{
+let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+let g:haskell_indent_if = 0
+let g:haskell_indent_in = 0
+
+" Ghcmod
+let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
+let g:ghcmod_type_highlight = 'ghcmodType'
+
 " }}}
 
 " Idris {{{
@@ -725,10 +737,6 @@ call plug#end()
 " }}}
 
 " Spaces and tabs {{{
-" vim sleuth
-" set tabstop=4       " number of visual spaces per TAB
-" set shiftwidth=4
-" set softtabstop=4   " number of spaces in tab when editing
 set expandtab         " tabs are spaces
 set autoindent        " Indentation
 set smartindent       " Indentation
@@ -750,7 +758,7 @@ set mouse=                       " Disable mouse usage in terminal vim
 set termguicolors                " true color support (will work only in tmux)
 set relativenumber               " Enable relative number
 set number                       " Enable hybrid mode
-" set encoding=utf-8             " UTF-8 encoding
+set encoding=utf-8               " UTF-8 encoding
 set scrolloff=3                  " Number of screen lines to show around the cursor
 set cursorline                   " Highlight the line you are on
 set cursorline cursorcolumn      " Highlights the column you are in
@@ -796,11 +804,11 @@ nnoremap 0 ^
 nnoremap ` ^
 nnoremap <BS> ^
 nnoremap \ $
-" nnoremap <CR> G
+nnoremap <CR> G
 " move to the search
 " Treat long lines as break lines (useful when moving around in them)
-map j gj
-map k gk
+nnoremap j gj
+nnoremap k gk
 " Visual block mode
 nnoremap q <c-V>
 " Visual Mode
@@ -818,13 +826,10 @@ set autoread
 set noswapfile
 set nobackup
 set nowb
-"Equivalent to set backspace=indent,eol,start " backspace over everything in insert mode
+" Equivalent to set backspace=indent,eol,start " backspace over everything in insert mode
 set backspace=2
 " turn off search highlight
-" It hides buffers instead of closing them
-set hidden
-" Alignment/Indentation
-" nnoremap == mz=ab'z
+set hidden  " It hides buffers instead of closing them
 " Preventing entering Ex mode
 nnoremap Q :bd %<CR>
 " select last paste in visual mode
@@ -834,47 +839,45 @@ cnoremap $t <CR>:t''<CR>
 cnoremap $m <CR>:m''<CR>
 cnoremap $d <CR>:d<CR>``
 " Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-vmap K :m'<-2<cr>`>my`<mzgv`yo`z
-vmap J :m'>+<cr>`<my`>mzgv`yo`z
+nnoremap <M-j> :m .+1<CR>==
+nnoremap <M-k> :m .-2<CR>==
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+vnoremap <M-j> :m '>+1<CR>gv=gv
+vnoremap <M-k> :m '<-2<CR>gv=gv
 " Sorting
 vmap <C-s> !sort<CR>
 " Splits
 nnoremap <silent> sv :vsplit<CR>
 nnoremap <silent> sh :split<CR>
-" C-k
-inoremap <C-k> <Esc>ld$a
 " }}}
 
 " Leader shortcuts {{{
-" Switch the Leader Key
-" let mapleader=","
 let mapleader="\<Space>"
 let maplocalleader=","
 
 " Remap the ex command
 nnoremap <Leader><Leader> V
 nnoremap <silent><Leader>q :q<CR>
-vmap <Leader><Leader> :
+vnoremap <Leader><Leader> :
 " Escapes visual mode
-vmap <C-g> <ESC>
+vnoremap <C-g> <ESC>
 " Disable highlight when <leader><cr> is pressed
-map <silent> <Leader><CR> :noh<CR>
+nnoremap <silent> <Leader><CR> :noh<CR>
 " Treat long lines as break lines (useful when moving around in them)
-map j gj
-map k gk
 nnoremap <Leader><CR> :nohlsearch<CR>
 " Save a file
 nnoremap <Leader>w :w<CR>
 " Paste
 nnoremap <silent> <leader>p :set paste!<CR>
 " Copy & paste to system clipboard
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-nmap <Leader>y "+yy
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-vmap <Leader>p "+p
-vmap <Leader>P "+P
+vnoremap <Leader>y "+y
+vnoremap <Leader>d "+d
+vnoremap <Leader>y "+yy
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+P
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+P
 " Splits
 nnoremap <silent> <Leader>k :vsplit<CR>
 nnoremap <silent> <Leader>j :split<CR>
@@ -882,22 +885,13 @@ nnoremap <silent> <Leader>j :split<CR>
 nnoremap <leader>ev :edit $MYVIMRC<CR>
 nnoremap <leader>ez :edit ~/.zshrc<CR>
 nnoremap <leader>et :edit ~/.tmux.conf<CR>
-" Close all buffers but the current one
-nmap <Leader>x :only<CR>
-" Close the current buffer and back to the last edited
-nmap <leader>d :call BufferDelete()<CR>
 " Scroll Off
 nnoremap <Leader>zz :let &scrolloff=999-&scrolloff<CR>
-" NERDTreeTabsToggle
-" map <Leader>t <plug>NERDTreeTabsToggle<CR>
-map <silent><Leader>t :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -auto-expand -toggle -no-quit<CR>
+nnoremap <silent><Leader>t :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -auto-expand -toggle -no-quit<CR>
 " Spell checking
 nnoremap <silent> <leader>s :set spell!<CR>
 " Numbers
 nnoremap <silent> <leader>n :set number!<CR>
-" RainbowParenthesesToggle
-nnoremap <Leader>( :call RainbowAll()<CR>
-" nnoremap <Leader>( :RainbowParenthesesToggle<CR>
 " Color the colorcolumn
 nnoremap <Leader>cc :call ColorColumn()<CR>
 " Key bindings for adjusting tee tab/shift width.
@@ -905,7 +899,9 @@ nnoremap <leader>w2 :setlocal tabstop=2<CR>:setlocal shiftwidth=2<CR>
 nnoremap <leader>w4 :setlocal tabstop=4<CR>:setlocal shiftwidth=4<CR>
 nnoremap <leader>w8 :setlocal tabstop=8<CR>:setlocal shiftwidth=8<CR>
 " Shows file name
-nnoremap <Leader>g :echo expand('%:p')<CR>
+nnoremap <Leader>gg :echo expand('%:p')<CR>
+" Copy the filename to the unamed register
+nnoremap <Leader>gy :let +" = expand("%:p")<CR>
 " }}}
 
 " Terminal {{{
@@ -918,6 +914,10 @@ tnoremap jj <C-\><C-n>
 " Buffers {{{
 nnoremap <Leader>l :bnext<CR>
 nnoremap <Leader>h :bprevious<CR>
+" Close all buffers but the current one
+nnoremap <Leader>x :only<CR>
+" Close the current buffer and back to the last edited
+nnoremap <leader>d :call BufferDelete()<CR>
 " }}}
 
 " Highlightings {{{
@@ -990,13 +990,6 @@ augroup RAINBOWS
   autocmd BufEnter * RainbowParenthesesLoadBraces
 augroup END
 
-function! RainbowAll()
-  RainbowParenthesesActivate
-  RainbowParenthesesLoadBraces
-  RainbowParenthesesLoadRound
-  RainbowParenthesesLoadSquare
-endfunction
-
 augroup UNITE
   autocmd!
   autocmd FileType unite call s:unite_my_settings()
@@ -1017,8 +1010,6 @@ augroup END
 " ELM
 augroup ELM
   autocmd!
-
-  autocmd BufNewFile,BufRead,BufReadPost elm call ElmSettings()
 
   " Keybindings
   autocmd FileType elm nmap <LocalLeader>b <Plug>(elm-make)
@@ -1090,26 +1081,10 @@ augroup END
 
 augroup configgroup
   autocmd!
-  " No bell
-  autocmd GUIEnter * set visualbell t_vb=
-  " Unite Settings
+  autocmd GUIEnter * set visualbell t_vb=       " No bell
   autocmd! VimEnter * call UniteSettings()
-  " Save on Focus Lost
-  " autocmd FocusLost * silent! wa
-  " Conoline
-  " autocmd FocusLost * ConoLineDisable
-  " autocmd FocusGained * ConoLineEnable
-  " autocmd BufWinLeave * ConoLineDisable
-  " autocmd BufWinEnter * ConoLineEnable
-  " Whitespace cleaning
-  " autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-  " autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-  " autocmd InsertLeave * match ExtraWhitespace /\s\+$/
   autocmd BufWinLeave * call clearmatches()
-  " TrimWhiteSpaces when saving
   autocmd BufWritePre * :call TrimWhiteSpace()
-  " Fugitive
-  " autocmd QuickFixCmdPost *grep* cwindow " all the files are open in a quickfix buffer
 augroup END
 " }}}
 
@@ -1132,141 +1107,57 @@ function! ClojureSettings()
 endfunction
 
 function! SexpSettings()
-  " mapping
-  " nmap <silent><buffer> w <Plug>(sexp_round_tail_wrap_element)
-  " Slurpage & Burfage
   nmap <silent><buffer> << <Plug>(sexp_capture_prev_element)
   nmap <silent><buffer> >> <Plug>(sexp_capture_next_element)
 endfunction
 
 function! JavaScriptSettings()
-
-  " mapping
-  imap <buffer> <C-j> <CR><Esc>O
-  imap <buffer> <C-l> <C-o>A
-
-  " Map the conceal characters to their expanded forms.
-  " inoremap <silent> @ <C-r>=syntax_expand#expand("@", "this")<CR>
-  " inoremap <silent> # <C-r>=syntax_expand#expand("#", "prototype")<CR>
-  " inoremap <silent> < <C-r>=syntax_expand#expand_head("<", "return")<CR>
-
-  " Keeps everything concealed at all times. Even when my cursor is on the word.
+  inoremap <buffer> <C-j> <CR><Esc>O
+  inoremap <buffer> <C-l> <C-o>A
 endfunction
 " }}}
 
 " Python {{{
 function! PythonSettings()
+  " TODO
 endfunction
 " }}}
 "
 function! GhcModQuickFix()
   :Unite -no-empty -no-start-insert -no-quit quickfix
-  " :CtrlPQuickfix
 endfunction
 
 " Haskell {{{
 function! HaskellSettings()
-  " YouCompleteMe and NecoGHC
-  " Disable haskell-vim omnifunc
-  let g:haskellmode_completion_ghc = 0
-" Disable haskell-vim omnifunc
-  autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
-  set omnifunc=necoghc#omnifunc
-
-  " let g:ycm_min_num_of_chars_for_completion = 0
-  " let g:ycm_auto_trigger = 1
-  let g:necoghc_enable_detailed_browse = 1
-  let g:necoghc_debug=1
 
   " Hoogle
-  " Hoogle the word under the cursor
   nnoremap <silent> K :Hoogle<CR>
   nnoremap <silent> <LocalLeader>hh :Hoogle<CR>
-  " Hoogle, close the Hoogle window
   nnoremap <silent> <LocalLeader>hz :HoogleClose<CR>
-  " Hoogle for detailed documentation and prompt for input
   nnoremap <silent> <LocalLeader>hi :HoogleInfo <Space>
+
   " Imports
   nnoremap <silent> <LocalLeader>i :Unite haskellimport<CR>
 
-  " TODO: how to make it work with stack?
   " GHC Mod
-  let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
+  " TODO: how to make it work with stack?
   " Resource: http://www.stephendiehl.com/posts/vim_2016.html
-  " Type of expression under cursor
   nnoremap <silent> <LocalLeader>tt :w<CR> :GhcModType<CR>
-  " Insert type of expression under cursor
   nnoremap <silent> <LocalLeader>tw :w<CR> :GhcModTypeInsert<CR>
   nnoremap <silent> <LocalLeader>ts :w<CR> :GhcModSplitFunCase<CR>
   nnoremap <silent> <LocalLeader>tq :w<CR> :GhcModType<CR>
   nnoremap <silent> <LocalLeader>te :w<CR> :GhcModTypeClear<CR>
   nnoremap <silent> <LocalLeader>tc :w<CR> :GhcModCheckAndLintAsync<CR>
 
-  " TODO: improve
-  " Customize colors
-  " highlight ghcmodType ctermfg=15 ctermbg=23
-  let g:ghcmod_type_highlight = 'ghcmodType'
-  highlight ghcmodType ctermfg=15 ctermbg=24
-  " highlight ghcmodType guibg=Green guifg=White ctermbg=green ctermfg=black cterm=None
-  " Stylish Haskell: Installed globally
-
-  " Pretty unicode haskell symbols
-  " let g:haskell_conceal_wide = 1
-  " let g:haskell_conceal_enumerations = 1
-  " let hscoptions="𝐒𝐓𝐄𝐌xRtB𝔻w"
   call WSHighlight()
-
 endfunction
-
-
-" haskell-vim: Syntax highlighting (https://github.com/neovimhaskell/haskell-vim) {{{
-let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-
-let g:haskell_indent_if = 0
-let g:haskell_indent_in = 0
 " }}}
-
 
 function! WSHighlight()
   syn match BadWhiteSpace "^\\s*\\t\\+"
   syn match BadWhiteSpace "\\s\\+$"
 endfunction
 " }}}
-
-function! ElmSettings()
-  " let g:elm_jump_to_error = 1
-  " let g:elm_make_output_file = "elm.js"
-  " let g:elm_make_show_warnings = 0
-  " let g:elm_browser_command = ""
-  " let g:elm_detailed_complete = 1
-
-  " Provides my own keybindings
-  let g:elm_setup_keybindings = 0
-
-  " Requires elm-format
-  let g:elm_format_autosave = 1
-
-  " Syntastic
-  let g:syntastic_always_populate_loc_list = 1
-  let g:syntastic_auto_loc_list = 1
-
-  let g:elm_syntastic_show_warnings = 1
-
-  let g:elm_jump_to_error = 0
-  let g:elm_make_output_file = "elm.js"
-  let g:elm_make_show_warnings = 0
-  let g:elm_syntastic_show_warnings = 0
-  let g:elm_browser_command = ""
-  let g:elm_detailed_complete = 0
-  let g:elm_format_autosave = 0
-  let g:elm_setup_keybindings = 0
-  let g:elm_classic_hightlighting = 0
-endfunction
 
 " The silver searcher {{{
 if executable('ag')
@@ -1322,13 +1213,6 @@ function! TslimeSettings()
   vmap <silent> ce <Plug>SendSelectionToTmux
   nmap <silent> ce <Plug>NormalModeSendToTmux
   nmap <silent> cc <Plug>NormalModeSendAllToTmux
-  " nmap <silent> sr <Plug>SetTmuxVars
-  " let g:tslime_normal_mapping = rs
-  " let g:tslime_visual_mapping = rs
-  " let g:tslime_vars_mapping = rv
-  " let g:tslime_normal_mapping = '<localleader>s'
-  " let g:tslime_visual_mapping = '<localleader>s'
-  " let g:tslime_vars_mapping = '<localleader>v'
 endfunction
 " }}}
 
@@ -1351,6 +1235,7 @@ function! ColorColumn()
         setlocal colorcolumn=
     endif
 endfunction
+
 function! BufferDelete()
     if &modified
         echohl ErrorMsg
@@ -1370,6 +1255,3 @@ function! BufferDelete()
     endif
 endfunction
 " }}}
-
-" FIXME
-nnoremap <silent> <Leader>b :TagbarToggle<CR>
