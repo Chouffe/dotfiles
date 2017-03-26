@@ -1,4 +1,3 @@
-" TODO: move things here
 let mapleader="\<Space>"
 let maplocalleader=","
 
@@ -34,11 +33,11 @@ Plug 'mhinz/vim-startify'
 " align with ease
 Plug 'junegunn/vim-easy-align'
 
-vnoremap <Enter> <Plug>(EasyAlign)
+vmap <Enter> <Plug>(EasyAlign)
 " Start interactive EasyAlign in visual mode (e.g. vipga)
-xnoremap ga <Plug>(EasyAlign)
+xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nnoremap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 " }}}
 
 " FZF {{{
@@ -89,13 +88,6 @@ function! s:fzf_statusline()
   highlight fzf3 ctermfg=237 ctermbg=251
   setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
 endfunction
-" Narrow ag results within vim
-
-" CTRL-X, CTRL-V, CTRL-T to open in a new split, vertical split, tab respectively.
-" CTRL-A to select all matches and list them in quickfix window
-" TAB to select one
-" CTRL-D to deselect all
-" Ag without argument will list all the lines
 
 function! s:ag_to_qf(line)
   let parts = split(a:line, ':')
@@ -188,8 +180,8 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 " vim-expand-region {{{
 Plug 'terryma/vim-expand-region'
 
-vnoremap v <Plug>(expand_region_expand)
-vnoremap <C-V> <Plug>(expand_region_shrink)
+vmap v <Plug>(expand_region_expand)
+vmap <C-V> <Plug>(expand_region_shrink)
 " }}}
 
 " Rainbow Parentheses {{{
@@ -280,6 +272,24 @@ let g:neomake_haskell_enabled_makers = ['ghcmod']
 let g:neomake_javascript_enabled_makers = ['eslint']
 " }}}
 
+" Snippets {{{
+" Snipmate {{{
+Plug 'garbas/vim-snipmate'
+Plug 'honza/vim-snippets'
+" }}}
+" Neosnippet {{{
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+
+let g:neosnippet#enable_snipmate_compatibility = 1 " Enable snipMate compatibility feature
+let g:neosnippet#snippets_directory='~/.vim/bundle/vim-snippets/snippets'
+
+imap <C-k>  <Plug>(neosnippet_expand_or_jump)
+smap <C-k>  <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>  <Plug>(neosnippet_expand_target)
+imap <C-s>  <Plug>(neosnippet_start_unite_snippet)
+" }}}
+" }}}
 
 " Neoformat {{{
 Plug 'sbdchd/neoformat'
@@ -305,15 +315,19 @@ Plug 'zchee/deoplete-jedi', { 'for' : ['python'] }
 " intellij completion: https://github.com/vhakulinen/neovim-intellij-complete
 
 " Make sure the autocompletion will actually trigger using the omnifuncs
-"https://www.gregjs.com/vim/2016/configuring-the-deoplete-asynchronous-keyword-completion-plugin-with-tern-for-vim/
+" https://www.gregjs.com/vim/2016/configuring-the-deoplete-asynchronous-keyword-completion-plugin-with-tern-for-vim/
 if !exists('g:deoplete#omni#input_patterns')
   let g:deoplete#omni#input_patterns = {}
+endif
+
+if !exists('g:deoplete#sources')
+  let g:deoplete#sources = {}
 endif
 
 " Automatically closing the scratch window
 autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-" deoplete tab-complete
+" Deoplete tab-complete
 inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 
@@ -322,6 +336,7 @@ let g:deoplete#keyword_patterns = {}
 let g:deoplete#omni_patterns = {}
 let g:deoplete#omni_patterns.scala='[^. *\t]\.\w*'
 let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+" let g:deoplete#sources._ = ['buffer', 'tag']
 
 " Tern {{{
 let g:tern#command = ["tern"]
@@ -501,11 +516,12 @@ Plug 'joshdick/onedark.vim'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'Wutzara/vim-materialtheme'
 
-let g:gruvbox_contrast_dark="hard"
+" let g:gruvbox_contrast_dark="hard"
+let g:gruvbox_contrast_dark="medium"
 " }}}
 
-" Tags {{{
 Plug 'majutsushi/tagbar', { 'for': ['haskell'] }
+" Tags {{{
 Plug 'szw/vim-tags'  " Ctags generator for Vim
 
 set tags=tags;/,codex.tags;/
@@ -682,7 +698,7 @@ Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
 Plug 'ujihisa/unite-haskellimport', { 'for': 'haskell' }
 
-" haskell-vim: Syntax highlighting (https://github.com/neovimhaskell/haskell-vim) {{{
+" haskell-vim: Syntax highlighting (https://github.com/neovimhaskell/haskell-vim)
 let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
 let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
 let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
@@ -856,6 +872,9 @@ nnoremap <silent> sh :split<CR>
 let mapleader="\<Space>"
 let maplocalleader=","
 
+
+" Keys {{{
+" Leader Mappings {{{
 " Remap the ex command
 nnoremap <Leader><Leader> V
 nnoremap <silent><Leader>q :q<CR>
@@ -920,13 +939,10 @@ nnoremap <Leader>x :only<CR>
 nnoremap <leader>d :call BufferDelete()<CR>
 " }}}
 
+" }}}
+
 " Highlightings {{{
-" Highlights trailing whitespaces
-" highlight ExtraWhitespace ctermbg=red guibg=red
-" match ExtraWhitespace /\s\+$/
 highlight clear SignColumn
-" Change Highlights colors
-" highlight SignColumn ctermbg=16
 " }}}
 
 " Autocmd {{{
@@ -1192,6 +1208,7 @@ endfunction
 nnoremap <silent><C-p> :FZF<CR>
 nnoremap <silent><C-f> :Unite -buffer-name=search line:all -start-insert<CR>
 nnoremap <silent><C-q> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
+nnoremap <silent><C-s> :<C-u>Unite neosnippet -start-insert<CR>
 nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
 nnoremap <silent><M-g> :FZFAg<CR>'
 nnoremap <silent><M-p> :FZF<CR>
