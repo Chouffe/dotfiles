@@ -1,5 +1,7 @@
-let mapleader="\<Space>"
-let maplocalleader=","
+" Leader Shortcuts {{{
+let mapleader = "\<Space>"
+let maplocalleader = ","
+" }}}
 
 " Plugins {{{
 call plug#begin('~/.vim/plugged')
@@ -471,9 +473,7 @@ let g:tmuxline_powerline_separators = 1
 let g:tmuxline_theme = 'iceberg'
 let g:tmuxline_preset = 'nightly_fox'
 " }}}
-" Plug 'itchyny/lightline.vim'
-" vim plugin for tmux.conf
-
+" Plug 'itchyny/lightline.vim' vim plugin for tmux.conf
 " }}}
 
 " Objects and Motions {{{
@@ -515,9 +515,6 @@ Plug 'Donearm/Ubaryd'
 Plug 'joshdick/onedark.vim'
 Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'Wutzara/vim-materialtheme'
-
-" let g:gruvbox_contrast_dark="hard"
-let g:gruvbox_contrast_dark="medium"
 " }}}
 
 Plug 'majutsushi/tagbar', { 'for': ['haskell'] }
@@ -752,54 +749,58 @@ Plug 'cakebaker/scss-syntax.vim'
 call plug#end()
 " }}}
 
-" Spaces and tabs {{{
-set expandtab         " tabs are spaces
-set autoindent        " Indentation
-set smartindent       " Indentation
-" }}}
-
-" UI and Layout {{{
-set t_Co=256                " Number of colors used in terminal
+" Colors / UI / Colorschemes {{{
+filetype plugin indent on       " Enable filetype plugins
+syntax enable                   " Syntax highlighting
+set termguicolors               " true color support (will work only in tmux)
+set t_Co=256                    " Number of colors used in terminal
 if &term =~ '256color'
 "   " disable Background Color Erase (BCE) so that color schemes
 "   " render properly when inside 256-color tmux and GNU screen.
 "   " see also http://snk.tuxfamily.org/log/vim-256color-bce.html
   set t_ut=
 endif
+set background=dark
+colorscheme gruvbox              " Awesome colorscheme
+" colorscheme hybrid_material      " Awesome colorscheme
+set cursorline                   " Highlight the line you are on
+set cursorline cursorcolumn      " Highlights the column you are in
+highlight clear SignColumn
 " " let base16colorspace=256
 " let $NVIM_TUI_ENABLE_TRUE_COLOR='1'
+" }}}
+
+" UX / Layout {{{
+" Spaces / Tabs {{{
+set expandtab         " tabs are spaces
+set autoindent        " Indentation
+set smartindent       " Indentation
+" }}}
 set spelllang=en_us              " Set region to American English
 " set mouse=a                      " Enable mouse usage in terminal vim
 set mouse=                       " Disable mouse usage in terminal vim
-set termguicolors                " true color support (will work only in tmux)
 set relativenumber               " Enable relative number
 set number                       " Enable hybrid mode
 set encoding=utf-8               " UTF-8 encoding
 set scrolloff=3                  " Number of screen lines to show around the cursor
-set cursorline                   " Highlight the line you are on
-set cursorline cursorcolumn      " Highlights the column you are in
 set showmatch                    " Show matches ({[
 set pastetoggle=<F2>
 " set textwidth=79               " Max text-width
-filetype plugin indent on        " Enable filetype plugins
-syntax enable                    " Syntax highlighting
+" Wildmenu {{{
 " Tab completion on the command line
-" Wildmenu
 set wildmenu
 set wildmode=longest:full,full
-" Splits
+" }}}
+" Splits {{{
 set splitbelow
 set splitright
 set laststatus=2                 " Status line always on
-" colorscheme hybrid_material      " Awesome colorscheme
-set background=dark
-colorscheme gruvbox              " Awesome colorscheme
 " }}}
-
 " Folding {{{
 set foldenable        " enable folding
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10    " 10 nested folds max
+" }}}
 " }}}
 
 " Searching {{{
@@ -809,11 +810,15 @@ set hlsearch    " Highlight the search results
 " }}}
 
 " Movement {{{
-" Insert Mode
+" Insert Mode {{{
 " Exits INSERT mode without moving cursor (press jk || jj)
 inoremap jk <ESC>l
 inoremap jj <ESC>l
-" Normal mode
+" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+inoremap <M-j> <Esc>:m .+1<CR>==gi
+inoremap <M-k> <Esc>:m .-2<CR>==gi
+" }}}
+" Normal mode {{{
 " Remap the beginning of the line
 nnoremap 0 ^
 " Move to beginning/end of the line
@@ -825,12 +830,21 @@ nnoremap <CR> G
 " Treat long lines as break lines (useful when moving around in them)
 nnoremap j gj
 nnoremap k gk
-" Visual block mode
+" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+nnoremap <M-j> :m .+1<CR>==
+nnoremap <M-k> :m .-2<CR>==
+" }}}
+" Visual block mode {{{
 nnoremap q <c-V>
-" Visual Mode
+" }}}
+" Visual Mode {{{
 vnoremap < <gv
 vnoremap > >gv
 vnoremap q <c-V>
+" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
+vnoremap <M-j> :m '>+1<CR>gv=gv
+vnoremap <M-k> :m '<-2<CR>gv=gv
+" }}}
 " }}}
 
 " Misc {{{
@@ -838,10 +852,10 @@ vnoremap q <c-V>
 set noerrorbells visualbell t_vb=
 " Reload files changed outside vim
 set autoread
-" No swap files
+" No swap / backup files
 set noswapfile
 set nobackup
-set nowb
+set nowritebackup
 " Equivalent to set backspace=indent,eol,start " backspace over everything in insert mode
 set backspace=2
 " turn off search highlight
@@ -854,13 +868,6 @@ nnoremap <expr> gb '`[' . strpart(getregtype(), 0, 1) . '`]'
 cnoremap $t <CR>:t''<CR>
 cnoremap $m <CR>:m''<CR>
 cnoremap $d <CR>:d<CR>``
-" Move a line of text using ALT+[jk] or Comamnd+[jk] on mac
-nnoremap <M-j> :m .+1<CR>==
-nnoremap <M-k> :m .-2<CR>==
-inoremap <M-j> <Esc>:m .+1<CR>==gi
-inoremap <M-k> <Esc>:m .-2<CR>==gi
-vnoremap <M-j> :m '>+1<CR>gv=gv
-vnoremap <M-k> :m '<-2<CR>gv=gv
 " Sorting
 vmap <C-s> !sort<CR>
 " Splits
@@ -868,12 +875,13 @@ nnoremap <silent> sv :vsplit<CR>
 nnoremap <silent> sh :split<CR>
 " }}}
 
-" Leader shortcuts {{{
+" Keys {{{
+"
+" Leader Shortcuts {{{
 let mapleader="\<Space>"
 let maplocalleader=","
+" }}}
 
-
-" Keys {{{
 " Leader Mappings {{{
 " Remap the ex command
 nnoremap <Leader><Leader> V
@@ -938,11 +946,6 @@ nnoremap <Leader>x :only<CR>
 " Close the current buffer and back to the last edited
 nnoremap <leader>d :call BufferDelete()<CR>
 " }}}
-
-" }}}
-
-" Highlightings {{{
-highlight clear SignColumn
 " }}}
 
 " Autocmd {{{
@@ -991,7 +994,7 @@ augroup END
 
 augroup FZF
   autocmd!
-  " autocmd User FzfStatusLine call <SID>fzf_statusline()
+  autocmd User FzfStatusLine call <SID>fzf_statusline()
 augroup END
 
 augroup RAINBOWS
@@ -1014,12 +1017,8 @@ augroup END
 " Haskell
 augroup HASKELL
   autocmd!
-  " au Bufenter *.hs compiler ghc
   autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
-  " Use tc instead
-  " autocmd BufWritePost *.hs :GhcModCheckAndLintAsync
   autocmd FileType haskell call HaskellSettings()
-  " TODO: Fix when opening different file types (it breaks)
   autocmd BufWritePost *.hs silent! Neomake
 augroup END
 
@@ -1045,13 +1044,10 @@ augroup END
 
 augroup JS
   autocmd!
-  " Two space indentation
+
   autocmd FileType javascript set tabstop=2
   autocmd FileType javascript set softtabstop=2
   autocmd FileType javascript set shiftwidth=2
-  autocmd FileType javascript set expandtab
-  autocmd FileType javascript set conceallevel=1
-  autocmd FileType javascript set concealcursor=nvic
   autocmd BufWinEnter,BufNewFile *.js silent tab
   autocmd BufNewFile,BufRead,BufReadPost *.js call JavaScriptSettings()
   autocmd BufNewFile,BufRead,BufReadPost *.js call TslimeSettings()
@@ -1089,7 +1085,6 @@ augroup END
 
 augroup CLJS
   autocmd!
-  " autocmd BufNewFile,BufRead,BufReadPost *.cljs call TslimeSettings()
   autocmd BufNewFile,BufRead,BufReadPost *.cljs call SexpSettings()
   autocmd BufEnter *.cljs setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
   command! Figwheel :Piggieback! (do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/cljs-repl))
@@ -1097,12 +1092,10 @@ augroup END
 
 augroup configgroup
   autocmd!
-  autocmd GUIEnter * set visualbell t_vb=       " No bell
   autocmd! VimEnter * call UniteSettings()
   autocmd BufWinLeave * call clearmatches()
   autocmd BufWritePre * :call TrimWhiteSpace()
 augroup END
-" }}}
 
 augroup QUICKFIX_WINDOW
   autocmd!
@@ -1110,8 +1103,17 @@ augroup QUICKFIX_WINDOW
   " cursor, so undefine the mapping there.
   autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
 augroup END
+" }}}
 
-" Clojure Settings {{{
+" Tslime {{{
+function! TslimeSettings()
+  vmap <silent> ce <Plug>SendSelectionToTmux
+  nmap <silent> ce <Plug>NormalModeSendToTmux
+  nmap <silent> cc <Plug>NormalModeSendAllToTmux
+endfunction
+" }}}
+
+" Language specific settings {{{
 function! ClojureSettings()
   " Mapping
   nnoremap cq :Require<CR>
@@ -1131,16 +1133,9 @@ function! JavaScriptSettings()
   inoremap <buffer> <C-j> <CR><Esc>O
   inoremap <buffer> <C-l> <C-o>A
 endfunction
-" }}}
 
-" Python {{{
 function! PythonSettings()
   " TODO
-endfunction
-" }}}
-"
-function! GhcModQuickFix()
-  :Unite -no-empty -no-start-insert -no-quit quickfix
 endfunction
 
 " Haskell {{{
@@ -1167,18 +1162,16 @@ function! HaskellSettings()
 
   call WSHighlight()
 endfunction
-" }}}
+
+function! GhcModQuickFix()
+  :Unite -no-empty -no-start-insert -no-quit quickfix
+endfunction
 
 function! WSHighlight()
   syn match BadWhiteSpace "^\\s*\\t\\+"
   syn match BadWhiteSpace "\\s\\+$"
 endfunction
 " }}}
-
-" The silver searcher {{{
-if executable('ag')
-  set grepprg=ag\ --nogroup\ --nocolor
-endif
 " }}}
 
 " Unite {{{
@@ -1190,11 +1183,6 @@ function! UniteSettings()
   call unite#custom#source(
         \ 'neomru/file', 'matchers',
         \ ['matcher_project_files', 'matcher_fuzzy'])
-
-  " start-insert starts in INSERT mode when Unite is triggered
-  " prompt defines the prompt text
-  " winheight is the height of the Unite items
-  " direction is the location of the unite buffer
   call unite#custom#profile('default', 'context', {
         \   'start_insert': 1,
         \   'prompt': ">> ",
@@ -1204,7 +1192,13 @@ function! UniteSettings()
 endfunction
 " }}}
 
-" Search/Grep/Buffer/Lines {{{
+" Search / Grep / Buffer / Lines {{{
+" The silver searcher {{{
+if executable('ag')
+  set grepprg=ag\ --nogroup\ --nocolor
+endif
+" }}}
+" Mappings {{{
 nnoremap <silent><C-p> :FZF<CR>
 nnoremap <silent><C-f> :Unite -buffer-name=search line:all -start-insert<CR>
 nnoremap <silent><C-q> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
@@ -1224,15 +1218,9 @@ nnoremap <silent><M-h> :Unite help<CR>
 " Seems broken and does not output MRUs...
 " nnoremap <C-b> :FilesMru --tiebreak=end<CR>
 " }}}
-
-" tslime {{{
-function! TslimeSettings()
-  vmap <silent> ce <Plug>SendSelectionToTmux
-  nmap <silent> ce <Plug>NormalModeSendToTmux
-  nmap <silent> cc <Plug>NormalModeSendAllToTmux
-endfunction
 " }}}
 
+" Util Functions {{{
 " Remove trailing whitespace
 function! TrimWhiteSpace()
     %s/\s\+$//e
@@ -1272,3 +1260,5 @@ function! BufferDelete()
     endif
 endfunction
 " }}}
+
+" vim:foldmethod=marker:foldlevel=0
