@@ -60,8 +60,13 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Virtualenvwrapper
-# source /usr/local/bin/virtualenvwrapper.sh
-source ~/.local/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper.sh
+# source ~/.local/bin/virtualenvwrapper.sh
+
+# pyenv
+eval "$(pyenv init -)"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+pyenv activate neovim3
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -100,4 +105,7 @@ stty -ixon
 
 # Right Prompt
 # RPROMPT="$FG[013]%D{%H:%M}%{$reset_color%}$FG[015] %D{»} %{$reset_color%}$FG[014]%D{%m/%d}%{$reset_color%}"
-RPROMPT=""
+# if [[ -f /usr/local/opt/chruby/share/chruby/chruby.sh ]]; then
+#   source /usr/local/opt/chruby/share/chruby/chruby.sh
+#   source /usr/local/opt/chruby/share/chruby/auto.sh
+# fi

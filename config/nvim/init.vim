@@ -15,7 +15,7 @@ Plug 'tpope/vim-sleuth'
 " Helpers for Linux
 Plug 'tpope/vim-eunuch'
 " Defaults everyone can agree on
-Plug 'tpope/vim-sensible'
+" Plug 'tpope/vim-sensible'  " Not needed in nvim
 " Pairs of handy bracket mapping
 Plug 'tpope/vim-unimpaired'
 " asynchronous build and test dispatcher
@@ -171,7 +171,6 @@ Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 Plug 'haya14busa/incsearch.vim'
 " provides improved * motions
 Plug 'haya14busa/vim-asterisk'
-
 " Some utility functions for vim
 Plug 'tomtom/tlib_vim'
 " Interpret a file by function and cache file automatically
@@ -305,6 +304,7 @@ function! DoRemote(arg)
   UpdateRemotePlugins
 endfunction
 
+" Dark powered asynchronous completion framework for neovim
 Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
 Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neco-vim'
@@ -324,6 +324,10 @@ endif
 
 if !exists('g:deoplete#sources')
   let g:deoplete#sources = {}
+endif
+
+if !exists('g:deoplete#ignore_sources')
+  let g:deoplete#ignore_sources = {}
 endif
 
 " Automatically closing the scratch window
@@ -366,8 +370,8 @@ let g:tern#filetypes = [
 " Deoplete Python {{{
 " Make sure echo has('python') and echo has('ruby') both return 1 for deoplete
 " to work
-" let g:python3_host_prog = '/Users/arthur_caillau/.virtualenvs/neovim3/bin/python'
-" let g:python3_host_prog = '/Users/arthur_caillau/.pyenv/shims/python'
+let g:python3_host_prog = '/Users/arthur_caillau/.virtualenvs/neovim3/bin/python'
+let g:python3_host_prog = '/Users/arthur_caillau/.pyenv/shims/python'
 " let g:python3_host_prog = '/usr/local/bin/python3.6'
 " }}}
 " }}}
@@ -507,7 +511,7 @@ Plug 'jasonlong/vim-textobj-css'
 " }}}
 
 " Colorschemes {{{
-" Plug 'Plug morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 Plug 'flazz/vim-colorschemes'
 Plug 'sjl/badwolf'
 Plug 'mkarmona/colorsbox'
@@ -926,9 +930,9 @@ nnoremap <leader>w2 :setlocal tabstop=2<CR>:setlocal shiftwidth=2<CR>
 nnoremap <leader>w4 :setlocal tabstop=4<CR>:setlocal shiftwidth=4<CR>
 nnoremap <leader>w8 :setlocal tabstop=8<CR>:setlocal shiftwidth=8<CR>
 " Shows file name
-nnoremap <Leader>gg :echo expand('%:p')<CR>
+nnoremap <Leader>gg :echo "Filename> " expand('%:p')<CR>
 " Copy the filename to the unamed register
-nnoremap <Leader>gy :let +" = expand("%:p")<CR>
+nnoremap <Leader>gy :let @+ = expand('%:p')<CR>:echo "Filename copied to clipboard"<CR>
 " }}}
 
 " Terminal {{{
@@ -1014,6 +1018,15 @@ augroup UNITE
   autocmd FileType unite call s:unite_my_settings()
 augroup END
 
+augroup SCALA
+  " TODO: make neovim work with scala and gradle
+  " Need to figure out how to get only stderr from neomake
+  " autocmd FileType scala nnoremap <LocalLeader>c :Dispatch gradlew compileScala 2>&1 > /dev/null<CR>
+  autocmd BufNewFile,BufRead,BufReadPost *.scala call TslimeSettings()
+  autocmd BufWritePost *.scala silent! Neomake
+  autocmd BufWritePost *.scala silent! Neomake! gradlew
+augroup END
+
 " Haskell
 augroup HASKELL
   autocmd!
@@ -1060,6 +1073,9 @@ augroup END
 
 augroup RUBY
   autocmd!
+  " Exclude omni (fails to find host)
+  " autocmd BufEnter *.rb let g:deoplete#sources.ruby = ['buffer', 'tag', 'member', 'around', 'file', 'tmuxcomplete', 'ruby', 'rct', 'neosnippet']
+  autocmd BufEnter *.rb let g:deoplete#ignore_sources.ruby = ['omni']
   autocmd BufNewFile,BufRead,BufReadPost *.rb call TslimeSettings()
 augroup END
 
@@ -1137,6 +1153,14 @@ endfunction
 function! PythonSettings()
   " TODO
 endfunction
+
+" Neomake {{{
+" let g:neomake_logfile='/Users/arthur_caillau/neomake.log'
+" TODO: only for kyoo for now
+let g:neomake_enabled_makers = ['gradlew']
+" let g:neomake_open_list=2  " Conserves the cursor position + open the quickfix
+" let g:neomake_highlight_lines=1
+" }}}
 
 " Haskell {{{
 function! HaskellSettings()
