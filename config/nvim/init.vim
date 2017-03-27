@@ -507,7 +507,7 @@ Plug 'jasonlong/vim-textobj-css'
 " }}}
 
 " Colorschemes {{{
-" Plug 'Plug morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 Plug 'flazz/vim-colorschemes'
 Plug 'sjl/badwolf'
 Plug 'mkarmona/colorsbox'
