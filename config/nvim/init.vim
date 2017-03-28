@@ -896,7 +896,7 @@ nnoremap <Leader><CR> :nohlsearch<CR>
 " Save a file
 nnoremap <Leader>w :w<CR>
 " Paste
-nnoremap <silent> <leader>p :set paste!<CR>
+nnoremap <silent> <leader>p :set paste!<CR>"+p:set paste!<CR>
 " Copy & paste to system clipboard
 vnoremap <Leader>y "+y
 vnoremap <Leader>d "+d
