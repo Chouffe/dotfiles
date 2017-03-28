@@ -443,7 +443,7 @@ nnoremap <Leader>gp :Gpush<CR>
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-let g:airline_theme="distinguished"
+let g:airline_theme="gruvbox"
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#buffer_nr_show=1
@@ -467,7 +467,7 @@ nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
 " }}}
 
 " TmuxLine {{{
-Plug 'edkolev/tmuxline.vim'
+" Plug 'edkolev/tmuxline.vim'
 
 let g:tmuxline_powerline_separators = 1
 let g:tmuxline_theme = 'iceberg'
@@ -926,9 +926,14 @@ nnoremap <leader>w2 :setlocal tabstop=2<CR>:setlocal shiftwidth=2<CR>
 nnoremap <leader>w4 :setlocal tabstop=4<CR>:setlocal shiftwidth=4<CR>
 nnoremap <leader>w8 :setlocal tabstop=8<CR>:setlocal shiftwidth=8<CR>
 " Shows file name
-nnoremap <Leader>gg :echo expand('%:p')<CR>
+nnoremap <Leader>gg :call ColorEcho("Filename> ", expand('%:p'))<CR>
 " Copy the filename to the unamed register
-nnoremap <Leader>gy :let +" = expand("%:p")<CR>
+nnoremap <Leader>gy :let @+ = expand("%:p")<CR>:call ColorEcho("Filename> ", expand('%:p'), " → copied to clipboard")<CR>
+
+function! ColorEcho(title, msg, ...)
+  let optional = (a:0 >= 1) ? a:1 : ""
+  echohl GruvboxGreenBold | echon a:title | echohl GruvboxYellow | echon a:msg | echohl GruvboxAqua | echon optional | echohl None
+endfunction
 " }}}
 
 " Terminal {{{
