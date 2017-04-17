@@ -193,8 +193,8 @@ Plug 'kien/rainbow_parentheses.vim'
 " IndentLine {{{
 Plug 'Yggdroot/indentLine'
 
-let g:indentLine_color_term = 239
-let g:indentLine_color_gui = '#09AA08'
+" let g:indentLine_color_term = 239
+let g:indentLine_color_gui = '#689d6a'
 " let g:indentLine_char = '│'
 let g:indentLine_char = '┆'
 " }}}
@@ -707,7 +707,8 @@ let g:haskell_indent_in = 0
 
 " Ghcmod
 let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
-let g:ghcmod_type_highlight = 'ghcmodType'
+" highlight ghcmodType ctermbg=GruvboxYellow
+" let g:ghcmod_type_highlight = 'ghcmodType'
 
 " }}}
 
@@ -736,7 +737,7 @@ let g:used_javascript_libs = 'react,flux,jquery,chai'
 " }}}
 
 " provides insert mode auto-completion for quotes, parens, brackets
-Plug 'Raimondi/delimitMate', { 'for': ['haskell', 'html', 'javascript', 'python', 'ruby'] }
+Plug 'Raimondi/delimitMate', { 'for': ['haskell', 'html', 'javascript', 'python', 'ruby', 'idris'] }
 
 " CSS {{{
 Plug 'JulesWang/css.vim'
@@ -785,6 +786,7 @@ set encoding=utf-8               " UTF-8 encoding
 set scrolloff=3                  " Number of screen lines to show around the cursor
 set showmatch                    " Show matches ({[
 set pastetoggle=<F2>
+set listchars=tab:▸\ ,eol:¬
 " set textwidth=79               " Max text-width
 " Wildmenu {{{
 " Tab completion on the command line
@@ -1019,7 +1021,12 @@ augroup UNITE
   autocmd FileType unite call s:unite_my_settings()
 augroup END
 
-" Haskell
+augroup YAML
+  autocmd!
+  autocmd FileType yaml setlocal tabstop=2
+  autocmd FileType yaml setlocal shiftwidth=2
+augroup END
+
 augroup HASKELL
   autocmd!
   autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
@@ -1027,7 +1034,6 @@ augroup HASKELL
   autocmd BufWritePost *.hs silent! Neomake
 augroup END
 
-" ELM
 augroup ELM
   autocmd!
 
@@ -1041,7 +1047,6 @@ augroup ELM
   autocmd FileType elm nmap <LocalLeader>w <Plug>(elm-browse-docs)
 augroup END
 
-" Lisp
 augroup LISP
   autocmd!
   autocmd BufNewFile,BufRead,BufReadPost *.scm call SexpSettings()
@@ -1148,9 +1153,9 @@ function! HaskellSettings()
 
   " Hoogle
   nnoremap <silent> K :Hoogle<CR>
-  nnoremap <silent> <LocalLeader>hh :Hoogle<CR>
-  nnoremap <silent> <LocalLeader>hz :HoogleClose<CR>
-  nnoremap <silent> <LocalLeader>hi :HoogleInfo <Space>
+  " nnoremap <silent> <LocalLeader>hh :Hoogle<CR>
+  " nnoremap <silent> <LocalLeader>hz :HoogleClose<CR>
+  " nnoremap <silent> <LocalLeader>hi :HoogleInfo <Space>
 
   " Imports
   nnoremap <silent> <LocalLeader>i :Unite haskellimport<CR>
@@ -1158,12 +1163,41 @@ function! HaskellSettings()
   " GHC Mod
   " TODO: how to make it work with stack?
   " Resource: http://www.stephendiehl.com/posts/vim_2016.html
-  nnoremap <silent> <LocalLeader>tt :w<CR> :GhcModType<CR>
-  nnoremap <silent> <LocalLeader>tw :w<CR> :GhcModTypeInsert<CR>
-  nnoremap <silent> <LocalLeader>ts :w<CR> :GhcModSplitFunCase<CR>
-  nnoremap <silent> <LocalLeader>tq :w<CR> :GhcModType<CR>
-  nnoremap <silent> <LocalLeader>te :w<CR> :GhcModTypeClear<CR>
-  nnoremap <silent> <LocalLeader>tc :w<CR> :GhcModCheckAndLintAsync<CR>
+  nnoremap <silent> <LocalLeader>t :GhcModType!<CR>
+  nnoremap <silent> <LocalLeader>w :GhcModTypeInsert!<CR>
+  nnoremap <silent> <LocalLeader>e :GhcModExpand!<CR>
+  nnoremap <silent> <LocalLeader>y :GhcModTypeClear<CR>
+  nnoremap <silent> <LocalLeader>h :GhcModInfoPreview!<CR>
+  nnoremap <silent> <LocalLeader>d :GhcModSigCodegen!<CR>
+  nnoremap <silent> <LocalLeader>c :GhcModSplitFunCase!<CR>
+  nnoremap <silent> <LocalLeader>r ::GhcModCheckAndLintAsync!<CR>
+
+  " Colorscheme: https://github.com/morhetz/gruvbox/blob/master/colors/gruvbox.vim#L1182
+  hi! link haskellType GruvboxYellow
+  hi! link haskellIdentifier GruvboxPurple
+  hi! link haskellSeparator GruvboxFg1
+  hi! link haskellDelimiter GruvboxFg4
+  hi! link haskellOperators GruvboxOrange
+  "
+  hi! link haskellBacktick GruvboxOrange
+  hi! link haskellStatement GruvboxOrange
+  hi! link haskellConditional GruvboxOrange
+
+  hi! link haskellLet GruvboxAqua
+  hi! link haskellDefault GruvboxAqua
+  hi! link haskellWhere GruvboxAqua
+  hi! link haskellBottom GruvboxAqua
+  hi! link haskellBlockKeywords GruvboxAqua
+  hi! link haskellImportKeywords GruvboxAqua
+  hi! link haskellDeclKeyword GruvboxAqua
+  hi! link haskellDeriving GruvboxAqua
+  hi! link haskellAssocType GruvboxAqua
+
+  hi! link haskellNumber GruvboxPurple
+  hi! link haskellPragma GruvboxPurple
+
+  hi! link haskellString GruvboxGreen
+  hi! link haskellChar GruvboxGreen
 
   call WSHighlight()
 endfunction
