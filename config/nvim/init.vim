@@ -413,7 +413,16 @@ nnoremap <silent> <C-g> :UniteClose<CR>
 nnoremap <silent> <C-x> :UniteResume -no-start-insert<CR>
 
 function! s:unite_my_settings()
-    nmap <buffer> <C-j>                   <Plug>(unite_toggle_auto_preview)
+    nunmap <buffer> <C-k>
+    nunmap <buffer> <C-l>
+    nunmap <buffer> <C-h>
+    imap <buffer> <Esc>         <Plug>(unite_exit)
+    nmap <buffer> <Esc>         <Plug>(unite_exit)
+    imap <buffer> <C-j>         <Plug>(unite_select_next_line)
+    imap <buffer> <C-k>         <Plug>(unite_select_previous_line)
+    nmap <silent><buffer><expr> s unite#do_action('split')
+    nmap <silent><buffer><expr> vs unite#do_action('vsplit')
+    nmap <silent><buffer><expr> S unite#do_action('vsplit')
     imap <silent><buffer><expr> <C-h>     unite#do_action('split')
 endfunction
 
@@ -447,7 +456,7 @@ nnoremap <Leader>gp :Gpush<CR>
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
-let g:airline_theme="distinguished"
+let g:airline_theme="gruvbox"
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tabline#buffer_nr_show=1
@@ -740,7 +749,7 @@ let g:used_javascript_libs = 'react,flux,jquery,chai'
 " }}}
 
 " provides insert mode auto-completion for quotes, parens, brackets
-Plug 'Raimondi/delimitMate', { 'for': ['haskell', 'html', 'javascript', 'python', 'ruby'] }
+Plug 'Raimondi/delimitMate', { 'for': ['haskell', 'html', 'javascript', 'python', 'ruby', 'idris'] }
 
 " CSS {{{
 Plug 'JulesWang/css.vim'
@@ -900,7 +909,7 @@ nnoremap <Leader><CR> :nohlsearch<CR>
 " Save a file
 nnoremap <Leader>w :w<CR>
 " Paste
-nnoremap <silent> <leader>p :set paste!<CR>
+nnoremap <silent> <leader>p :set paste!<CR>"+p :set paste!<CR>
 " Copy & paste to system clipboard
 vnoremap <Leader>y "+y
 vnoremap <Leader>d "+d
@@ -963,6 +972,7 @@ augroup VIMFILER
 
   "Config file: https://gist.github.com/mattjmorrison/6c2fff20f969237fb9fa
   autocmd FileType vimfiler nunmap <buffer> <C-l>
+  autocmd FileType vimfiler nunmap <buffer> <C-j>
   autocmd FileType vimfiler nmap <buffer><Leader>t :q<CR>
   autocmd FileType vimfiler nmap <silent><buffer><expr> v vimfiler#do_switch_action('vsplit')
   autocmd FileType vimfiler nmap <silent><buffer><expr> s vimfiler#do_switch_action('split')
@@ -1081,6 +1091,7 @@ augroup END
 
 augroup PYTHON
   autocmd!
+  autocmd BufEnter *.py let g:deoplete#ignore_sources.python = ['omni']
   autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
   autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()
 augroup END

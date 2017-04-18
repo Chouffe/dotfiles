@@ -30,6 +30,6 @@
 [push]
 	default = current
 [rerere]
-	enabled = 1
+	enabled = true
 [help]
   autocorrect = 1
