@@ -468,16 +468,10 @@ Plug 'tmux-plugins/vim-tmux'
 " Vimux {{{
 Plug 'benmills/vimux'
 
-function! VimuxZoomRunner()
-  " Function to make tmux zoom its runner pane.
-  call VimuxInspectRunner()
-  call system("tmux resize-pane -Z")
-endfunction
-
 nnoremap <Leader>vp :VimuxPromptCommand<CR>
 nnoremap <Leader>vl :VimuxRunLastCommand<CR>
 nnoremap <Leader>vi :VimuxInspectRunner<CR>
-nnoremap <Leader>vz :call VimuxZoomRunner()<CR>
+nnoremap <Leader>vz :VimuxZoomRunner<CR>
 nnoremap <Leader>vq :VimuxCloseRunner<CR>
 nnoremap <Leader>vx :VimuxInterruptRunner<CR>
 " }}}
