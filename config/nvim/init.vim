@@ -53,9 +53,9 @@ let g:fzf_command_prefix = 'FZF'
 
 " This is the default extra key bindings
 let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
+      \ 'ctrl-t': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
 
 " Enable per-command history.
 " CTRL-N and CTRL-P will be automatically bound to next-history and
@@ -65,18 +65,18 @@ let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " Customize fzf colors to match the color scheme
 let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+      \ { 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
 
 " let g:fzf_layout = { 'window': 'enew' }
 let g:fzf_layout = { 'down': '~40%' }
@@ -143,23 +143,23 @@ function! s:buffer_lines()
 endfunction
 
 command! FZFLines call fzf#run({
-\   'source':  <sid>buffer_lines(),
-\   'sink':    function('<sid>line_handler'),
-\   'options': '--extended --nth=3..',
-\   'down':    '60%'
-\})
+      \   'source':  <sid>buffer_lines(),
+      \   'sink':    function('<sid>line_handler'),
+      \   'options': '--extended --nth=3..',
+      \   'down':    '60%'
+      \})
 
 command! FZFMru call fzf#run({
-\ 'source':  reverse(s:all_files()),
-\ 'sink':    'edit',
-\ 'options': '-m -x +s',
-\ 'down':    '40%' })
+      \ 'source':  reverse(s:all_files()),
+      \ 'sink':    'edit',
+      \ 'options': '-m -x +s',
+      \ 'down':    '40%' })
 
 function! s:all_files()
   return extend(
-  \ filter(copy(v:oldfiles),
-  \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
-  \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
+        \ filter(copy(v:oldfiles),
+        \        "v:val !~ 'fugitive:\\|NERD_tree\\|^/tmp/\\|.git/'"),
+        \ map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), 'bufname(v:val)'))
 endfunction
 " }}}
 " }}}
@@ -357,10 +357,10 @@ let g:tern_show_signature_in_pum = '0'  " This do disable full signature type on
 
 "Add extra filetypes
 let g:tern#filetypes = [
-                \ 'jsx',
-                \ 'javascript.jsx',
-                \ 'vue',
-                \ ]
+      \ 'jsx',
+      \ 'javascript.jsx',
+      \ 'vue',
+      \ ]
 " }}}
 
 " Deoplete Python {{{
@@ -409,8 +409,20 @@ nnoremap <silent> <C-g> :UniteClose<CR>
 nnoremap <silent> <C-x> :UniteResume -no-start-insert<CR>
 
 function! s:unite_my_settings()
-    nmap <buffer> <C-j>                   <Plug>(unite_toggle_auto_preview)
-    imap <silent><buffer><expr> <C-h>     unite#do_action('split')
+  " Unmap
+  nunmap <buffer> <C-k>
+  nunmap <buffer> <C-l>
+  nunmap <buffer> <C-h>
+  " Insert mode
+  imap <buffer> <Esc>         <Plug>(unite_exit)
+  imap <buffer> <C-j>         <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>         <Plug>(unite_select_previous_line)
+  imap <silent><buffer><expr> <C-h>     unite#do_action('split')
+  " Normal mode
+  nmap <buffer> <Esc>         <Plug>(unite_exit)
+  nmap <silent><buffer><expr> s unite#do_action('split')
+  nmap <silent><buffer><expr> vs unite#do_action('vsplit')
+  nmap <silent><buffer><expr> S unite#do_action('vsplit')
 endfunction
 
 " }}}
@@ -452,6 +464,23 @@ let g:airline#extensions#tabline#buffer_min_count= 2
 
 " Tmux {{{
 Plug 'tmux-plugins/vim-tmux'
+
+" Vimux {{{
+Plug 'benmills/vimux'
+
+function! VimuxZoomRunner()
+  " Function to make tmux zoom its runner pane.
+  call VimuxInspectRunner()
+  call system("tmux resize-pane -Z")
+endfunction
+
+nnoremap <Leader>vp :VimuxPromptCommand<CR>
+nnoremap <Leader>vl :VimuxRunLastCommand<CR>
+nnoremap <Leader>vi :VimuxInspectRunner<CR>
+nnoremap <Leader>vz :call VimuxZoomRunner()<CR>
+nnoremap <Leader>vq :VimuxCloseRunner<CR>
+nnoremap <Leader>vx :VimuxInterruptRunner<CR>
+" }}}
 " TmuxNavigator {{{
 Plug 'christoomey/vim-tmux-navigator'
 
@@ -523,46 +552,46 @@ Plug 'szw/vim-tags'  " Ctags generator for Vim
 
 set tags=tags;/,codex.tags;/
 let g:tagbar_type_ruby = {
-    \ 'kinds' : [
-        \ 'm:modules',
-        \ 'c:classes',
-        \ 'd:describes',
-        \ 'C:contexts',
-        \ 'f:methods',
-        \ 'F:singleton methods'
-    \ ]
-\ }
+      \ 'kinds' : [
+      \ 'm:modules',
+      \ 'c:classes',
+      \ 'd:describes',
+      \ 'C:contexts',
+      \ 'f:methods',
+      \ 'F:singleton methods'
+      \ ]
+      \ }
 let g:tagbar_type_haskell = {
-    \ 'ctagsbin'  : 'hasktags',
-    \ 'ctagsargs' : '-x -c -o-',
-    \ 'kinds'     : [
-        \  'm:modules:0:1',
-        \  'd:data: 0:1',
-        \  'd_gadt: data gadt:0:1',
-        \  't:type names:0:1',
-        \  'nt:new types:0:1',
-        \  'c:classes:0:1',
-        \  'cons:constructors:1:1',
-        \  'c_gadt:constructor gadt:1:1',
-        \  'c_a:constructor accessors:1:1',
-        \  'ft:function types:1:1',
-        \  'fi:function implementations:0:1',
-        \  'o:others:0:1'
-    \ ],
-    \ 'sro'        : '.',
-    \ 'kind2scope' : {
-        \ 'm' : 'module',
-        \ 'c' : 'class',
-        \ 'd' : 'data',
-        \ 't' : 'type'
-    \ },
-    \ 'scope2kind' : {
-        \ 'module' : 'm',
-        \ 'class'  : 'c',
-        \ 'data'   : 'd',
-        \ 'type'   : 't'
-    \ }
-\ }
+      \ 'ctagsbin'  : 'hasktags',
+      \ 'ctagsargs' : '-x -c -o-',
+      \ 'kinds'     : [
+      \  'm:modules:0:1',
+      \  'd:data: 0:1',
+      \  'd_gadt: data gadt:0:1',
+      \  't:type names:0:1',
+      \  'nt:new types:0:1',
+      \  'c:classes:0:1',
+      \  'cons:constructors:1:1',
+      \  'c_gadt:constructor gadt:1:1',
+      \  'c_a:constructor accessors:1:1',
+      \  'ft:function types:1:1',
+      \  'fi:function implementations:0:1',
+      \  'o:others:0:1'
+      \ ],
+      \ 'sro'        : '.',
+      \ 'kind2scope' : {
+      \ 'm' : 'module',
+      \ 'c' : 'class',
+      \ 'd' : 'data',
+      \ 't' : 'type'
+      \ },
+      \ 'scope2kind' : {
+      \ 'module' : 'm',
+      \ 'class'  : 'c',
+      \ 'data'   : 'd',
+      \ 'type'   : 't'
+      \ }
+      \ }
 
 nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " }}}
@@ -898,7 +927,7 @@ nnoremap <Leader><CR> :nohlsearch<CR>
 " Save a file
 nnoremap <Leader>w :w<CR>
 " Paste
-nnoremap <silent> <leader>p :set paste!<CR>"+p:set paste!<CR>
+nnoremap <silent> <leader>p :set paste!<CR>"+p :set paste!<CR>
 " Copy & paste to system clipboard
 vnoremap <Leader>y "+y
 vnoremap <Leader>d "+d
@@ -965,6 +994,7 @@ augroup VIMFILER
   autocmd!
 
   "Config file: https://gist.github.com/mattjmorrison/6c2fff20f969237fb9fa
+  autocmd FileType vimfiler nunmap <buffer> <C-j>
   autocmd FileType vimfiler nunmap <buffer> <C-l>
   autocmd FileType vimfiler nmap <buffer><Leader>t :q<CR>
   autocmd FileType vimfiler nmap <silent><buffer><expr> v vimfiler#do_switch_action('vsplit')
@@ -1032,6 +1062,7 @@ augroup HASKELL
   autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
   autocmd FileType haskell call HaskellSettings()
   autocmd BufWritePost *.hs silent! Neomake
+  autocmd BufWritePre *.hs Neoformat
 augroup END
 
 augroup ELM
@@ -1075,6 +1106,7 @@ augroup END
 
 augroup PYTHON
   autocmd!
+  autocmd BufEnter *.py let g:deoplete#ignore_sources.python = ['omni']
   autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
   autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()
 augroup END
@@ -1175,7 +1207,7 @@ function! HaskellSettings()
   " Colorscheme: https://github.com/morhetz/gruvbox/blob/master/colors/gruvbox.vim#L1182
   hi! link haskellType GruvboxYellow
   hi! link haskellIdentifier GruvboxPurple
-  hi! link haskellSeparator GruvboxFg1
+  hi! link haskellSeparator GruvboxFg4
   hi! link haskellDelimiter GruvboxFg4
   hi! link haskellOperators GruvboxOrange
   "
@@ -1193,7 +1225,7 @@ function! HaskellSettings()
   hi! link haskellDeriving GruvboxAqua
   hi! link haskellAssocType GruvboxAqua
 
-  hi! link haskellNumber GruvboxPurple
+  hi! link haskellNumber GruvboxRed
   hi! link haskellPragma GruvboxPurple
 
   hi! link haskellString GruvboxGreen
@@ -1245,6 +1277,7 @@ nnoremap <silent><C-s> :<C-u>Unite neosnippet -start-insert<CR>
 nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
 nnoremap <silent><M-g> :FZFAg<CR>'
 nnoremap <silent><M-p> :FZF<CR>
+nnoremap <silent><C-b> :FZFBuffers<CR>
 nnoremap <silent><M-b> :FZFBuffers<CR>
 nnoremap <silent><M-t> :Unite -buffer-name=tags tag -start-insert<CR>
 nnoremap <silent><M-f> :Unite -buffer-name=buffer-tags tag:% -start-insert<CR>
