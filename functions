@@ -109,3 +109,15 @@ function tmsession () {
 function silver-presto () {
   cat $1 | ssh silver10 presto | less -SFX
 }
+
+# VPN
+
+function vpn_us () {
+  # TODO: randomly choose a server
+  sudo openvpn /etc/openvpn/us197.nordvpn.com.tcp443.ovpn
+}
+
+function vpn_fr () {
+  # TODO: randomly choose a server
+  sudo openvpn /etc/openvpn/fr9.nordvpn.com.tcp443.ovpn
+}
