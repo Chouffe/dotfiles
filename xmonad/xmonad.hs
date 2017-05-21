@@ -1,3 +1,4 @@
+import           Data.Default                 (def)
 import           Graphics.X11.ExtraTypes.XF86
 import           System.IO
 import           XMonad
@@ -15,7 +16,6 @@ import           XMonad.ManageHook            (composeAll, doShift, resource,
                                                (-->), (=?))
 import           XMonad.Util.EZConfig         (additionalKeys)
 import           XMonad.Util.Run              (spawnPipe)
-import           Data.Default                 (def)
 
 -- ------------------------
 -- Config
@@ -103,18 +103,26 @@ newManageHook = myManageHook <+> manageHook def
 -- ------------------------------------------------
 -- External Commands
 -- ------------------------------------------------
-dmenuRunCmd :: String
-dmenuRunCmd = unwords
-  [ "dmenu_run"
-  , "-i"
-  , "-nb", quote background
-  , "-nf", quote color2
-  , "-sb", quote color1
-  , "-sf", quote foreground
-  , "-fn", quote font
-  , "-p",  quote "Run Program:"
-  ]
+
+dmenuArgs :: String -> [String]
+dmenuArgs title = [ "-i"
+                  , "-nb", quote background
+                  , "-nf", quote color2
+                  , "-sb", quote color1
+                  , "-sf", quote foreground
+                  , "-fn", quote font
+                  , "-p",  quote title
+                  ]
   where quote s = "'" ++ s ++ "'"
+
+dmenuRunCmd :: String
+dmenuRunCmd = "dmenu_run " ++ (unwords $ dmenuArgs "Run Program:")
+
+passmenuRunCmd :: String
+passmenuRunCmd = scripts ++ "passmenu " ++ (unwords $ dmenuArgs "Password:")
+
+clipmenuRunCmd :: String
+clipmenuRunCmd = scripts ++ "clipmenu " ++ (unwords $ dmenuArgs "Clipboard:")
 
 musicPlayerCmd :: String -> String
 musicPlayerCmd cmd = scripts ++ "shpotify " ++ cmd
@@ -136,6 +144,13 @@ myKeys =
 
   -- Dmenu
   , ((mod4Mask, xK_p), spawn dmenuRunCmd)
+
+  -- PassMenu
+  , ((mod4Mask .|. shiftMask, xK_p), spawn passmenuRunCmd)
+
+  -- Clipmenu
+  , ((mod4Mask, xK_y), spawn clipmenuRunCmd)
+  , ((mod4Mask, xK_c), spawn clipmenuRunCmd)
 
   -- Gmrun
   , ((mod4Mask, xK_P), spawn "gmrun")
@@ -205,6 +220,7 @@ highColor   = color10
 -- ------------------------
 main = do
     xmproc <- spawnPipe "xmobar"
+    _ <- spawnPipe $ scripts ++ "clipmenud" -- Starts clipmenud for clipboard management via dmenu
     xmonad $ def
       { manageHook         = newManageHook
       , layoutHook         = smartBorders myLayout
