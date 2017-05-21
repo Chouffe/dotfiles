@@ -112,9 +112,24 @@ function silver-presto () {
 
 # VPN
 
-function vpn_us () {
-  # TODO: randomly choose a server
+function vpn_us0 () {
   sudo openvpn /etc/openvpn/us197.nordvpn.com.tcp443.ovpn
+}
+
+function vpn_us1 () {
+  sudo openvpn /etc/openvpn/us108.nordvpn.com.tcp443.ovpn
+}
+
+function vpn_us2 () {
+  sudo openvpn /etc/openvpn/us3.nordvpn.com.tcp443.ovpn
+}
+
+function vpn_us3 () {
+  sudo openvpn /etc/openvpn/us20.nordvpn.com.tcp443.ovpn
+}
+
+function vpn_us () {
+  vpn_us0
 }
 
 function vpn_fr () {
