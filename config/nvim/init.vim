@@ -296,7 +296,7 @@ imap <C-s>  <Plug>(neosnippet_start_unite_snippet)
 " Neoformat {{{
 Plug 'sbdchd/neoformat'
 
-nnoremap <Leader>f :Neoformat<CR>
+nnoremap <silent><Leader>f :Neoformat<CR>
 " }}}
 
 " Deoplete {{{
@@ -701,8 +701,10 @@ let g:sexp_insert_after_wrap = 0 " Disable insertion after wrapping
 " Plug 'travitch/hasksyn', { 'for' : 'haskell' }
 " Plug 'urso/haskell_syntax.vim', { 'for' : 'haskell' }
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
+let g:haskellmode_completion_ghc = 0
 " Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+let g:necoghc_enable_detailed_browse = 1
 " Plug 'mkasa/neco-ghc-lushtags', { 'for' : 'haskell' }
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
 " Vim plugin for Haskell development
@@ -1056,7 +1058,7 @@ augroup HASKELL
   autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
   autocmd FileType haskell call HaskellSettings()
   autocmd BufWritePost *.hs silent! Neomake
-  autocmd BufWritePre *.hs Neoformat
+  autocmd BufWritePre *.hs silent! Neoformat
 augroup END
 
 augroup ELM
@@ -1193,6 +1195,7 @@ function! HaskellSettings()
   nnoremap <silent> <LocalLeader>w :GhcModTypeInsert!<CR>
   nnoremap <silent> <LocalLeader>e :GhcModExpand!<CR>
   nnoremap <silent> <LocalLeader>y :GhcModTypeClear<CR>
+  nnoremap <silent> <LocalLeader><CR> :GhcModTypeClear<CR>
   nnoremap <silent> <LocalLeader>h :GhcModInfoPreview!<CR>
   nnoremap <silent> <LocalLeader>d :GhcModSigCodegen!<CR>
   nnoremap <silent> <LocalLeader>c :GhcModSplitFunCase!<CR>
