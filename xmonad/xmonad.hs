@@ -174,7 +174,7 @@ myKeys =
   -- Screenshots
   , ((mod4Mask .|. shiftMask, xK_s), spawn $ screenshotCmd ++ " " ++ screenshotFolder ++ "screen_%Y-%m-%d-%H-%M-%S.png -d 1")
   , ((mod4Mask, xK_s),               spawn $ screenshotCmd ++ " " ++ screenshotFolder ++ "screen_%Y-%m-%d-%H-%M-%S.png -d 1")
-  , ((0, xK_Print),                  spawn $ screenshotCmd ++ " " ++ screenshotFolder ++ "selection_%Y-%m-%d-%H-%M-%S.png -s")
+  , ((0, xK_Print),                  spawn $ screenshotCmd ++ " -s " ++ screenshotFolder ++ "selection_%Y-%m-%d-%H-%M-%S.png")
 
   -- Backlight
   , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 10")

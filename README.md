@@ -111,3 +111,7 @@
 * Scheme
 * Racket
 * Common Lisp
+
+# Resources
+
+https://begriffs.com/posts/2017-05-17-linux-workstation-guide.html
