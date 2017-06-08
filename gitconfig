@@ -5,6 +5,7 @@
   editor = nvim
   excludesfile = ~/.gitignore
 	precomposeunicode = true
+	sparseCheckout = true
 [merge]
   tool = vimdiff
 [alias]

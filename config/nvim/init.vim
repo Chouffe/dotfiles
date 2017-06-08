@@ -30,6 +30,12 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
 " The fancy start screen for Vim
 Plug 'mhinz/vim-startify'
+" Rest console {{{
+Plug 'diepm/vim-rest-console'
+let g:vrc_set_default_mapping = 0
+let g:vrc_follow_redirects = 1
+autocmd FileType rest nnoremap <silent> <buffer><LocalLeader>r :call VrcQuery()<CR>
+" }}}
 
 " vim-easy-align {{{
 " align with ease
@@ -271,6 +277,7 @@ let g:neomake_open_list = 2        " Conserves the cursor position + open the qu
 let g:neomake_highlight_lines = 0
 let g:neomake_haskell_enabled_makers = ['ghcmod']
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_ruby_enabled_makers = ['rubocop']
 " }}}
 
 " Snippets {{{
@@ -370,8 +377,8 @@ let g:tern#filetypes = [
 " Deoplete Python {{{
 " Make sure echo has('python') and echo has('ruby') both return 1 for deoplete
 " to work
-let g:python3_host_prog = '/Users/arthur_caillau/.virtualenvs/neovim3/bin/python'
-let g:python3_host_prog = '/Users/arthur_caillau/.pyenv/shims/python'
+" let g:python3_host_prog = '/Users/arthur_caillau/.virtualenvs/neovim3/bin/python'
+" let g:python3_host_prog = '/Users/arthur_caillau/.pyenv/shims/python'
 " let g:python3_host_prog = '/usr/local/bin/python3.6'
 " }}}
 " }}}
@@ -621,6 +628,7 @@ let g:pymode_folding = 0
 
 " Scala {{{
 Plug 'derekwyatt/vim-scala', { 'for': 'scala' }
+" Plug 'ensime/ensime-vim', { 'for': 'scala' }
 " }}}
 
 " Ruby {{{
@@ -1033,7 +1041,7 @@ augroup SCALA
   " Need to figure out how to get only stderr from neomake
   " autocmd FileType scala nnoremap <LocalLeader>c :Dispatch gradlew compileScala 2>&1 > /dev/null<CR>
   autocmd BufNewFile,BufRead,BufReadPost *.scala call TslimeSettings()
-  autocmd BufWritePost *.scala silent! Neomake
+  " autocmd BufWritePost *.scala silent! Neomake
   autocmd BufWritePost *.scala silent! Neomake! gradlew
 augroup END
 
@@ -1129,6 +1137,8 @@ augroup QUICKFIX_WINDOW
   " In the quickfix window, <CR> is used to jump to the error under the
   " cursor, so undefine the mapping there.
   autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+  autocmd Filetype quickfix nnoremap <buffer> <CR> <CR>
+  autocmd FileType qf nnoremap <silent> <buffer>z :close <CR>:vertical copen<CR><C-w>=
 augroup END
 " }}}
 
