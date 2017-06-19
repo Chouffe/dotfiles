@@ -67,6 +67,13 @@
 * Rest Client
   * jq
 
+## Password manager
+
+* password-store
+  * upass for cli interaction
+  * passmenu: dmenu script
+* gpg
+
 ## Config
 
 * Remap Caps lock to Control
