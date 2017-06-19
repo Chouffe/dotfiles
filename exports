@@ -44,10 +44,13 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 # Virtualenvwrapper
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
+# export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
 export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
 export VIRTUALENVWRAPPER_VIRTUALENV=~/.local/bin/virtualenv
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 
 # nvm
 export NVM_DIR="~/.nvm"
+
+# GPG
+export GPGKEY=2F2ED8D6E84B4064E7353E4AFCCE290A00D47682
