@@ -39,7 +39,7 @@
 * virtualenvwrapper
 * fzf (should be installed with neovim)
   * https://github.com/junegunn/fzf/wiki/examples
-* ranger
+* file manager: ranger
   * caca-utils
   * highlight
   * atool
@@ -62,6 +62,17 @@
 * docker
   * fpco/stack-build
   * fpco/stack-full
+* Images
+  * feh
+* Rest Client
+  * jq
+
+## Password manager
+
+* password-store
+  * upass for cli interaction
+  * passmenu: dmenu script
+* gpg
 
 ## Config
 
