@@ -1,35 +1,36 @@
 [user]
-  email = arthur.caillau@airbnb.com
-  name = Arthur Caillau
+	email = chouffe.caillau@gmail.com
+	name = Chouffe
 [core]
-  editor = nvim
-  excludesfile = ~/.gitignore
+	editor = nvim
+	excludesfile = ~/.gitignore
 	precomposeunicode = true
 [merge]
-  tool = vimdiff
+	tool = vimdiff
 [alias]
-  co = checkout
-  ci = commit
-  st = status
-  bd = branch -D
-  br = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
-  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
-  type = cat-file -t
-  dump = cat-file -p
-  prune-merged = ! "git branch --merged master | grep -v -E '^(\\* |  master$)' | xargs -n 1 git branch -d"
+	co = checkout
+	ci = commit
+	st = status
+	bd = branch -D
+	br = for-each-ref --sort=-committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'
+	hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	type = cat-file -t
+	dump = cat-file -p
+	prune-merged = ! "git branch --merged master | grep -v -E '^(\\* |  master$)' | xargs -n 1 git branch -d"
+	stash-unapply = ! "git stash show -p | git apply -R"
 [color]
-  diff = auto
-  status = auto
-  branch = auto
+	diff = auto
+	status = auto
+	branch = auto
 [color "status"]
-  changed = yellow
-  added = green
-  untracked = red
+	changed = yellow
+	added = green
+	untracked = red
 [credential]
-  helper = cache --timeout=3600000
+	helper = cache --timeout=3600000
 [push]
 	default = current
 [rerere]
 	enabled = 1
 [help]
-  autocorrect = 1
+	autocorrect = 1
