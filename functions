@@ -136,3 +136,12 @@ function vpn_fr () {
   # TODO: randomly choose a server
   sudo openvpn /etc/openvpn/fr9.nordvpn.com.tcp443.ovpn
 }
+
+function vpn_fr1 () {
+  sudo openvpn /etc/openvpn/fr21.nordvpn.com.tcp443.ovpn
+}
+
+function vpn () {
+  vpn_us
+}
+
