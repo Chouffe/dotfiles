@@ -1,5 +1,9 @@
 # Dev dependencies
 
+## Package Management
+
+* Nix
+
 ## Terminal
 
 * rxvt-unicode-256colors
