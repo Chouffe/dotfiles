@@ -433,6 +433,57 @@ function! s:unite_my_settings()
     imap <silent><buffer><expr> <C-h>     unite#do_action('split')
 endfunction
 
+" Menu source for Search
+let g:unite_source_menu_menus = get(g:,'unite_source_menu_menus',{})
+
+let g:unite_source_menu_menus.git = {
+    \ 'description' : '            Git commands
+        \                            <M-h>g',
+    \}
+let g:unite_source_menu_menus.search = {
+    \ 'description' : '            Efficient codebase search
+        \                            <M-h>s',
+    \}
+
+let g:unite_source_menu_menus.git.command_candidates = [
+    \['▷  git commit                                                <Leader>gc',
+        \'Gcommit'],
+    \['▷  git blame                                                 <Leader>gb',
+        \'Gblame'],
+    \['▷  git log                                                   <Leader>gl',
+        \'Glog'],
+    \['▷  git push                                                  <Leader>gp',
+        \'Gpush'],
+    \['▷  tig                                                       <Leader>gt',
+        \'VimuxRunCommand("tig")'],
+    \]
+
+" Keep it sync with Search Mappings
+let g:unite_source_menu_menus.search.command_candidates = [
+    \['▷  anzu                                                      <C-/> || <M-/>',
+        \'Unite anzu -no-start-insert'],
+    \['▷  buffers                                                   <M-b>',
+        \'FZFBuffers'],
+    \['▷  buffer > lines                                            <C-f>',
+        \'Unite -buffer-name=search line:all -start-insert'],
+    \['▷  buffer > tags                                             <M-f>',
+        \'Unite -buffer-name=tags tag -start-insert'],
+    \['▷  filenames                                                 <C-p> || <M-p>',
+        \'FZF'],
+    \['▷  grep                                                      <M-g>',
+        \'FZFAg'],
+    \['▷  cursor > grep                                             <C-q>',
+        \'Unite -no-quit -buffer-name=search grep:. -no-start-insert'],
+    \['▷  marks                                                     <M-m>',
+        \'FZFMarks'],
+    \['▷  snippets                                                  <C-s>',
+        \'Unite neosnippet -start-insert'],
+    \['▷  tags                                                      <M-t>',
+        \'Unite -buffer-name=tags tag -start-insert'],
+    \['▷  yank history                                              <C-y>',
+        \'Unite history/yank'],
+    \]
+
 " }}}
 
 " Anzu {{{
@@ -455,7 +506,7 @@ Plug 'lambdalisue/vim-gita'
 nnoremap <Leader>gc :Gcommit<CR>
 nnoremap <Leader>gb :Gblame<CR>
 nnoremap <Leader>gl :Glog<CR>
-nnoremap <Leader>gp :Gpush<CR>
+nnoremap <Leader>gt :VimuxRunCommand("tig")<CR>
 " }}}
 
 " lean & mean status/tabline for vim that's light as air
@@ -541,7 +592,9 @@ Plug 'majutsushi/tagbar', { 'for': ['haskell'] }
 " Tags {{{
 Plug 'szw/vim-tags'  " Ctags generator for Vim
 
-set tags=tags;/,codex.tags;/
+" set tags=tags;/,codex.tags;/
+set tags=./tags;
+
 let g:tagbar_type_ruby = {
     \ 'kinds' : [
         \ 'm:modules',
@@ -593,7 +646,7 @@ nnoremap <silent> <Leader>b :TagbarToggle<CR>
 
 " Python {{{
 " Plug 'julienr/vimux-pyutils', {'for': 'python' }
-" Plug 'benmills/vimux'
+Plug 'benmills/vimux'
 Plug 'klen/python-mode', { 'for': 'python' }
 
 let g:pymode=1
