@@ -488,6 +488,19 @@ nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
+
+nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <A-\> :TmuxNavigatePrevious<cr>
+
+" terminal
+tnoremap <silent> <A-h> <C-\><C-n>:TmuxNavigateLeft<cr>
+tnoremap <silent> <A-j> <C-\><C-n>:TmuxNavigateDown<cr>
+tnoremap <silent> <A-k> <C-\><C-n>:TmuxNavigateUp<cr>
+tnoremap <silent> <A-l> <C-\><C-n>:TmuxNavigateLeft<cr>
+tnoremap <silent> <A-\> <C-\><C-n>:TmuxNavigatePrevious<cr>
 " }}}
 
 " TmuxLine {{{
@@ -1328,7 +1341,6 @@ nnoremap <silent><M-o> :FZFLines<CR>
 nnoremap <silent><M-m> :FZFMarks<CR>
 nnoremap <silent><M-/> :Unite anzu -no-start-insert<CR>
 nnoremap <silent><C-/> :Unite anzu -no-start-insert<CR>
-nnoremap <silent><M-h> :Unite help<CR>
 " FZF MRU: https://github.com/tweekmonster/fzf-filemru
 " Seems broken and does not output MRUs...
 " nnoremap <C-b> :FilesMru --tiebreak=end<CR>
