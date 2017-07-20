@@ -704,7 +704,7 @@ let g:sexp_insert_after_wrap = 0 " Disable insertion after wrapping
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 let g:haskellmode_completion_ghc = 0
 " Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
-" Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 let g:necoghc_enable_detailed_browse = 1
 " Plug 'mkasa/neco-ghc-lushtags', { 'for' : 'haskell' }
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
@@ -926,6 +926,11 @@ nnoremap <Leader><CR> :nohlsearch<CR>
 nnoremap <Leader>w :w<CR>
 " Paste
 nnoremap <silent> <leader>p :set paste!<CR>"+p :set paste!<CR>
+" quickfix window
+nnoremap <Leader>e :call ToggleQuickfix()<CR>
+nnoremap <Leader>en :cn<CR>
+nnoremap <Leader>el :cl<CR>
+nnoremap <Leader>ep :cp<CR>
 " Copy & paste to system clipboard
 vnoremap <Leader>y "+y
 vnoremap <Leader>d "+d
@@ -1368,6 +1373,14 @@ function! BufferDelete()
             echo "Buffer deleted."
         endif
     endif
+endfunction
+function! ToggleQuickfix()
+  let l:nr =  winnr("$")
+  if l:nr == 1
+      copen
+  else
+      cclose
+  endif
 endfunction
 " }}}
 
