@@ -25,6 +25,46 @@ function json() {
 	fi
 }
 
+# --------------------
+# Password Store utils
+# --------------------
+
+# List all filenames under .pasword-store directory in a
+# Turn filenames into a readable input for pass command
+_pwdstore-files() {
+  find $HOME/.password-store -type f \
+    | sed 's/.*\(\.password-store\/.*\)/\1/' \
+    | grep -v '/\.' \
+    | cut -d / -f2- \
+    | rev \
+    | cut -d . -f2- \
+    | rev
+}
+
+# pass copy
+pc() {
+  local files pwdstore_file
+  files=$(_pwdstore-files)
+  pwdstore_file=$(echo $files | fzf)
+  pass -c $(echo "$pwdstore_file")
+}
+
+# pass show
+pd() {
+  local files pwdstore_file
+  files=$(_pwdstore-files)
+  pwdstore_file=$(echo $files | fzf)
+  pass show $(echo "$pwdstore_file")
+}
+
+# pass edit
+pe() {
+  local files pwdstore_file
+  files=$(_pwdstore-files)
+  pwdstore_file=$(echo $files | fzf)
+  pass edit $(echo "$pwdstore_file")
+}
+
 # ---
 # Git
 # ---
@@ -126,6 +166,10 @@ function vpn_us2 () {
 
 function vpn_us3 () {
   sudo openvpn /etc/openvpn/us20.nordvpn.com.tcp443.ovpn
+}
+
+function vpn_us4 () {
+  sudo openvpn /etc/openvpn/us501.nordvpn.com.tcp443.ovpn
 }
 
 function vpn_us () {
