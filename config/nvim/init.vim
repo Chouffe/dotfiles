@@ -269,9 +269,10 @@ Plug 'junegunn/limelight.vim'
 Plug 'neomake/neomake'
 
 let g:neomake_open_list = 2        " Conserves the cursor position + open the quickfix
-let g:neomake_highlight_lines = 0
-let g:neomake_haskell_enabled_makers = ['ghcmod']
+let g:neomake_highlight_lines = 1
+let g:neomake_haskell_enabled_makers = ['ghcmod', 'hlint']
 let g:neomake_javascript_enabled_makers = ['eslint']
+let g:neomake_enabled_makers=-1
 " }}}
 
 " Snippets {{{
@@ -487,6 +488,19 @@ nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
 nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
 nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
 nnoremap <silent> <c-\> :TmuxNavigatePrevious<cr>
+
+nnoremap <silent> <A-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <A-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <A-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <A-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <A-\> :TmuxNavigatePrevious<cr>
+
+" terminal
+tnoremap <silent> <A-h> <C-\><C-n>:TmuxNavigateLeft<cr>
+tnoremap <silent> <A-j> <C-\><C-n>:TmuxNavigateDown<cr>
+tnoremap <silent> <A-k> <C-\><C-n>:TmuxNavigateUp<cr>
+tnoremap <silent> <A-l> <C-\><C-n>:TmuxNavigateLeft<cr>
+tnoremap <silent> <A-\> <C-\><C-n>:TmuxNavigatePrevious<cr>
 " }}}
 
 " TmuxLine {{{
@@ -707,6 +721,7 @@ Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
 let g:necoghc_enable_detailed_browse = 1
 " Plug 'mkasa/neco-ghc-lushtags', { 'for' : 'haskell' }
 Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
 " Vim plugin for Haskell development
 " Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 " Vim plugin used to query hoogle, the haskell search engine
@@ -924,6 +939,11 @@ nnoremap <Leader><CR> :nohlsearch<CR>
 nnoremap <Leader>w :w<CR>
 " Paste
 nnoremap <silent> <leader>p :set paste!<CR>"+p :set paste!<CR>
+" quickfix window
+nnoremap <Leader>e :call ToggleQuickfix()<CR>
+nnoremap <Leader>en :cn<CR>
+nnoremap <Leader>el :cl<CR>
+nnoremap <Leader>ep :cp<CR>
 " Copy & paste to system clipboard
 vnoremap <Leader>y "+y
 vnoremap <Leader>d "+d
@@ -1055,10 +1075,48 @@ augroup END
 
 augroup HASKELL
   autocmd!
-  autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
+  " autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
   autocmd FileType haskell call HaskellSettings()
-  autocmd BufWritePost *.hs silent! Neomake
   autocmd BufWritePre *.hs silent! Neoformat
+  " autocmd! BufWritePost *.hs Neomake
+augroup END
+
+augroup interoMaps
+  au!
+  " Maps for intero. Restrict to Haskell buffers so the bindings don't collide.
+
+  " Background process and window management
+  au FileType haskell nnoremap <silent> <leader>is :InteroStart<CR>
+  au FileType haskell nnoremap <silent> <leader>ik :InteroKill<CR>
+
+  " Open intero/GHCi split horizontally
+  au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
+  " Open intero/GHCi split vertically
+  au FileType haskell nnoremap <silent> <leader>iov :InteroOpen<CR><C-W>H
+  au FileType haskell nnoremap <silent> <leader>ih :InteroHide<CR>
+
+  " Reloading (pick one)
+  " Automatically reload on save
+  au BufWritePost *.hs InteroReload
+  " Manually save and reload
+  " au FileType haskell nnoremap <silent> <leader>wr :w \| :InteroReload<CR>
+
+  " Load individual modules
+  au FileType haskell nnoremap <silent> <leader>il :InteroLoadCurrentModule<CR>
+  au FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
+
+  " Type-related information
+  " Heads up! These next two differ from the rest.
+  au FileType haskell map <silent> <LocalLeader>t <Plug>InteroGenericType
+  au FileType haskell map <silent> <LocalLeader>T <Plug>InteroType
+  au FileType haskell nnoremap <silent> <LocalLeader>it :InteroTypeInsert<CR>
+
+  " Navigation
+  au FileType haskell nnoremap <silent> <leader>jd :InteroGoToDef<CR>
+
+  " Managing targets
+  " Prompts you to enter targets (no silent):
+  au FileType haskell nnoremap <leader>ist :InteroSetTargets<SPACE>
 augroup END
 
 augroup ELM
@@ -1191,15 +1249,16 @@ function! HaskellSettings()
   " GHC Mod
   " TODO: how to make it work with stack?
   " Resource: http://www.stephendiehl.com/posts/vim_2016.html
-  nnoremap <silent> <LocalLeader>t :GhcModType!<CR>
-  nnoremap <silent> <LocalLeader>w :GhcModTypeInsert!<CR>
-  nnoremap <silent> <LocalLeader>e :GhcModExpand!<CR>
-  nnoremap <silent> <LocalLeader>y :GhcModTypeClear<CR>
-  nnoremap <silent> <LocalLeader><CR> :GhcModTypeClear<CR>
-  nnoremap <silent> <LocalLeader>h :GhcModInfoPreview!<CR>
-  nnoremap <silent> <LocalLeader>d :GhcModSigCodegen!<CR>
-  nnoremap <silent> <LocalLeader>c :GhcModSplitFunCase!<CR>
-  nnoremap <silent> <LocalLeader>r ::GhcModCheckAndLintAsync!<CR>
+  " nnoremap <silent> <LocalLeader>t :GhcModType!<CR>
+  " nnoremap <silent> <LocalLeader>w :GhcModTypeInsert!<CR>
+  " nnoremap <silent> <LocalLeader>e :GhcModExpand!<CR>
+  " nnoremap <silent> <LocalLeader>y :GhcModTypeClear<CR>
+  " nnoremap <silent> <LocalLeader><CR> :GhcModTypeClear<CR>
+  " nnoremap <silent> <LocalLeader>h :GhcModInfoPreview!<CR>
+  " nnoremap <silent> <LocalLeader>d :GhcModSigCodegen!<CR>
+  " nnoremap <silent> <LocalLeader>c :GhcModSplitFunCase!<CR>
+
+  " nnoremap <silent> <LocalLeader>r :w<CR>:Neomake<CR>
 
   " Colorscheme: https://github.com/morhetz/gruvbox/blob/master/colors/gruvbox.vim#L1182
   hi! link haskellType GruvboxYellow
@@ -1282,7 +1341,6 @@ nnoremap <silent><M-o> :FZFLines<CR>
 nnoremap <silent><M-m> :FZFMarks<CR>
 nnoremap <silent><M-/> :Unite anzu -no-start-insert<CR>
 nnoremap <silent><C-/> :Unite anzu -no-start-insert<CR>
-nnoremap <silent><M-h> :Unite help<CR>
 " FZF MRU: https://github.com/tweekmonster/fzf-filemru
 " Seems broken and does not output MRUs...
 " nnoremap <C-b> :FilesMru --tiebreak=end<CR>
@@ -1327,6 +1385,14 @@ function! BufferDelete()
             echo "Buffer deleted."
         endif
     endif
+endfunction
+function! ToggleQuickfix()
+  let l:nr =  winnr("$")
+  if l:nr == 1
+      copen
+  else
+      cclose
+  endif
 endfunction
 " }}}
 

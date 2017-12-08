@@ -220,7 +220,7 @@ highColor   = color10
 -- ------------------------
 main = do
     xmproc <- spawnPipe "xmobar"
-    _ <- spawnPipe $ scripts ++ "clipmenud" -- Starts clipmenud for clipboard management via dmenu
+    spawn $ scripts ++ "clipmenud" -- Starts clipmenud for clipboard management via dmenu
     xmonad $ def
       { manageHook         = newManageHook
       , layoutHook         = smartBorders myLayout
