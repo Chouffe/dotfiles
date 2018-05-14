@@ -21,6 +21,10 @@ import           XMonad.Util.Run              (spawnPipe)
 -- Config
 -- ------------------------
 myTerm        = "urxvt"
+myFileManager = "nautilus"
+myBrowser     = "firefox"
+myDevBrowser  = "chromium-browser"
+myMusic       = "spotify"
 myBorderWidth = 2
 xmonadPath    = "/home/chouffe/.xmonad/"
 scripts       = xmonadPath ++ "scripts/"
@@ -91,7 +95,7 @@ myWorkspaces = ["i", "ii", "iii", "iv"]
 -- myWorkspaces = ["i", "ii", "iii", "iv", "v", "vi"]
 
 myManageHook =
-  composeAll [ resource =? "spotify" --> doShift (myWorkspaces !! 3)
+  composeAll [ resource =? myMusic --> doShift (myWorkspaces !! 3)
              , resource =? "dmenu" --> doFloat
              , resource =? "transmission" --> doShift (myWorkspaces !! 2)
              , resource =? "transmission-gtk" --> doShift (myWorkspaces !! 2)
@@ -162,10 +166,17 @@ myKeys =
   , ((0, xF86XK_AudioPause), spawn $ musicPlayerCmd "pause")
 
   -- Music
-  , ((mod4Mask .|. shiftMask, xK_m), spawn "spotify")
+  , ((mod4Mask .|. shiftMask, xK_m), spawn myMusic)
 
   -- Terminal
   , ((mod4Mask, xK_Return), spawn myTerm)
+
+  -- Files
+  , ((mod4Mask, xK_f), spawn myFileManager)
+
+  -- Browser
+  , ((mod4Mask, xK_b), spawn myBrowser)
+  , ((mod4Mask .|. shiftMask, xK_b), spawn myDevBrowser)
 
   -- Layout toggle
   , ((mod4Mask .|. controlMask, xK_space), sendMessage ToggleLayout)
