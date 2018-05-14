@@ -38,7 +38,8 @@ _pwdstore-files() {
     | cut -d / -f2- \
     | rev \
     | cut -d . -f2- \
-    | rev
+    | rev \
+    | sort
 }
 
 # pass copy
