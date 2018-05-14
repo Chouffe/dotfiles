@@ -22,7 +22,9 @@ URxvt*urgentOnBell: false
 
 ! Plugins
 ! Resource: http://funloop.org/post/2015-06-25-urxvt-plugins.html
+! Resource: https://github.com/muennich/urxvt-perls
 URxvt.perl-ext-common: default,font-size,matcher,clipboard,keyboard-select
+URxvt.perl-lib: /usr/lib/urxvt/perl/
 
 ! Copy and Paste -> install xsel
 URxvt.clipboard.copycmd:  xsel -ib
