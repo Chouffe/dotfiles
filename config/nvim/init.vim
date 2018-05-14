@@ -314,7 +314,7 @@ Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for' : ['javasc
 Plug 'clojure-vim/async-clj-omni', { 'for' : ['clojure'] }
 Plug 'fishbullet/deoplete-ruby', { 'for' : ['ruby'] }
 Plug 'Shougo/deoplete-rct', { 'for' : ['ruby'] }
-Plug 'zchee/deoplete-jedi', { 'for' : ['python'] }
+" Plug 'zchee/deoplete-jedi', { 'for' : ['python'] }
 " intellij completion: https://github.com/vhakulinen/neovim-intellij-complete
 
 " Make sure the autocompletion will actually trigger using the omnifuncs
@@ -611,7 +611,7 @@ nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " Python {{{
 " Plug 'julienr/vimux-pyutils', {'for': 'python' }
 " Plug 'benmills/vimux'
-Plug 'klen/python-mode', { 'for': 'python' }
+" Plug 'klen/python-mode', { 'for': 'python' }
 
 let g:pymode=1
 " Enable default options
@@ -1109,6 +1109,7 @@ augroup interoMaps
   " Heads up! These next two differ from the rest.
   au FileType haskell map <silent> <LocalLeader>t <Plug>InteroGenericType
   au FileType haskell map <silent> <LocalLeader>T <Plug>InteroType
+  au FileType haskell nnoremap <silent> <LocalLeader>ii :InteroInfo<CR>
   au FileType haskell nnoremap <silent> <LocalLeader>it :InteroTypeInsert<CR>
 
   " Navigation
@@ -1244,7 +1245,7 @@ function! HaskellSettings()
   " nnoremap <silent> <LocalLeader>hi :HoogleInfo <Space>
 
   " Imports
-  nnoremap <silent> <LocalLeader>i :Unite haskellimport<CR>
+  " nnoremap <silent> <LocalLeader>i :Unite haskellimport<CR>
 
   " GHC Mod
   " TODO: how to make it work with stack?
