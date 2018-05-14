@@ -1,9 +1,9 @@
 ! URxvt*font       : xft:Inconsolata Powerline:pixelsize=17:antialias=true
 URxvt*font:      xft:inconsolata:size=13:antialias=true
 URxvt*depth:     32
-URxvt*boldFont:  xft:Inconsolata:pixelsize=17:antialias=true
+URxvt*boldFont:  xft:Inconsolata:pixelsize=14:antialias=true
 ! URxvt*font       : xft:Inconsolata:pixelsize=13:antialias=true
-URxvt*scrollBar: False
+URxvt*scrollBar: false
 URxvt*termName:  rxvt-unicode
 
 ! Blinking cursor
@@ -27,22 +27,23 @@ URxvt.url-launcher: firefox
 URxvt.matcher.button: 1
 
 ! Tomorrow Night Theme
-URxvt*foreground: #c5c8c6
-URxvt*background: #1d1f21
-URxvt*cursorColor: #aeafad
-URxvt*color0: #000000
-URxvt*color1: #912226
-URxvt*color2: #778900
-URxvt*color3: #ae7b00
-URxvt*color4: #1d2594
-URxvt*color5: #682a9b
-URxvt*color6: #2b6651
-URxvt*color7: #929593
-URxvt*color8: #666666
-URxvt*color9: #cc6666
-URxvt*color10: #b5bd68
-URxvt*color11: #f0c674
-URxvt*color12: #81a2be
-URxvt*color13: #b294bb
-URxvt*color14: #8abeb7
-URxvt*color15: #ecebec
+
+! URxvt*foreground: #c5c8c6
+! URxvt*background: #1d1f21
+! URxvt*cursorColor: #aeafad
+! URxvt*color0: #000000
+! URxvt*color1: #912226
+! URxvt*color2: #778900
+! URxvt*color3: #ae7b00
+! URxvt*color4: #1d2594
+! URxvt*color5: #682a9b
+! URxvt*color6: #2b6651
+! URxvt*color7: #929593
+! URxvt*color8: #666666
+! URxvt*color9: #cc6666
+! URxvt*color10: #b5bd68
+! URxvt*color11: #f0c674
+! URxvt*color12: #81a2be
+! URxvt*color13: #b294bb
+! URxvt*color14: #8abeb7
+! URxvt*color15: #ecebec
