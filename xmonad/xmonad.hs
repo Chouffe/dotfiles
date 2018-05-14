@@ -29,7 +29,8 @@ myBorderWidth = 2
 xmonadPath    = "/home/chouffe/.xmonad/"
 scripts       = xmonadPath ++ "scripts/"
 
-myLayout = workSpace0 $ workSpace1 $ defaultWorkspace
+myLayout = defaultWorkspace
+  -- workSpace0 $ workSpace1 $ defaultWorkspace
   where
      -- Default tiling algorithm partitions the screen into two panes
      tiled          = smartSpacing 5 $ ResizableTall nmaster delta ratio []
@@ -46,15 +47,16 @@ myLayout = workSpace0 $ workSpace1 $ defaultWorkspace
      delta          = 3/100
 
      -- Workspace layouts
-     workSpace0       = onWorkspace (myWorkspaces !! 0) $
-       toggleLayouts fullScreen $
-         avoidStruts (tiled ||| Mirror tiled ||| tiledSpace) ||| avoidStruts fullTile
+     -- workSpace0       = onWorkspace (myWorkspaces !! 0) $
+     --   toggleLayouts fullScreen $
+     --     avoidStruts (tiled ||| Mirror tiled ||| tiledSpace) ||| avoidStruts fullTile
 
-     workSpace1       = onWorkspace (myWorkspaces !! 1) $
-       toggleLayouts fullScreen $
-         avoidStruts (fullTile ||| tiledSpace) ||| fullScreen
+     -- workSpace1       = onWorkspace (myWorkspaces !! 1) $
+     --   toggleLayouts fullScreen $
+     --     avoidStruts (fullTile ||| tiledSpace) ||| fullScreen
 
      defaultWorkspace = toggleLayouts fullScreen $
+       -- avoidStruts (fullTile ||| tiled ||| tiledSpace)
        avoidStruts (fullTile ||| tiled ||| tiledSpace)
 
 myLogHook h =
@@ -90,21 +92,22 @@ myLayoutPrinter layout =
 -- ------------------------------------------------
 -- Application Specific Rules
 -- ------------------------------------------------
-myWorkspaces = ["i", "ii", "iii", "iv"]
--- myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
+-- myWorkspaces = ["i", "ii", "iii", "iv"]
+myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 -- myWorkspaces = ["i", "ii", "iii", "iv", "v", "vi"]
 
 myManageHook =
-  composeAll [ resource =? myMusic --> doShift (myWorkspaces !! 3)
+  composeAll [ manageDocks
              , resource =? "dmenu" --> doFloat
-             , resource =? "transmission" --> doShift (myWorkspaces !! 2)
-             , resource =? "transmission-gtk" --> doShift (myWorkspaces !! 2)
-             , manageDocks
+             , resource =? myMusic --> doShift (myWorkspaces !! 2)
+             , resource =? "transmission" --> doShift (myWorkspaces !! 3)
+             , resource =? "transmission-gtk" --> doShift (myWorkspaces !! 3)
              ]
 
 newManageHook = myManageHook <+> manageHook def
 
 -- ------------------------------------------------
+
 -- External Commands
 -- ------------------------------------------------
 
@@ -131,9 +134,6 @@ clipmenuRunCmd = scripts ++ "clipmenu " ++ (unwords $ dmenuArgs "Clipboard:")
 musicPlayerCmd :: String -> String
 musicPlayerCmd cmd = scripts ++ "shpotify " ++ cmd
 
-screenshotCmd :: String
-screenshotCmd = "scrot"
-
 screenshotFolder :: String
 screenshotFolder = "~/Pictures/"
 
@@ -142,22 +142,20 @@ screenshotFolder = "~/Pictures/"
 ----------------------------------------
 myKeys =
   [ -- Screensaver
-    ((mod4Mask .|. shiftMask, xK_l), spawn "gnome-screensaver-command -l")
-  -- Browser
-  , ((mod4Mask .|. shiftMask, xK_b), spawn "chromium-browser")
+    ((mod4Mask, xK_Escape), spawn "gnome-screensaver-command -l")
 
   -- Dmenu
   , ((mod4Mask, xK_p), spawn dmenuRunCmd)
 
   -- PassMenu
-  , ((mod4Mask .|. shiftMask, xK_p), spawn passmenuRunCmd)
+  -- TODO: add a preview mode as well
+  , ((mod4Mask, xK_c), spawn passmenuRunCmd)
 
   -- Clipmenu
   , ((mod4Mask, xK_y), spawn clipmenuRunCmd)
-  , ((mod4Mask, xK_c), spawn clipmenuRunCmd)
 
-  -- Gmrun
-  , ((mod4Mask, xK_P), spawn "gmrun")
+  -- Gmrun: Default binding
+  -- , ((mod4Mask, xK_P), spawn "gmrun")
 
   -- Media
   , ((0, xF86XK_AudioPrev),  spawn $ musicPlayerCmd "prev")
@@ -168,8 +166,8 @@ myKeys =
   -- Music
   , ((mod4Mask .|. shiftMask, xK_m), spawn myMusic)
 
-  -- Terminal
-  , ((mod4Mask, xK_Return), spawn myTerm)
+  -- Terminal: Default KeyBinding
+  -- , ((mod4Mask .|. shiftMask, xK_Return), spawn myTerm)
 
   -- Files
   , ((mod4Mask, xK_f), spawn myFileManager)
@@ -183,9 +181,10 @@ myKeys =
   , ((mod4Mask, xK_z),                     sendMessage (Toggle "Full"))
 
   -- Screenshots
-  , ((mod4Mask .|. shiftMask, xK_s), spawn $ screenshotCmd ++ " " ++ screenshotFolder ++ "screen_%Y-%m-%d-%H-%M-%S.png -d 1")
-  , ((mod4Mask, xK_s),               spawn $ screenshotCmd ++ " " ++ screenshotFolder ++ "screen_%Y-%m-%d-%H-%M-%S.png -d 1")
-  , ((0, xK_Print),                  spawn $ screenshotCmd ++ " -s " ++ screenshotFolder ++ "selection_%Y-%m-%d-%H-%M-%S.png")
+  -- gnome-screenshot
+  , ((mod4Mask .|. shiftMask, xK_Insert), spawn $ "gnome-screenshot -a")  -- area to grab: does not work for some reason
+  , ((mod4Mask, xK_Insert), spawn $ "gnome-screenshot -d 1")  -- full window
+  , ((0, xK_Print),                  spawn $ "gnome-screenshot -i")  -- interactive mode
 
   -- Backlight
   , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 10")
@@ -200,6 +199,7 @@ myKeys =
 -- ------------------------
 -- Color Theme
 -- ------------------------
+
 color0      = "#332d29"
 color1      = "#8c644c"
 color2      = "#746C48"
@@ -229,6 +229,7 @@ highColor   = color10
 -- ------------------------
 -- Xmonad entry point
 -- ------------------------
+
 main = do
     xmproc <- spawnPipe "xmobar"
     spawn $ scripts ++ "clipmenud" -- Starts clipmenud for clipboard management via dmenu
@@ -242,4 +243,7 @@ main = do
       , borderWidth        = myBorderWidth
       , focusedBorderColor = color3
       , normalBorderColor  = color0
+      -- It makes xmobar to be visible
+      -- this must be in this order, docksEventHook must be last
+      , handleEventHook    = handleEventHook defaultConfig <+> docksEventHook
       } `additionalKeys` myKeys
