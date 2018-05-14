@@ -70,11 +70,12 @@
   * feh
 * Rest Client
   * jq
+* Disk Encrytpion
+  * [tomb](https://github.com/dyne/Tomb/blob/master/INSTALL.md)
 
 ## Password manager
 
 * password-store
-  * upass for cli interaction
   * passmenu: dmenu script
 * gpg
 
