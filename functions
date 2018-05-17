@@ -141,6 +141,17 @@ fstash() {
 #   file="$(fasd -Rfl "$1" | fzf -1 -0 --no-sort +m)" && nvim "${file}" || return 1
 # }
 
+# Screens and Monitors
+# set dual monitors
+dual () {
+    xrandr --auto --output HDMI-1 --mode 1366x768 --right-of eDP-1 --primary
+}
+
+# set single monitor
+single () {
+    xrandr --output eDP-1 --off
+}
+
 # Tmux
 
 function tmsession () {
