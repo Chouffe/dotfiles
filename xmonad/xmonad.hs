@@ -34,7 +34,7 @@ main = do
 
 myConfig p =  def
       { manageHook         = myManageHook
-      , layoutHook         = myLayout
+      , layoutHook         = myLayoutHook
       , logHook            = myLogHook p
       , modMask            = mod4Mask
       , terminal           = myTerm
@@ -50,24 +50,20 @@ myConfig p =  def
 -- Workspaces
 ------------------------------------------------------------------------
 
-wsDMO   = "DMO"
-wsFLOAT = "FLT"
-wsGEN   = "GEN"
-wsGCC   = "GCC"
-wsMON   = "MON"
-wsOSS   = "OSS"
-wsRAD   = "RAD"
-wsRW    = "RW"
-wsSYS   = "SYS"
-wsTMP   = "TMP"
-wsVIX   = "VIX"
-wsWRK   = "WRK"
-wsWRK2  = "WRK:2"
-wsGGC   = "GGC"
+wsDev      = "dev"
+wsTerm     = "term"
+wsWeb      = "web"
+wsEmail    = "email"
+wsFiles    = "files"
+wsMusic    = "music"
+wsDownload = "download"
+
+myWorkspaces :: [String]
+myWorkspaces = [wsDev, wsTerm, wsWeb, wsEmail, wsFiles, wsMusic, wsDownload]
 
 -- myWorkspaces = map show [1..9]
 -- myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
-myWorkspaces = [wsGEN, wsWRK, wsWRK2, wsSYS, wsMON, wsFLOAT, wsRW, wsTMP]
+-- myWorkspaces = [wsGEN, wsDEV, wsWRK, wsMUS]
 
 -- ------------------------
 -- Config
@@ -80,42 +76,58 @@ myBrowser     = "firefox"
 myDevBrowser  = "chromium-browser"
 myMusic       = "spotify"
 xmonadPath    = "/home/chouffe/.xmonad/"
-scriptsPath       = xmonadPath ++ "scripts/"
+scriptsPath   = xmonadPath ++ "scripts/"
+configPath    = xmonadPath ++ "config/"
 
 -- ------------------------
 -- Layouts
 -- ------------------------
 
-myLayout = defaultWorkspace
-  -- workSpace0 $ workSpace1 $ defaultWorkspace
+myBasicLayout = ResizableTall nmaster delta ratio []
   where
-     -- Default tiling algorithm partitions the screen into two panes
-     tiled          = smartSpacing 5 $ ResizableTall nmaster delta ratio []
-     tiledSpace     = smartSpacing 60 $ ResizableTall nmaster delta ratio []
-     fullScreen     = noBorders $ fullscreenFull Full
-     fullTile       = ResizableTall nmaster delta ratio []
-     borderlessTile = noBorders fullTile
-     nmaster        = 1 -- The default number of windows in the master pane
-     ratio          = toRational (2 / (1 + sqrt 5 :: Double)) -- Default proportion of the screen taken up by main pane (Goldern Ratio)
-     delta          = 3 / 100 -- Percent of screen to increment by when resizing panes
+    nmaster = 1
+    delta   = 3 / 100
+    ratio   = toRational (2 / (1 + sqrt 5 :: Double)) -- Default proportion of the screen taken up by main pane (Golden Ratio)
 
-     -- addTopBar      = noFrillsDeco shrinkText topBarTheme
-     -- mySpacing      = smartSpacing gapSize
 
-     -- Workspace layouts
-     -- workSpace0       = onWorkspace (myWorkspaces !! 0) $
-     --   toggleLayouts fullScreen $
-     --     avoidStruts (tiled ||| Mirror tiled ||| tiledSpace) ||| avoidStruts fullTile
+myFullScreenLayout = noBorders $ fullscreenFull Full
 
-     -- workSpace1       = onWorkspace (myWorkspaces !! 1) $
-     --   toggleLayouts fullScreen $
-     --     avoidStruts (fullTile ||| tiledSpace) ||| fullScreen
+myLayoutHook = smartBorders
+  $ toggleLayouts myFullScreenLayout     -- Fullscreen mode with mod-z
+  $ avoidStruts
+  $ myBasicLayout
+-- TODO: add spacing layout
 
-     defaultWorkspace = smartBorders  -- Removes borders if only one window
-       $ toggleLayouts fullScreen     -- Fullscreen mode with mod-z
-       $ avoidStruts                  -- Makes xmobar appear
-       -- $ addTopBar
-       $ fullTile ||| tiled ||| tiledSpace
+-- myLayout = defaultWorkspace
+--   -- workSpace0 $ workSpace1 $ defaultWorkspace
+--   where
+--      -- Default tiling algorithm partitions the screen into two panes
+--      tiled          = smartSpacing 5 $ ResizableTall nmaster delta ratio []
+--      tiledSpace     = smartSpacing 60 $ ResizableTall nmaster delta ratio []
+--      fullScreen     = noBorders $ fullscreenFull Full
+--      fullTile       = ResizableTall nmaster delta ratio []
+--      borderlessTile = noBorders fullTile
+--      nmaster        = 1 -- The default number of windows in the master pane
+--      ratio          = toRational (2 / (1 + sqrt 5 :: Double)) -- Default proportion of the screen taken up by main pane (Goldern Ratio)
+--      delta          = 3 / 100 -- Percent of screen to increment by when resizing panes
+
+--      -- addTopBar      = noFrillsDeco shrinkText topBarTheme
+--      -- mySpacing      = smartSpacing gapSize
+
+--      -- Workspace layouts
+--      -- workSpace0       = onWorkspace (myWorkspaces !! 0) $
+--      --   toggleLayouts fullScreen $
+--      --     avoidStruts (tiled ||| Mirror tiled ||| tiledSpace) ||| avoidStruts fullTile
+
+--      -- workSpace1       = onWorkspace (myWorkspaces !! 1) $
+--      --   toggleLayouts fullScreen $
+--      --     avoidStruts (fullTile ||| tiledSpace) ||| fullScreen
+
+--      defaultWorkspace = smartBorders  -- Removes borders if only one window
+--        $ toggleLayouts fullScreen     -- Fullscreen mode with mod-z
+--        $ avoidStruts                  -- Makes xmobar appear
+--        -- $ addTopBar
+--        $ fullTile ||| tiled ||| tiledSpace
 
 -- ---------------
 -- LogHook
@@ -156,12 +168,15 @@ myLayoutPrinter layout =
 -- ------------------------------------------------
 
 myManageHook =
-  composeAll [ manageDocks
-             , resource =? "dmenu" --> doFloat
-             , resource =? myMusic --> doShift (myWorkspaces !! 2)
-             , resource =? "transmission" --> doShift (myWorkspaces !! 3)
-             , resource =? "transmission-gtk" --> doShift (myWorkspaces !! 3)
+  composeAll [
+               resource =? "dmenu" --> doFloat
+             , resource =? myMusic --> doShift wsMusic
+             , resource =? "nautilus" --> doShift wsFiles
+             , resource =? "transmission" --> doShift wsDownload
+             , resource =? "transmission-gtk" --> doShift wsDownload
+             , className =? "stalonetray" --> doIgnore
              ]
+    <+> manageDocks
     <+> manageHook def
 
 -- ------------------------------------------------
@@ -199,9 +214,10 @@ screenshotFolder = "~/Pictures/"
 ----------------------------------------
 myKeys =
   [ -- Dynamic Workspaces
-    ((mod4Mask .|. shiftMask, xK_v      ), selectWorkspace myPromptTheme)
-  , ((mod4Mask, xK_m                    ), withWorkspace myPromptTheme (windows . W.shift))
-  , ((mod4Mask .|. shiftMask, xK_m      ), withWorkspace myPromptTheme (windows . copy))
+    ((mod4Mask .|. shiftMask, xK_v), selectWorkspace myPromptTheme)
+  , ((mod4Mask, xK_v),               selectWorkspace myPromptTheme)
+  , ((mod4Mask, xK_m),              withWorkspace myPromptTheme (windows . W.shift))
+  -- , ((mod4Mask .|. shiftMask, xK_m      ), withWorkspace myPromptTheme (windows . copy))
   -- ((mod4Mask .|. shiftMask, xK_BackSpace), removeWorkspace)
   -- , ((mod4Mask .|. shiftMask, xK_r),   renameWorkspace def)
 
@@ -242,7 +258,11 @@ myKeys =
 
   -- Layout toggle
   , ((mod4Mask .|. controlMask, xK_space), sendMessage ToggleLayout)
+  , ((mod4Mask, xK_space),                 sendMessage ToggleLayout)
   , ((mod4Mask, xK_z),                     sendMessage (Toggle "Full"))
+
+  -- Refresh
+  , ((mod4Mask, xK_n), refresh)
 
   -- Screenshots
   -- gnome-screenshot
@@ -267,6 +287,8 @@ myKeys =
 myStartupHook = do
   spawn $ scriptsPath ++ "clipmenud"  -- Starts clipmenud for clipboard management via dmenu
   spawn $ scriptsPath ++ "init-wallpaper"  -- Sets wallpaper
+  -- spawn $ "stalonetray -c " ++ configPath ++ ".stalonetrayrc"
+  -- spawn $ "nm-applet"
   return ()
 
 -- ------------------------
