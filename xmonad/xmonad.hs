@@ -2,21 +2,28 @@ import           Data.Default                     (def)
 import           Graphics.X11.ExtraTypes.XF86
 import           System.IO
 import           XMonad
+
+-- Actions
 import           XMonad.Actions.CopyWindow        (copy)
 import           XMonad.Actions.DynamicWorkspaces
 import           XMonad.Actions.UpdatePointer     (updatePointer)
 import           XMonad.Hooks.DynamicLog          (xmobar)
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
+
+-- Layouts
 import           XMonad.Layout.Fullscreen         (fullscreenFull)
+import           XMonad.Layout.Grid
 import           XMonad.Layout.NoBorders          (noBorders, smartBorders)
 import           XMonad.Layout.NoFrillsDecoration hiding (urgentColor)
 import           XMonad.Layout.PerWorkspace       (onWorkspace)
+import           XMonad.Layout.Reflect
 import           XMonad.Layout.ResizableTile
 import           XMonad.Layout.SimpleDecoration   hiding (urgentColor)
 import           XMonad.Layout.Spacing            (smartSpacing)
 import           XMonad.Layout.Spacing
 import           XMonad.Layout.ToggleLayouts
+
 import           XMonad.ManageHook                (composeAll, doShift,
                                                    resource, (-->), (=?))
 import           XMonad.Prompt
@@ -83,19 +90,27 @@ configPath    = xmonadPath ++ "config/"
 -- Layouts
 -- ------------------------
 
-myBasicLayout = ResizableTall nmaster delta ratio []
+myLayoutHook = smartBorders
+  $ toggleLayouts fullScreenLayout      -- Fullscreen mode with mod-z
+  $ avoidStruts
+  $ standardLayout                      -- Master area with golden ratio
+    -- ||| reflectHoriz standardLayout     -- Horizontal reflection of the standardLayout
+    ||| spacedTiledLayout               -- spaced between master tiles and same as standardLayout
+    ||| Grid                            -- Grid Layout
+    ||| smartSpacing gapSize Grid     -- Grid Layout with spaces
+
   where
     nmaster = 1
     delta   = 3 / 100
     ratio   = toRational (2 / (1 + sqrt 5 :: Double)) -- Default proportion of the screen taken up by main pane (Golden Ratio)
+    gapSize = 5
+
+    -- My Layouts
+    standardLayout    = ResizableTall nmaster delta ratio []
+    spacedTiledLayout = smartSpacing gapSize $ standardLayout
+    fullScreenLayout  = noBorders $ fullscreenFull Full
 
 
-myFullScreenLayout = noBorders $ fullscreenFull Full
-
-myLayoutHook = smartBorders
-  $ toggleLayouts myFullScreenLayout     -- Fullscreen mode with mod-z
-  $ avoidStruts
-  $ myBasicLayout
 -- TODO: add spacing layout
 
 -- myLayout = defaultWorkspace
@@ -214,9 +229,10 @@ screenshotFolder = "~/Pictures/"
 ----------------------------------------
 myKeys =
   [ -- Dynamic Workspaces
-    ((mod4Mask .|. shiftMask, xK_v), selectWorkspace myPromptTheme)
-  , ((mod4Mask, xK_v),               selectWorkspace myPromptTheme)
-  , ((mod4Mask, xK_m),              withWorkspace myPromptTheme (windows . W.shift))
+    -- ((mod4Mask .|. shiftMask, xK_v), selectWorkspace myPromptTheme)
+    ((mod4Mask, xK_v),               selectWorkspace myPromptTheme)
+  , ((mod4Mask .|. shiftMask, xK_v), withWorkspace myPromptTheme (windows . W.shift))
+  -- , ((mod4Mask, xK_m),              withWorkspace myPromptTheme (windows . W.shift))
   -- , ((mod4Mask .|. shiftMask, xK_m      ), withWorkspace myPromptTheme (windows . copy))
   -- ((mod4Mask .|. shiftMask, xK_BackSpace), removeWorkspace)
   -- , ((mod4Mask .|. shiftMask, xK_r),   renameWorkspace def)
@@ -258,7 +274,7 @@ myKeys =
 
   -- Layout toggle
   , ((mod4Mask .|. controlMask, xK_space), sendMessage ToggleLayout)
-  , ((mod4Mask, xK_space),                 sendMessage ToggleLayout)
+  -- , ((mod4Mask, xK_space),                 sendMessage ToggleLayout)
   , ((mod4Mask, xK_z),                     sendMessage (Toggle "Full"))
 
   -- Refresh
