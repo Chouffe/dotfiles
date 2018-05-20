@@ -19,9 +19,10 @@ Config {
                         \ %multicpu% \
                         \| <icon=/home/chouffe/.xmonad/icons/music.xbm/>\
                         \ %music% \
-                        \| [%wlp2s0wi% - %vpn%]\
-                        \ %dynnetwork% \
-                        \<icon=/home/chouffe/.xmonad/icons/wifi.xbm/>\
+                        \| [%wlp2s0wi%]\
+                        \ %dynnetwork%\
+                        \ %vpn_status% \
+                        \<icon=/home/chouffe/.xmonad/icons/wifi.xbm/> \
                         \| %volume% \
                         \<icon=/home/chouffe/.xmonad/icons/volume100.xbm/> \
                         \| %battery% \
@@ -88,7 +89,7 @@ Config {
                        , Run Com "/home/chouffe/.xmonad/scripts/volume.sh" [] "volume" 10
                        , Run Com "/home/chouffe/.xmonad/scripts/music.sh" [] "music" 15
                        , Run Com "whoami" [] "whoami" 36000
-                       , Run Com "/home/chouffe/.xmonad/scripts/vpnstatus.sh" [] "vpn" 10
+                       , Run Com "/home/chouffe/.xmonad/scripts/vpnstatus.sh" [] "vpn_status" 10
                        -- , Run Com "uname" ["-s","-r"] "" 36000
                        ]
        }
