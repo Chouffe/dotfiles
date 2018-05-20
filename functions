@@ -66,6 +66,24 @@ pe() {
   pass edit $(echo "$pwdstore_file")
 }
 
+## VPN
+
+vpn_tcp() {
+  local servers server
+  servers=$(ls /etc/openvpn/ovpn_tcp/)
+  server=$(echo $servers| fzf)
+  sudo openvpn $(echo "/etc/openvpn/ovpn_tcp/$server")
+}
+
+vpn_udp() {
+  local servers server
+  servers=$(ls /etc/openvpn/ovpn_udp/)
+  server=$(echo $servers| fzf)
+  sudo openvpn $(echo "/etc/openvpn/ovpn_udp/$server")
+}
+
+alias vpn=vpn_tcp
+
 # ---
 # Git
 # ---
@@ -142,6 +160,7 @@ fstash() {
 # }
 
 # Screens and Monitors
+
 # set dual monitors
 dual () {
     xrandr --auto --output HDMI-1 --mode 1366x768 --right-of eDP-1 --primary
@@ -152,8 +171,9 @@ single () {
     xrandr --output eDP-1 --off
 }
 
+# set laptop monitor only
 laptop () {
-    xrandr --output eDP-1 --mode 1680x1050
+    xrandr --output eDP-1 --mode 1920x1080
 }
 
 # Tmux
@@ -165,43 +185,3 @@ function tmsession () {
 function silver-presto () {
   cat $1 | ssh silver10 presto | less -SFX
 }
-
-# VPN
-
-function vpn_us0 () {
-  sudo openvpn /etc/openvpn/us197.nordvpn.com.tcp443.ovpn
-}
-
-function vpn_us1 () {
-  sudo openvpn /etc/openvpn/us108.nordvpn.com.tcp443.ovpn
-}
-
-function vpn_us2 () {
-  sudo openvpn /etc/openvpn/us3.nordvpn.com.tcp443.ovpn
-}
-
-function vpn_us3 () {
-  sudo openvpn /etc/openvpn/us20.nordvpn.com.tcp443.ovpn
-}
-
-function vpn_us4 () {
-  sudo openvpn /etc/openvpn/us501.nordvpn.com.tcp443.ovpn
-}
-
-function vpn_us () {
-  vpn_us0
-}
-
-function vpn_fr () {
-  # TODO: randomly choose a server
-  sudo openvpn /etc/openvpn/fr9.nordvpn.com.tcp443.ovpn
-}
-
-function vpn_fr1 () {
-  sudo openvpn /etc/openvpn/fr21.nordvpn.com.tcp443.ovpn
-}
-
-function vpn () {
-  vpn_us
-}
-
