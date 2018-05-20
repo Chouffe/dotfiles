@@ -301,8 +301,9 @@ myKeys =
 -- ------------------------
 
 myStartupHook = do
-  spawn $ scriptsPath ++ "clipmenud"  -- Starts clipmenud for clipboard management via dmenu
+  spawn $ scriptsPath ++ "clipmenud"       -- Starts clipmenud for clipboard management via dmenu
   spawn $ scriptsPath ++ "init-wallpaper"  -- Sets wallpaper
+  spawn "redshift"                         -- Starts redshift: blue light filter
   -- spawn $ "stalonetray -c " ++ configPath ++ ".stalonetrayrc"
   -- spawn $ "nm-applet"
   return ()
