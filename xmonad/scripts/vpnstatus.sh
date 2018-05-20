@@ -8,9 +8,9 @@ vpn_status_string () {
   status=`vpn_status`
   if [ $status -eq 0 ]
   then
-    echo "Vpn x"
+    echo "x"
   else
-    echo "Vpn ✓"
+    echo "✓"
   fi
 }
 
