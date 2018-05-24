@@ -188,11 +188,31 @@ function silver-presto () {
 
 # Minimalist Pomodoro technique
 
+_pomo_loop() {
+
+  prompt=$1
+  loop_time=$(expr $2 + 0)
+  s=0
+
+  while [ $s -le $loop_time ]
+  do
+    sec=$(($loop_time - $s))
+    s=$(expr $s + 1)
+    sleep 1
+    printf '%s%02dh:%02dm:%02ds\r' $prompt $(($sec/3600)) $(($sec%3600/60)) $(($sec%60))
+  done
+}
+
 pomo () {
-  notify-send "Pomodoro: Start - 25m"\
-    && sleep 1500\
-    && zenity --warning --text="Pomodoro: End" --width=200\
-    && notify-send "Pomodoro: Break - 3m"\
-    && sleep 300\
-    && pomo
+
+  work_time=$(expr $1 + 0)
+  chill_time=$(expr $2 + 0)
+
+  notify-send "Pomodoro: Start"\
+    && _pomo_loop "Work for:  " $work_time\
+    && zenity --warning --text="Pomodoro: End" --width=200 > /dev/null 2>&1 \
+    && notify-send "Pomodoro: Break"\
+    && _pomo_loop "Relax for: " $chill_time\
+    && zenity --warning --text="Pomodoro: Start" --width=200 > /dev/null 2>&1 \
+    && pomo $work_time $chill_time
 }
