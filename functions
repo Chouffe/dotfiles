@@ -185,3 +185,14 @@ function tmsession () {
 function silver-presto () {
   cat $1 | ssh silver10 presto | less -SFX
 }
+
+# Minimalist Pomodoro technique
+
+pomo () {
+  notify-send "Pomodoro: Start - 25m"\
+    && sleep 1500\
+    && zenity --warning --text="Pomodoro: End" --width=200\
+    && notify-send "Pomodoro: Break - 3m"\
+    && sleep 300\
+    && pomo
+}
