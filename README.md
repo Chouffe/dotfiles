@@ -1,5 +1,18 @@
 # Dev dependencies
 
+## Privacy
+
+* [Improve your Privacy](https://iotdarwinaward.com/post/improve-your-privacy-in-age-of-mass-surveillance/)
+* EFF: HTTPS Everywhere
+* uBlock Origin
+* Privacy Badger
+* DuckDuckGo
+* VPN
+* [hosts file](https://github.com/StevenBlack/hosts)
+* Pi Hole
+* Mac Address Randomization: macchanger
+
+
 ## Package Management
 
 * Nix
