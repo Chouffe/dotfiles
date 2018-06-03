@@ -66,7 +66,7 @@ wsMusic    = "music"
 wsDownload = "download"
 
 myWorkspaces :: [String]
-myWorkspaces = [wsDev, wsTerm, wsWeb, wsEmail, wsFiles, wsMusic, wsDownload]
+myWorkspaces = zipWith (\x i -> show i ++ "-" ++ x) [wsDev, wsTerm, wsWeb, wsEmail, wsFiles, wsMusic, wsDownload] [1..]
 
 -- myWorkspaces = map show [1..9]
 -- myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -185,11 +185,11 @@ myLayoutPrinter layout =
 myManageHook =
   composeAll [
                resource =? "dmenu" --> doFloat
-             , resource =? myMusic --> doShift wsMusic
-             , resource =? "nautilus" --> doShift wsFiles
-             , resource =? "transmission" --> doShift wsDownload
-             , resource =? "transmission-gtk" --> doShift wsDownload
-             , className =? "stalonetray" --> doIgnore
+             -- , resource =? myMusic --> doShift wsMusic
+             -- , resource =? "nautilus" --> doShift wsFiles
+             -- , resource =? "transmission" --> doShift wsDownload
+             -- , resource =? "transmission-gtk" --> doShift wsDownload
+             -- , className =? "stalonetray" --> doIgnore
              ]
     <+> manageDocks
     <+> manageHook def
