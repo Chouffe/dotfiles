@@ -11,6 +11,9 @@ PREPAND_PATH=~/.local/bin:$PREPAND_PATH
 # Personal bin PATH
 PREPAND_PATH=$PREPAND_PATH:~/bin
 
+# Go Path
+PREPAND_PATH=$PREPAND_PATH:/usr/local/go/bin
+
 # Anaconda PATH
 PREPAND_PATH=$PREPAND_PATH:~/anaconda3/bin
 

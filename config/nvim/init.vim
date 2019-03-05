@@ -268,9 +268,9 @@ Plug 'junegunn/limelight.vim'
 " Neomake {{{
 Plug 'neomake/neomake'
 
-let g:neomake_open_list = 2        " Conserves the cursor position + open the quickfix
+let g:neomake_open_list = 0        " Conserves the cursor position + open the quickfix
 let g:neomake_highlight_lines = 1
-let g:neomake_haskell_enabled_makers = ['ghcmod', 'hlint']
+let g:neomake_haskell_enabled_makers = ['hlint']
 let g:neomake_javascript_enabled_makers = ['eslint']
 let g:neomake_enabled_makers=-1
 " }}}
@@ -693,8 +693,8 @@ Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 " static support for Leiningen and Boot
 Plug 'tpope/vim-salve', { 'for': 'clojure' }
 " the Clojure formatting tool.
-" Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
-" Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
+Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
+Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
 
 let g:vimclojure#HighlightBuiltins=1
 let g:vimclojure#ParenRainbow=1
@@ -709,6 +709,11 @@ let g:clj_fmt_autosave = 1
 let g:sexp_insert_after_wrap = 0 " Disable insertion after wrapping
 " }}}
 
+" Purescript {{{
+Plug 'purescript-contrib/purescript-vim', { 'for': 'purescript' }
+Plug 'FrigoEU/psc-ide-vim/', { 'for': 'purescript' }
+" }}}
+
 " Haskell {{{
 " Syntax highlighting: vim2hs/haksyn/haskell_syntax
 " Plug 'dag/vim2hs', { 'for': 'haskell' }
@@ -717,15 +722,22 @@ let g:sexp_insert_after_wrap = 0 " Disable insertion after wrapping
 Plug 'neovimhaskell/haskell-vim', { 'for': 'haskell' }
 let g:haskellmode_completion_ghc = 0
 " Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
-Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
-let g:necoghc_enable_detailed_browse = 1
+" Plug 'eagletmt/neco-ghc', { 'for': 'haskell' }
+" let g:necoghc_enable_detailed_browse = 1
 " Plug 'mkasa/neco-ghc-lushtags', { 'for' : 'haskell' }
-Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
-Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
+" Plug 'eagletmt/ghcmod-vim', { 'for': 'haskell' }
+" Plug 'parsonsmatt/intero-neovim', { 'for': 'haskell' }
+" let g:intero_start_immediately = 0  " Prevents Intero from starting immediately
+" let g:intero_type_on_hover = 1      " Type info holding cursor at point for 1s
+" let g:intero_vertical_split = 1     " Splits vertically instead of horizontally
 " Vim plugin for Haskell development
 " Plug 'bitc/vim-hdevtools', { 'for': 'haskell' }
 " Vim plugin used to query hoogle, the haskell search engine
+Plug 'alx741/vim-hindent', { 'for': 'haskell' }
+let g:hindent_on_save = 0
 Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
+Plug 'ndmitchell/ghcid', { 'rtp': 'plugins/nvim' }
+
 " Extended Haskell Conceal feature for Vim
 " Plug 'enomsg/vim-haskellConcealPlus', { 'for': 'haskell' }
 " Create ctags compatible tags files for Haskell programs
@@ -733,20 +745,20 @@ Plug 'Twinside/vim-hoogle', { 'for': 'haskell' }
 " Code reformatting
 " Plug 'nbouscal/vim-stylish-haskell', { 'for': 'haskell' }
 Plug 'MarcWeber/hasktags', { 'for': 'haskell' }
-Plug 'ujihisa/unite-haskellimport', { 'for': 'haskell' }
+" Plug 'ujihisa/unite-haskellimport', { 'for': 'haskell' }
 
 " haskell-vim: Syntax highlighting (https://github.com/neovimhaskell/haskell-vim)
-let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
-let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
-let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
-let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
-let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
-let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
-let g:haskell_indent_if = 0
-let g:haskell_indent_in = 0
+" let g:haskell_enable_quantification = 1   " to enable highlighting of `forall`
+" let g:haskell_enable_recursivedo = 1      " to enable highlighting of `mdo` and `rec`
+" let g:haskell_enable_arrowsyntax = 1      " to enable highlighting of `proc`
+" let g:haskell_enable_pattern_synonyms = 1 " to enable highlighting of `pattern`
+" let g:haskell_enable_typeroles = 1        " to enable highlighting of type roles
+" let g:haskell_enable_static_pointers = 1  " to enable highlighting of `static`
+" let g:haskell_indent_if = 0
+" let g:haskell_indent_in = 0
 
 " Ghcmod
-let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
+" let g:ghcmod_open_quickfix_function = 'GhcModQuickFix'
 " highlight ghcmodType ctermbg=GruvboxYellow
 " let g:ghcmod_type_highlight = 'ghcmodType'
 
@@ -1030,7 +1042,7 @@ augroup OMNIFUNCS
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-  autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+  " autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 augroup END
 
 augroup TERMINAL
@@ -1073,52 +1085,63 @@ augroup YAML
   autocmd FileType yaml setlocal shiftwidth=2
 augroup END
 
+augroup HASKELLSTYLISH
+  au!
+  " Just hindent
+  au FileType haskell nnoremap <leader>hi :Hindent<CR>
+  " Just stylish-haskell
+  au FileType haskell nnoremap <leader>hs :call HaskellFormat('stylish')<CR>
+  " First hindent, then stylish-haskell
+  au FileType haskell nnoremap <leader>hf :call HaskellFormat('both')<CR>
+augroup END
+
+
 augroup HASKELL
   autocmd!
   " autocmd FileType haskell let b:ghc_staticoptions = '-Wall -Werror'
   autocmd FileType haskell call HaskellSettings()
-  autocmd BufWritePre *.hs silent! Neoformat
-  " autocmd! BufWritePost *.hs Neomake
+  " autocmd BufWritePre *.hs silent! Neoformat
+  autocmd! BufWritePost *.hs Neomake
 augroup END
 
-augroup interoMaps
-  au!
-  " Maps for intero. Restrict to Haskell buffers so the bindings don't collide.
+" augroup interoMaps
+"   au!
+"   " Maps for intero. Restrict to Haskell buffers so the bindings don't collide.
 
-  " Background process and window management
-  au FileType haskell nnoremap <silent> <leader>is :InteroStart<CR>
-  au FileType haskell nnoremap <silent> <leader>ik :InteroKill<CR>
+"   " Background process and window management
+"   au FileType haskell nnoremap <silent> <leader>is :InteroStart<CR>
+"   au FileType haskell nnoremap <silent> <leader>ik :InteroKill<CR>
 
-  " Open intero/GHCi split horizontally
-  au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
-  " Open intero/GHCi split vertically
-  au FileType haskell nnoremap <silent> <leader>iov :InteroOpen<CR><C-W>H
-  au FileType haskell nnoremap <silent> <leader>ih :InteroHide<CR>
+"   " Open intero/GHCi split horizontally
+"   au FileType haskell nnoremap <silent> <leader>io :InteroOpen<CR>
+"   " Open intero/GHCi split vertically
+"   au FileType haskell nnoremap <silent> <leader>iov :InteroOpen<CR><C-W>H
+"   au FileType haskell nnoremap <silent> <leader>ih :InteroHide<CR>
 
-  " Reloading (pick one)
-  " Automatically reload on save
-  au BufWritePost *.hs InteroReload
-  " Manually save and reload
-  " au FileType haskell nnoremap <silent> <leader>wr :w \| :InteroReload<CR>
+"   " Reloading (pick one)
+"   " Automatically reload on save
+"   au BufWritePost *.hs InteroReload
+"   " Manually save and reload
+"   " au FileType haskell nnoremap <silent> <leader>wr :w \| :InteroReload<CR>
 
-  " Load individual modules
-  au FileType haskell nnoremap <silent> <leader>il :InteroLoadCurrentModule<CR>
-  au FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
+"   " Load individual modules
+"   au FileType haskell nnoremap <silent> <leader>il :InteroLoadCurrentModule<CR>
+"   au FileType haskell nnoremap <silent> <leader>if :InteroLoadCurrentFile<CR>
 
-  " Type-related information
-  " Heads up! These next two differ from the rest.
-  au FileType haskell map <silent> <LocalLeader>t <Plug>InteroGenericType
-  au FileType haskell map <silent> <LocalLeader>T <Plug>InteroType
-  au FileType haskell nnoremap <silent> <LocalLeader>ii :InteroInfo<CR>
-  au FileType haskell nnoremap <silent> <LocalLeader>it :InteroTypeInsert<CR>
+"   " Type-related information
+"   " Heads up! These next two differ from the rest.
+"   au FileType haskell map <silent> <LocalLeader>t <Plug>InteroGenericType
+"   au FileType haskell map <silent> <LocalLeader>T <Plug>InteroType
+"   au FileType haskell nnoremap <silent> <LocalLeader>ii :InteroInfo<CR>
+"   au FileType haskell nnoremap <silent> <LocalLeader>it :InteroTypeInsert<CR>
 
-  " Navigation
-  au FileType haskell nnoremap <silent> <leader>jd :InteroGoToDef<CR>
+"   " Navigation
+"   au FileType haskell nnoremap <silent> <leader>jd :InteroGoToDef<CR>
 
-  " Managing targets
-  " Prompts you to enter targets (no silent):
-  au FileType haskell nnoremap <leader>ist :InteroSetTargets<SPACE>
-augroup END
+"   " Managing targets
+"   " Prompts you to enter targets (no silent):
+"   au FileType haskell nnoremap <leader>ist :InteroSetTargets<SPACE>
+" augroup END
 
 augroup ELM
   autocmd!
@@ -1184,7 +1207,7 @@ augroup CLJS
   autocmd!
   autocmd BufNewFile,BufRead,BufReadPost *.cljs call SexpSettings()
   autocmd BufEnter *.cljs setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
-  command! Figwheel :Piggieback! (do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/cljs-repl))
+  " command! Figwheel :Piggieback! (do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/cljs-repl))
 augroup END
 
 augroup configgroup
@@ -1213,7 +1236,7 @@ endfunction
 " Language specific settings {{{
 function! ClojureSettings()
   " Mapping
-  nnoremap cq :Require<CR>
+  nnoremap cq :Require!<CR>
   nnoremap cr :Require<CR>
   nnoremap ce :Eval<CR>
   nnoremap cc :%Eval<CR>
@@ -1235,6 +1258,18 @@ function! PythonSettings()
   " TODO
 endfunction
 
+" Helper function, called below with mappings
+function! HaskellFormat(which) abort
+  if a:which ==# 'hindent' || a:which ==# 'both'
+    :Hindent
+  endif
+  if a:which ==# 'stylish' || a:which ==# 'both'
+    silent! exe 'undojoin'
+    silent! exe 'keepjumps %!stylish-haskell'
+  endif
+endfunction
+
+" Key bindings
 " Haskell {{{
 function! HaskellSettings()
 

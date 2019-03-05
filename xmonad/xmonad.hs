@@ -282,9 +282,9 @@ myKeys =
 
   -- Screenshots
   -- gnome-screenshot
-  , ((mod4Mask .|. shiftMask, xK_Insert), spawn $ "gnome-screenshot -a")  -- area to grab: does not work for some reason
-  , ((mod4Mask, xK_Insert),               spawn $ "gnome-screenshot -d 1")  -- full window
-  , ((0, xK_Print),                       spawn $ "gnome-screenshot -i")  -- interactive mode
+  , ((mod4Mask .|. shiftMask, xK_Insert), spawn "gnome-screenshot -a")  -- area to grab: does not work for some reason
+  , ((mod4Mask, xK_Insert),               spawn "gnome-screenshot -d 1")  -- full window
+  , ((0, xK_Print),                       spawn "gnome-screenshot -i")  -- interactive mode
 
   -- Backlight
   , ((0, xF86XK_MonBrightnessUp),   spawn "xbacklight -inc 10")

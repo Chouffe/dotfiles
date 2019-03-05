@@ -10,6 +10,8 @@ alias v=nvim
 alias n=nvim
 alias t=tig
 alias less="less -R"
+alias ccat='pygmentize -g'
+alias pcat='pygmentize -g'
 # alias git=gitsafe
 # alias g=gitsafe
 alias pg="ping 8.8.8.8"
@@ -60,12 +62,15 @@ alias duf='du -sh *'
 alias fd='find . -type d -name'
 alias ff='find . -type f -name'
 
+# Static Webserver
+alias pyserve='python -m SimpleHTTPServer 8080'
+
 alias lock='gnome-screensaver-command -l'
 
 # IP addresses
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias localip="ipconfig getifaddr en0"
-alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+alias ip-public="dig +short myip.opendns.com opendns.com"
+alias ip-local="ip addr show wlp2s0"
+alias ip-list="ip addr show | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # Intuitive map function
 # For example, to list all directories that contain a certain file:
@@ -78,9 +83,6 @@ alias ash='airlab ssh'
 alias vu='cd ~/airlab && vagrant up'
 alias vp='cd ~/airlab && vagrant provision'
 alias gk='goldkey'
-
-# Passwords
-alias k='kp -d ~/passwords/db.kdb'
 
 # Haskell
 alias ghc='stack exec -- ghc'

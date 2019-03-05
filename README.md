@@ -46,8 +46,10 @@
 * git
 * tig
 * htop
+* vtop
 * iotop
 * ncdu
+* imgcat
 * fasd
 * ssh
 * ag
@@ -83,6 +85,8 @@
   * feh
 * Rest Client
   * jq
+* Sound
+  * pavucontrol
 * Disk Encrytpion
   * [tomb](https://github.com/dyne/Tomb/blob/master/INSTALL.md)
 

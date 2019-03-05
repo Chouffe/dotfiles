@@ -52,7 +52,7 @@ unset file;
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git lein autojump sudo tmux jsontools python cabal)
 # virtualenvwrapper
-plugins=(git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew catimg web-search zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(pass docker git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew catimg web-search zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -101,3 +101,9 @@ stty -ixon
 # Right Prompt
 # RPROMPT="$FG[013]%D{%H:%M}%{$reset_color%}$FG[015] %D{»} %{$reset_color%}$FG[014]%D{%m/%d}%{$reset_color%}"
 RPROMPT=""
+
+# added by travis gem
+[ -f /home/chouffe/.travis/travis.sh ] && source /home/chouffe/.travis/travis.sh
+
+# kubectl autocompletion
+source <(kubectl completion zsh)
