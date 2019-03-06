@@ -84,6 +84,29 @@ vpn_udp() {
 
 alias vpn=vpn_tcp
 
+# ------
+# Github
+# ------
+
+# Display github URL based on branch
+ghurl() {
+  echo "$(git config --get remote.origin.url | sed -e 's/git@github.com:/https:\/\/github.com\//' | sed -e 's/\.git//')"
+}
+
+# Display Github PR URL
+ghprurl() {
+  echo "$(ghurl)/compare/$(git symbolic-ref --short HEAD)"
+}
+
+# Open a Github PR and open browser to the link
+ghpr() {
+  git push --set-upstream origin $(git symbolic-ref --short HEAD) && xdg-open $(ghprurl)
+}
+
+gh() {
+  xdg-open $(ghurl)
+}
+
 # ---
 # Git
 # ---
