@@ -89,6 +89,8 @@
   * pavucontrol
 * Disk Encrytpion
   * [tomb](https://github.com/dyne/Tomb/blob/master/INSTALL.md)
+* Gif Screen Recorder
+  * Peek
 
 ## Password manager
 
