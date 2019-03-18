@@ -695,6 +695,9 @@ Plug 'tpope/vim-salve', { 'for': 'clojure' }
 " the Clojure formatting tool.
 Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
 Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
+" Parinfer - requirement: rust and cargo installed
+" https://www.rust-lang.org/tools/install and add bin path to $PATH
+" Plug 'eraserhd/parinfer-rust', { 'do': 'cargo build --release', 'for': 'clojure' }
 
 let g:vimclojure#HighlightBuiltins=1
 let g:vimclojure#ParenRainbow=1
