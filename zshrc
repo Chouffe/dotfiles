@@ -52,7 +52,7 @@ unset file;
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git lein autojump sudo tmux jsontools python cabal)
 # virtualenvwrapper
-plugins=(pass docker git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew catimg web-search zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(pass docker git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew catimg web-search zsh-autosuggestions zsh-syntax-highlighting dotenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -93,7 +93,11 @@ fi
 stty -ixon
 
 # Loads nvm
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+# Very very slow bash
+# alias `loadnvm` in .aliases used instead: https://github.com/robbyrussell/oh-my-zsh/issues/5327
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Syntax Highlighting
 # source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
