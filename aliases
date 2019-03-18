@@ -88,3 +88,6 @@ alias gk='goldkey'
 alias ghc='stack exec -- ghc'
 alias ghci='stack exec -- ghci'
 # alias ghc-mod='stack exec -- ghc-mod'
+
+# NVM
+# alias loadnvm=\."$NVM_DIR/nvm.sh" && \. "$NVM_DIR/bash_completion"
