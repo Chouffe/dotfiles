@@ -58,6 +58,7 @@ myConfig p =  def
 ------------------------------------------------------------------------
 
 wsDev      = "dev"
+wsChat     = "chat"
 wsTerm     = "term"
 wsWeb      = "web"
 wsEmail    = "email"
@@ -66,7 +67,7 @@ wsMusic    = "music"
 wsDownload = "download"
 
 myWorkspaces :: [String]
-myWorkspaces = zipWith (\x i -> show i ++ "-" ++ x) [wsDev, wsTerm, wsWeb, wsEmail, wsFiles, wsMusic, wsDownload] [1..]
+myWorkspaces = zipWith (\x i -> show i ++ "-" ++ x) [wsDev, wsChat, wsWeb, wsEmail, wsFiles, wsMusic, wsDownload] [1..]
 
 -- myWorkspaces = map show [1..9]
 -- myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
