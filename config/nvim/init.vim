@@ -166,7 +166,7 @@ endfunction
 
 " Requirements: bash, gawk, fzf
 " Asynchronous
-Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+" Plug 'Shougo/vimproc.vim', { 'do': 'make' }
 "Improved incremental searching
 Plug 'haya14busa/incsearch.vim'
 " provides improved * motions
@@ -311,6 +311,8 @@ Plug 'Shougo/neoinclude.vim'
 Plug 'Shougo/neco-vim'
 Plug 'wellle/tmux-complete.vim'
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for' : ['javascript'] }
+" nrepl Python Client needs to be installed
+" https://github.com/clojure-vim/async-clj-omni
 Plug 'clojure-vim/async-clj-omni', { 'for' : ['clojure'] }
 Plug 'fishbullet/deoplete-ruby', { 'for' : ['ruby'] }
 Plug 'Shougo/deoplete-rct', { 'for' : ['ruby'] }
@@ -1367,7 +1369,8 @@ endif
 " Mappings {{{
 nnoremap <silent><C-p> :FZF<CR>
 nnoremap <silent><C-f> :Unite -buffer-name=search line:all -start-insert<CR>
-nnoremap <silent><C-q> :<C-u>Unite -no-quit -buffer-name=search grep:. -no-start-insert<cr><C-r><c-w><CR>
+nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
+nnoremap <silent><C-q> :Ag <C-R><C-W><CR>
 nnoremap <silent><C-s> :<C-u>Unite neosnippet -start-insert<CR>
 nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
 nnoremap <silent><M-g> :FZFAg<CR>'
