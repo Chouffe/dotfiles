@@ -2,6 +2,7 @@ import           Data.Default                     (def)
 import           Graphics.X11.ExtraTypes.XF86
 import           System.IO
 import           XMonad
+import           XMonad.Config.Gnome
 
 -- Actions
 import           XMonad.Actions.CopyWindow        (copy)
@@ -10,6 +11,11 @@ import           XMonad.Actions.UpdatePointer     (updatePointer)
 import           XMonad.Hooks.DynamicLog          (xmobar)
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
+
+-- Prompt
+import           XMonad.Prompt.Pass               (passPrompt)
+import           XMonad.Prompt.FuzzyMatch         (fuzzyMatch)
+import           XMonad.Prompt.Workspace          (workspacePrompt)
 
 -- Layouts
 import           XMonad.Layout.Fullscreen         (fullscreenFull)
@@ -23,6 +29,7 @@ import           XMonad.Layout.SimpleDecoration   hiding (urgentColor)
 import           XMonad.Layout.Spacing            (smartSpacing)
 import           XMonad.Layout.Spacing
 import           XMonad.Layout.ToggleLayouts
+import           XMonad.Layout.MultiToggle.Instances
 
 import           XMonad.ManageHook                (composeAll, doShift,
                                                    resource, (-->), (=?))
@@ -35,9 +42,22 @@ import           XMonad.Util.Run                  (spawnPipe)
 -- Xmonad entry point
 -- ------------------------
 
-main = do
+defaultMain = do
     xmproc <- spawnPipe myStatusBar
     xmonad $ myConfig xmproc
+
+-- GnomeConfig works out of the box!
+gnomeMain = xmonad $ gnomeConfig {
+        layoutHook         = myLayoutHook
+      ,  manageHook         = myManageHook
+      , modMask            = mod4Mask
+      , terminal           = myTerm
+      , workspaces         = myWorkspaces
+      , borderWidth        = myBorderWidth
+      , focusedBorderColor = blue
+      , normalBorderColor  = color0
+      -- , startupHook        = myStartupHook
+      } `additionalKeys` myGnomeKeys
 
 myConfig p =  def
       { manageHook         = myManageHook
@@ -53,6 +73,10 @@ myConfig p =  def
       , handleEventHook    = myHandleEventHook
       } `additionalKeys` myKeys
 
+-- Choosing `gnomeMain`
+main = gnomeMain
+-- main = defaultMain
+
 ------------------------------------------------------------------------
 -- Workspaces
 ------------------------------------------------------------------------
@@ -67,11 +91,32 @@ wsMusic    = "music"
 wsDownload = "download"
 
 myWorkspaces :: [String]
-myWorkspaces = zipWith (\x i -> show i ++ "-" ++ x) [wsDev, wsChat, wsWeb, wsEmail, wsFiles, wsMusic, wsDownload] [1..]
+-- myWorkspaces = zipWith (\x i -> show i ++ "-" ++ x) [wsDev, wsChat, wsWeb, wsEmail, wsFiles, wsMusic, wsDownload] [1..]
+myWorkspaces = [wsDev, wsChat, wsWeb, wsEmail, wsFiles, wsMusic, wsDownload]
 
 -- myWorkspaces = map show [1..9]
 -- myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 -- myWorkspaces = [wsGEN, wsDEV, wsWRK, wsMUS]
+
+---------------------------
+-- XPConfig
+---------------------------
+
+myXPConfig :: XPConfig
+myXPConfig = def {
+    alwaysHighlight     = True
+  , bgColor             = background
+  , bgHLight            = color6
+  , borderColor         = blue
+  , fgColor             = color10
+  , fgHLight            = blue
+  , font                = myFont
+  , height              = 32
+  , maxComplRows        = Just 5
+  , position            = Top
+  , promptBorderWidth   = 2
+  , searchPredicate     = fuzzyMatch
+}
 
 -- ------------------------
 -- Config
@@ -80,7 +125,9 @@ myWorkspaces = zipWith (\x i -> show i ++ "-" ++ x) [wsDev, wsChat, wsWeb, wsEma
 myTerm        = "urxvt"
 myStatusBar   = "xmobar"
 myFileManager = "nautilus"
-myBrowser     = "firefox"
+myBrowser     = "chromium-browser"
+-- myBrowser     = "/usr/bin/google-chrome-stable --force-device-scale-factor=2 %U"
+-- myBrowser     = "google-chrome-stable"
 myDevBrowser  = "chromium-browser"
 myMusic       = "spotify"
 xmonadPath    = "/home/chouffe/.xmonad/"
@@ -109,7 +156,7 @@ myLayoutHook = smartBorders
     -- My Layouts
     standardLayout    = ResizableTall nmaster delta ratio []
     spacedTiledLayout = smartSpacing gapSize $ standardLayout
-    fullScreenLayout  = noBorders $ fullscreenFull Full
+    fullScreenLayout  = noBorders $ Full
 
 
 -- TODO: add spacing layout
@@ -228,6 +275,51 @@ screenshotFolder = "~/Pictures/"
 ----------------------------------------
 -- Keyboard Options
 ----------------------------------------
+
+-- Default keybindings
+-- Alt-Shift-Enter # create new terminal
+-- Alt-p           # launch application
+-- Alt-Space       # change window layout
+-- Alt-Tab         # switch window
+-- Alt-b           # toggle GNOME menu bar and status bar
+--
+
+myGnomeKeys =
+  [ -- Dynamic Workspaces
+    ((mod4Mask, xK_m),               selectWorkspace myXPConfig)
+  , ((mod4Mask .|. shiftMask, xK_m), workspacePrompt myXPConfig (windows . W.shift))
+
+  -- Screensaver
+  , ((mod4Mask, xK_Escape), spawn "gnome-screensaver-command -l")
+
+  -- PassMenu
+  -- TODO: add a preview mode as well
+  , ((mod4Mask .|. shiftMask, xK_p), spawn passmenuRunCmd)
+  , ((mod4Mask .|. shiftMask, xK_i), passPrompt myXPConfig)
+
+  -- Clipmenu
+  , ((mod4Mask, xK_y), spawn clipmenuRunCmd)
+
+  -- Files
+  , ((mod4Mask, xK_f), spawn myFileManager)
+
+  -- Browser
+  -- , ((mod4Mask, xK_b),               spawn myBrowser)
+  , ((mod4Mask .|. shiftMask, xK_b), spawn myDevBrowser)
+
+  -- Layout toggle
+  , ((mod4Mask, xK_z),                     sendMessage (Toggle "Full"))
+
+  -- Refresh
+  , ((mod4Mask, xK_n), refresh)
+
+  -- Screenshots
+  -- gnome-screenshot
+  , ((mod4Mask .|. shiftMask, xK_Insert), spawn "gnome-screenshot -a")  -- area to grab: does not work for some reason
+  , ((mod4Mask, xK_Insert),               spawn "gnome-screenshot -d 1")  -- full window
+  , ((0, xK_Print),                       spawn "gnome-screenshot -i")  -- interactive mode
+  ]
+
 myKeys =
   [ -- Dynamic Workspaces
     -- ((mod4Mask .|. shiftMask, xK_v), selectWorkspace myPromptTheme)
@@ -315,6 +407,7 @@ myStartupHook = do
 
 -- It makes xmobar to be visible
 -- this must be in this order, docksEventHook must be last
+-- Without GnomeConfig
 myHandleEventHook = handleEventHook defaultConfig <+> docksEventHook
 
 -- ------------------------
@@ -343,7 +436,7 @@ foreground  = "#D6C3B6"
 
 myFont       = "xft:Inconsolata:size=13:antialias=true"
 myMediumFont = "xft:Inconsolata:size=14:antialias=true"
-myLargeFont  = "xft:Inconsolata:size=24:antialias=true"
+myLargeFont  = "xft:Inconsolata:size=25:antialias=true"
 
 yellow  = "#b58900"
 orange  = "#cb4b16"
