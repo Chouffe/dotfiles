@@ -115,6 +115,8 @@
 * xmobar
   * trayer
     * nm-applet
+* gnome-session-xmonad
+* xmonad-contrib
 
 ## Browsers
 
