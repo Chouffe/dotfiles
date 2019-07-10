@@ -4,6 +4,13 @@ import           System.IO
 import           XMonad
 import           XMonad.Config.Gnome
 
+-- Prompt
+import           XMonad.Prompt.Pass               (passPrompt)
+import           XMonad.Prompt.FuzzyMatch         (fuzzyMatch)
+import           XMonad.Prompt.Workspace          (workspacePrompt)
+import           XMonad.Prompt.Window
+import           XMonad.Prompt.Shell              (shellPrompt)
+
 -- Actions
 import           XMonad.Actions.CopyWindow        (copy)
 import           XMonad.Actions.DynamicWorkspaces
@@ -11,11 +18,7 @@ import           XMonad.Actions.UpdatePointer     (updatePointer)
 import           XMonad.Hooks.DynamicLog          (xmobar)
 import           XMonad.Hooks.DynamicLog
 import           XMonad.Hooks.ManageDocks
-
--- Prompt
-import           XMonad.Prompt.Pass               (passPrompt)
-import           XMonad.Prompt.FuzzyMatch         (fuzzyMatch)
-import           XMonad.Prompt.Workspace          (workspacePrompt)
+import           XMonad.Actions.GroupNavigation
 
 -- Layouts
 import           XMonad.Layout.Fullscreen         (fullscreenFull)
@@ -27,7 +30,6 @@ import           XMonad.Layout.Reflect
 import           XMonad.Layout.ResizableTile
 import           XMonad.Layout.SimpleDecoration   hiding (urgentColor)
 import           XMonad.Layout.Spacing            (smartSpacing)
-import           XMonad.Layout.Spacing
 import           XMonad.Layout.ToggleLayouts
 import           XMonad.Layout.MultiToggle.Instances
 
@@ -49,10 +51,11 @@ defaultMain = do
 -- GnomeConfig works out of the box!
 gnomeMain = xmonad $ gnomeConfig {
         layoutHook         = myLayoutHook
-      ,  manageHook         = myManageHook
+      , manageHook         = myManageHook
       , modMask            = mod4Mask
       , terminal           = myTerm
       , workspaces         = myWorkspaces
+      , logHook            = historyHook
       , borderWidth        = myBorderWidth
       , focusedBorderColor = blue
       , normalBorderColor  = color0
@@ -289,13 +292,24 @@ myGnomeKeys =
     ((mod4Mask, xK_m),               selectWorkspace myXPConfig)
   , ((mod4Mask .|. shiftMask, xK_m), workspacePrompt myXPConfig (windows . W.shift))
 
+  -- moving forward/backward between windows
+  -- TODO: remap xK_O instead of xk_u
+  , ((mod4Mask , xK_i), nextMatch Forward (return True))
+  , ((mod4Mask, xK_u), nextMatch History (return True))
+  -- , ((mod4Mask, xK_i), nextMatch Forward (return True))
+
+  , ((mod4Mask .|. shiftMask, xK_g), windowPrompt myXPConfig Goto wsWindows)
+
+  -- Run in Shell
+  , ((mod4Mask, xK_r),               shellPrompt myXPConfig)
+
   -- Screensaver
   , ((mod4Mask, xK_Escape), spawn "gnome-screensaver-command -l")
 
   -- PassMenu
   -- TODO: add a preview mode as well
-  , ((mod4Mask .|. shiftMask, xK_p), spawn passmenuRunCmd)
-  , ((mod4Mask .|. shiftMask, xK_i), passPrompt myXPConfig)
+  -- , ((mod4Mask .|. shiftMask, xK_p), spawn passmenuRunCmd)
+  , ((mod4Mask .|. shiftMask, xK_p), passPrompt myXPConfig)
 
   -- Clipmenu
   , ((mod4Mask, xK_y), spawn clipmenuRunCmd)
