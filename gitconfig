@@ -1,6 +1,7 @@
 [user]
-	email = chouffe.caillau@gmail.com
+	email = arthur@caillau.me
 	name = Chouffe
+	signingkey = FEF6AA450D2F807B
 [core]
 	editor = nvim
 	excludesfile = ~/.gitignore
@@ -34,3 +35,5 @@
 	enabled = 1
 [help]
 	autocorrect = 1
+[commit]
+	gpgsign = true
