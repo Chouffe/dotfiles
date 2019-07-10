@@ -679,7 +679,7 @@ Plug 'wlangstroth/vim-racket', { 'for' : 'racket' }
 " }}}
 
 " Clojure {{{
-Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'tpope/vim-fireplace', { 'for': 'clojure', 'tag': 'v1.2' }
 Plug 'tpope/vim-classpath', { 'for': 'clojure' }
 " Plug 'honza/vim-clojure-conceal', { 'for' : 'clojure' }
 Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme'] }
