@@ -61,7 +61,8 @@ source $ZSH/oh-my-zsh.sh
 
 # Virtualenvwrapper
 # source /usr/local/bin/virtualenvwrapper.sh
-source ~/.local/bin/virtualenvwrapper.sh
+# source ~/.local/bin/virtualenvwrapper.sh
+source /usr/local/bin/virtualenvwrapper.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -110,4 +111,4 @@ RPROMPT=""
 [ -f /home/chouffe/.travis/travis.sh ] && source /home/chouffe/.travis/travis.sh
 
 # kubectl autocompletion
-source <(kubectl completion zsh)
+# source <(kubectl completion zsh)
