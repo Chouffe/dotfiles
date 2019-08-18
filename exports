@@ -42,8 +42,9 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 export WORKON_HOME=$HOME/.virtualenvs
 export PROJECT_HOME=$HOME/Devel
 # export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python
-export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python
-export VIRTUALENVWRAPPER_VIRTUALENV=~/.local/bin/virtualenv
+export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
+# export VIRTUALENVWRAPPER_VIRTUALENV=~/.local/bin/virtualenv
+export VIRTUALENVWRAPPER_VIRTUALENV=/usr/bin/virtualenv
 export VIRTUALENVWRAPPER_VIRTUALENV_ARGS='--no-site-packages'
 
 # nvm
@@ -53,4 +54,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # GPG
-export GPGKEY=2F2ED8D6E84B4064E7353E4AFCCE290A00D47682
+export KEYID=0x397F35B12DB2DDA7
+
+# Use gpg-agent as my ssh-agent
+export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
