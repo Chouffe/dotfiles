@@ -30,6 +30,8 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-obsession'
 " The fancy start screen for Vim
 Plug 'mhinz/vim-startify'
+" Modern database interface for Vim
+" Plug 'tpope/vim-dadbod'
 
 " vim-easy-align {{{
 " align with ease
@@ -171,6 +173,10 @@ endfunction
 Plug 'haya14busa/incsearch.vim'
 " provides improved * motions
 Plug 'haya14busa/vim-asterisk'
+" Provide yanking highlighting feedback
+if has('nvim')
+  Plug 'machakann/vim-highlightedyank'
+endif
 
 " Some utility functions for vim
 Plug 'tomtom/tlib_vim'
@@ -180,10 +186,10 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 " combination
 
 " vim-expand-region {{{
-Plug 'terryma/vim-expand-region'
+" Plug 'terryma/vim-expand-region'
 
-vmap v <Plug>(expand_region_expand)
-vmap <C-V> <Plug>(expand_region_shrink)
+" vmap v <Plug>(expand_region_expand)
+" vmap <C-V> <Plug>(expand_region_shrink)
 " }}}
 
 " Rainbow Parentheses {{{
@@ -313,7 +319,7 @@ Plug 'wellle/tmux-complete.vim'
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for' : ['javascript'] }
 " nrepl Python Client needs to be installed
 " https://github.com/clojure-vim/async-clj-omni
-Plug 'clojure-vim/async-clj-omni', { 'for' : ['clojure'] }
+" Plug 'clojure-vim/async-clj-omni', { 'for' : ['clojure'] }
 Plug 'fishbullet/deoplete-ruby', { 'for' : ['ruby'] }
 Plug 'Shougo/deoplete-rct', { 'for' : ['ruby'] }
 " Plug 'zchee/deoplete-jedi', { 'for' : ['python'] }
@@ -444,6 +450,7 @@ nmap # <Plug>(anzu-sharp-with-echo)
 
 " Git {{{
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rhubarb'
 Plug 'airblade/vim-gitgutter'
 Plug 'lambdalisue/vim-gita'
 
@@ -679,7 +686,7 @@ Plug 'wlangstroth/vim-racket', { 'for' : 'racket' }
 " }}}
 
 " Clojure {{{
-Plug 'tpope/vim-fireplace', { 'for': 'clojure', 'tag': 'v1.2' }
+Plug 'tpope/vim-fireplace', { 'for': 'clojure', 'tag': 'v2.0' }
 Plug 'tpope/vim-classpath', { 'for': 'clojure' }
 " Plug 'honza/vim-clojure-conceal', { 'for' : 'clojure' }
 Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme'] }
@@ -699,7 +706,8 @@ Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
 Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
 " Parinfer - requirement: rust and cargo installed
 " https://www.rust-lang.org/tools/install and add bin path to $PATH
-" Plug 'eraserhd/parinfer-rust', { 'do': 'cargo build --release', 'for': 'clojure' }
+Plug 'eraserhd/parinfer-rust', { 'do': 'cargo build --release', 'for': 'clojure' }
+" Plug 'bhurlow/vim-parinfer', { 'for': 'clojure', 'tag': 'v1.0.0' }
 
 let g:vimclojure#HighlightBuiltins=1
 let g:vimclojure#ParenRainbow=1
@@ -712,6 +720,7 @@ let g:clojure_fuzzy_indent_blacklist = ['-fn$', '\v^with-%(meta|out-str|loading-
 let g:clj_fmt_autosave = 1
 
 let g:sexp_insert_after_wrap = 0 " Disable insertion after wrapping
+let g:sexp_enable_insert_mode_mappings = 0 " Make sure vim-sexp plays nicely with parinfer
 " }}}
 
 " Purescript {{{
@@ -863,9 +872,10 @@ set foldnestmax=10    " 10 nested folds max
 " }}}
 
 " Searching {{{
-set ignorecase  " ignore case when using a search pattern
-set incsearch   " Highlight pattern matches as you type
-set hlsearch    " Highlight the search results
+set ignorecase         " ignore case when using a search pattern
+set incsearch          " Highlight pattern matches as you type
+set inccommand=nosplit " Live substitution in neovim only
+set hlsearch           " Highlight the search results
 " }}}
 
 " Movement {{{
@@ -894,7 +904,7 @@ nnoremap <M-j> :m .+1<CR>==
 nnoremap <M-k> :m .-2<CR>==
 " }}}
 " Visual block mode {{{
-nnoremap q <c-V>
+" nnoremap q <c-V>
 " }}}
 " Visual Mode {{{
 vnoremap < <gv
@@ -1240,13 +1250,23 @@ endfunction
 
 " Language specific settings {{{
 function! ClojureSettings()
-  " Mapping
+  " Vim Fireplace Mapping
   nnoremap cq :Require!<CR>
   nnoremap cr :Require<CR>
   nnoremap ce :Eval<CR>
   nnoremap cc :%Eval<CR>
   nnoremap cl :Last<CR>
-  nnoremap cf :setf clojure<CR>
+  " nnoremap ct :setf clojure<CR>
+  nnoremap cf <Plug>FireplacePrint<Plug>(sexp_outer_list)``
+  nnoremap cF <Plug>FireplacePrint<Plug>(sexp_outer_top_list)``
+  nnoremap ce <Plug>FireplacePrint<Plug>(sexp_inner_element)``
+  "   From vim-sexp doc :h vim-sexp
+  "   Use the FireplacePrint operator from fireplace.vim [2] to evaluate
+  "   the current top-level compound form, compound form, or element
+  "   without moving the cursor.
+  " nmap <Leader>F <Plug>FireplacePrint<Plug>(sexp_outer_top_list)``
+  " nmap <Leader>f <Plug>FireplacePrint<Plug>(sexp_outer_list)``
+  " nmap <Leader>e <Plug>FireplacePrint<Plug>(sexp_inner_element)``
 endfunction
 
 function! SexpSettings()
@@ -1369,7 +1389,7 @@ endif
 " Mappings {{{
 nnoremap <silent><C-p> :FZF<CR>
 nnoremap <silent><C-f> :Unite -buffer-name=search line:all -start-insert<CR>
-nnoremap <silent> <Leader>ag :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>g :Ag <C-R><C-W><CR>
 nnoremap <silent><C-q> :Ag <C-R><C-W><CR>
 nnoremap <silent><C-s> :<C-u>Unite neosnippet -start-insert<CR>
 nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
@@ -1383,6 +1403,12 @@ nnoremap <silent><M-o> :FZFLines<CR>
 nnoremap <silent><M-m> :FZFMarks<CR>
 nnoremap <silent><M-/> :Unite anzu -no-start-insert<CR>
 nnoremap <silent><C-/> :Unite anzu -no-start-insert<CR>
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
 " FZF MRU: https://github.com/tweekmonster/fzf-filemru
 " Seems broken and does not output MRUs...
 " nnoremap <C-b> :FilesMru --tiebreak=end<CR>
