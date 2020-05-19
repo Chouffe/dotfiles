@@ -52,7 +52,7 @@ unset file;
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git lein autojump sudo tmux jsontools python cabal)
 # virtualenvwrapper
-plugins=(pass docker git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew catimg web-search zsh-autosuggestions zsh-syntax-highlighting dotenv)
+plugins=(aws pass docker git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew web-search zsh-autosuggestions zsh-syntax-highlighting dotenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -62,7 +62,7 @@ source $ZSH/oh-my-zsh.sh
 # Virtualenvwrapper
 # source /usr/local/bin/virtualenvwrapper.sh
 # source ~/.local/bin/virtualenvwrapper.sh
-source /usr/local/bin/virtualenvwrapper.sh
+# source /usr/local/bin/virtualenvwrapper.sh
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -72,6 +72,9 @@ source /usr/local/bin/virtualenvwrapper.sh
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+export FZF_COMPLETION_TRIGGER=''
+bindkey '^T' fzf-completion
+bindkey '^I' $fzf_default_completion
 
 ### Added by the Heroku Toolbelt
 # export PATH="/usr/local/heroku/bin:$PATH"
@@ -93,22 +96,48 @@ fi
 #so as not to be disturbed by Ctrl-S ctrl-Q in terminals:
 stty -ixon
 
-# Loads nvm
-# Very very slow bash
-# alias `loadnvm` in .aliases used instead: https://github.com/robbyrussell/oh-my-zsh/issues/5327
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Syntax Highlighting
-# source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 # Right Prompt
 # RPROMPT="$FG[013]%D{%H:%M}%{$reset_color%}$FG[015] %D{»} %{$reset_color%}$FG[014]%D{%m/%d}%{$reset_color%}"
 RPROMPT=""
 
 # added by travis gem
-[ -f /home/chouffe/.travis/travis.sh ] && source /home/chouffe/.travis/travis.sh
+# [ -f /home/chouffe/.travis/travis.sh ] && source /home/chouffe/.travis/travis.sh
 
 # kubectl autocompletion
 # source <(kubectl completion zsh)
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+# [[ -f /home/chouffe/udemy/aws/lambda/node_modules/tabtab/.completions/serverless.zsh ]] && . /home/chouffe/udemy/aws/lambda/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+# [[ -f /home/chouffe/udemy/aws/lambda/node_modules/tabtab/.completions/sls.zsh ]] && . /home/chouffe/udemy/aws/lambda/node_modules/tabtab/.completions/sls.zsh
+# tabtab source for slss package
+# uninstall by removing these lines or running `tabtab uninstall slss`
+# [[ -f /home/chouffe/udemy/aws/lambda/node_modules/tabtab/.completions/slss.zsh ]] && . /home/chouffe/udemy/aws/lambda/node_modules/tabtab/.completions/slss.zsh
+#
+#
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/chouffe/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/chouffe/anaconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/chouffe/anaconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/chouffe/anaconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+#
+
+# Fix Ctrl-U
+bindkey \^U backward-kill-line
+# Fix Ctrl-W
+# backward-kill-dir () {
+#     local WORDCHARS=${WORDCHARS/\/}
+#     zle backward-kill-word
+# }
+# zle -N backward-kill-dir
