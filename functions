@@ -12,7 +12,7 @@ tree -aC -I '.git|node_modules|bower_components' --dirsfirst "$@" | less -FRNX;
 function fzf-git-branches() { git branch | fzf-tmux -d 15; }
 
 # with ag - respects .agignore and .gitignore
-function agi() { ag --nobreak --nonumbers --noheading . | fzf; }
+function agi() { ag --nobreak --nonumbers --noheading . | fzf --multi | cut -d : -f 1 | xargs vim; }
 
 # Syntax-highlight JSON strings or files
 function json() {
@@ -103,9 +103,9 @@ ghpr() {
   git push --set-upstream origin $(git symbolic-ref --short HEAD) && xdg-open $(ghprurl)
 }
 
-gh() {
-  xdg-open $(ghurl)
-}
+# gh() {
+#   xdg-open $(ghurl)
+# }
 
 # ---
 # Git
@@ -188,11 +188,13 @@ fstash() {
 dual () {
     # xrandr --auto --output HDMI-1 --mode 1366x768 --right-of eDP-1 --primary
     xrandr --auto --output HDMI-1 --mode 1920x1080 --right-of eDP-1 --primary
+    # xrandr --auto --output HDMI-1 --mode 3840x2160 --right-of eDP-1 --primary
 }
 
 # set single monitor
 single () {
-    xrandr --output eDP-1 --off
+    # xrandr --auto --output HDMI-1 --mode 1920x1080
+    xrandr --auto --output HDMI-1 --mode 3840x2160 --output eDP-1 --off
 }
 
 # set laptop monitor only
