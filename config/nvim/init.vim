@@ -186,10 +186,10 @@ Plug 'MarcWeber/vim-addon-mw-utils'
 " combination
 
 " vim-expand-region {{{
-" Plug 'terryma/vim-expand-region'
+Plug 'terryma/vim-expand-region'
 
-" vmap v <Plug>(expand_region_expand)
-" vmap <C-V> <Plug>(expand_region_shrink)
+vmap v <Plug>(expand_region_expand)
+vmap <C-V> <Plug>(expand_region_shrink)
 " }}}
 
 " Rainbow Parentheses {{{
@@ -250,19 +250,23 @@ let g:SignatureMarkerTextHL=1
 " Graph your Vim undo tree in style.
 Plug 'sjl/gundo.vim'
 
-" Vimfiler {{{
-Plug 'Shougo/vimfiler.vim'
+" NerdTree {{{
+Plug 'preservim/nerdtree'
+" }}}
 
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_tree_leaf_icon = " "
-let g:vimfiler_tree_opened_icon = '▾'
-let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_file_icon = '-'
-let g:vimfiler_marked_file_icon = '✓'
-let g:vimfiler_readonly_file_icon = '✗'
-let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
-let g:vimfiler_expand_jump_to_first_child = 1
+" Vimfiler {{{
+" Plug 'Shougo/vimfiler.vim'
+
+" let g:vimfiler_as_default_explorer = 1
+" let g:vimfiler_safe_mode_by_default = 0
+" let g:vimfiler_tree_leaf_icon = " "
+" let g:vimfiler_tree_opened_icon = '▾'
+" let g:vimfiler_tree_closed_icon = '▸'
+" let g:vimfiler_file_icon = '-'
+" let g:vimfiler_marked_file_icon = '✓'
+" let g:vimfiler_readonly_file_icon = '✗'
+" let g:vimfiler_time_format = '%m-%d-%y %H:%M:%S'
+" let g:vimfiler_expand_jump_to_first_child = 1
 " }}}
 
 
@@ -274,7 +278,7 @@ Plug 'junegunn/limelight.vim'
 " Neomake {{{
 Plug 'neomake/neomake'
 
-let g:neomake_open_list = 0        " Conserves the cursor position + open the quickfix
+let g:neomake_open_list = 1        " Conserves the cursor position + open the quickfix
 let g:neomake_highlight_lines = 1
 let g:neomake_haskell_enabled_makers = ['hlint']
 let g:neomake_javascript_enabled_makers = ['eslint']
@@ -301,52 +305,52 @@ imap <C-s>  <Plug>(neosnippet_start_unite_snippet)
 " }}}
 
 " Neoformat {{{
-Plug 'sbdchd/neoformat'
+" Plug 'sbdchd/neoformat'
 
-nnoremap <silent><Leader>f :Neoformat<CR>
+" nnoremap <silent><Leader>f :Neoformat<CR>
 " }}}
 
 " Deoplete {{{
 " Dark powered asynchronous completion framework for neovim
-function! DoRemote(arg)
-  UpdateRemotePlugins
-endfunction
+" function! DoRemote(arg)
+"   UpdateRemotePlugins
+" endfunction
 
-Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
-Plug 'Shougo/neoinclude.vim'
-Plug 'Shougo/neco-vim'
-Plug 'wellle/tmux-complete.vim'
-Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for' : ['javascript'] }
-" nrepl Python Client needs to be installed
-" https://github.com/clojure-vim/async-clj-omni
-" Plug 'clojure-vim/async-clj-omni', { 'for' : ['clojure'] }
-Plug 'fishbullet/deoplete-ruby', { 'for' : ['ruby'] }
-Plug 'Shougo/deoplete-rct', { 'for' : ['ruby'] }
-" Plug 'zchee/deoplete-jedi', { 'for' : ['python'] }
-" intellij completion: https://github.com/vhakulinen/neovim-intellij-complete
+" Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+" Plug 'Shougo/neoinclude.vim'
+" Plug 'Shougo/neco-vim'
+" Plug 'wellle/tmux-complete.vim'
+" Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern', 'for' : ['javascript'] }
+" " nrepl Python Client needs to be installed
+" " https://github.com/clojure-vim/async-clj-omni
+" " Plug 'clojure-vim/async-clj-omni', { 'for' : ['clojure'] }
+" Plug 'fishbullet/deoplete-ruby', { 'for' : ['ruby'] }
+" Plug 'Shougo/deoplete-rct', { 'for' : ['ruby'] }
+" " Plug 'zchee/deoplete-jedi', { 'for' : ['python'] }
+" " intellij completion: https://github.com/vhakulinen/neovim-intellij-complete
 
-" Make sure the autocompletion will actually trigger using the omnifuncs
-" https://www.gregjs.com/vim/2016/configuring-the-deoplete-asynchronous-keyword-completion-plugin-with-tern-for-vim/
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
+" " Make sure the autocompletion will actually trigger using the omnifuncs
+" " https://www.gregjs.com/vim/2016/configuring-the-deoplete-asynchronous-keyword-completion-plugin-with-tern-for-vim/
+" if !exists('g:deoplete#omni#input_patterns')
+"   let g:deoplete#omni#input_patterns = {}
+" endif
 
-if !exists('g:deoplete#sources')
-  let g:deoplete#sources = {}
-endif
+" if !exists('g:deoplete#sources')
+"   let g:deoplete#sources = {}
+" endif
 
 " Automatically closing the scratch window
-autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+" autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
 
-" Deoplete tab-complete
-inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
+" " Deoplete tab-complete
+" inoremap <silent><expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" inoremap <silent><expr><s-tab> pumvisible() ? "\<c-p>" : "\<s-tab>"
 
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#keyword_patterns = {}
-let g:deoplete#omni_patterns = {}
-let g:deoplete#omni_patterns.scala='[^. *\t]\.\w*'
-let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.#]*'
+" let g:deoplete#enable_at_startup = 1
+" let g:deoplete#keyword_patterns = {}
+" let g:deoplete#omni_patterns = {}
+" let g:deoplete#omni_patterns.scala='[^. *\t]\.\w*'
+" let g:deoplete#keyword_patterns.clojure='[\w!$%&*+/:<=>?@\^_~\-\.#]*'
 " let g:deoplete#sources._ = ['buffer', 'tag']
 
 " Tern {{{
@@ -456,8 +460,10 @@ Plug 'lambdalisue/vim-gita'
 
 nnoremap <Leader>gc :Gcommit<CR>
 nnoremap <Leader>gb :Gblame<CR>
-nnoremap <Leader>gl :Glog<CR>
-nnoremap <Leader>gp :Gpush<CR>
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gl :Glog -1000<CR>
+nnoremap <Leader>ggp :Gpush<CR>
+nnoremap <Leader>ggl :Gpull<CR>
 " }}}
 
 " lean & mean status/tabline for vim that's light as air
@@ -686,7 +692,7 @@ Plug 'wlangstroth/vim-racket', { 'for' : 'racket' }
 " }}}
 
 " Clojure {{{
-Plug 'tpope/vim-fireplace', { 'for': 'clojure', 'tag': 'v2.0' }
+Plug 'tpope/vim-fireplace', { 'for': 'clojure', 'tag': 'v2.1' }
 Plug 'tpope/vim-classpath', { 'for': 'clojure' }
 " Plug 'honza/vim-clojure-conceal', { 'for' : 'clojure' }
 Plug 'guns/vim-sexp', { 'for': ['clojure', 'scheme'] }
@@ -702,7 +708,7 @@ Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
 " static support for Leiningen and Boot
 Plug 'tpope/vim-salve', { 'for': 'clojure' }
 " the Clojure formatting tool.
-Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
+" Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
 Plug 'venantius/vim-eastwood', { 'for': 'clojure' }
 " Parinfer - requirement: rust and cargo installed
 " https://www.rust-lang.org/tools/install and add bin path to $PATH
@@ -988,7 +994,8 @@ nnoremap <leader>ez :edit ~/.zshrc<CR>
 nnoremap <leader>et :edit ~/.tmux.conf<CR>
 " Scroll Off
 nnoremap <Leader>zz :let &scrolloff=999-&scrolloff<CR>
-nnoremap <silent><Leader>t :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -auto-expand -toggle -no-quit<CR>
+" nnoremap <silent><Leader>t :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -auto-expand -toggle -no-quit<CR>
+nnoremap <silent><Leader>t :<C-u>NERDTreeToggle<CR>
 " Spell checking
 nnoremap <silent> <leader>s :set spell!<CR>
 " Numbers
@@ -1033,22 +1040,22 @@ if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC
 endif
 
-augroup VIMFILER
-  autocmd!
+"augroup VIMFILER
+"  autocmd!
 
-  "Config file: https://gist.github.com/mattjmorrison/6c2fff20f969237fb9fa
-  autocmd FileType vimfiler nunmap <buffer> <C-j>
-  autocmd FileType vimfiler nunmap <buffer> <C-l>
-  autocmd FileType vimfiler nmap <buffer><Leader>t :q<CR>
-  autocmd FileType vimfiler nmap <silent><buffer><expr> v vimfiler#do_switch_action('vsplit')
-  autocmd FileType vimfiler nmap <silent><buffer><expr> s vimfiler#do_switch_action('split')
-  autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
-  autocmd FileType vimfiler vmap <buffer> x <Plug>(vimfiler_toggle_mark_selected_lines)
-  autocmd FileType vimfiler nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
-  autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
-        \ "\<Plug>(vimfiler_expand_tree)",
-        \ "\<Plug>(vimfiler_edit_file)")
-augroup END
+"  "Config file: https://gist.github.com/mattjmorrison/6c2fff20f969237fb9fa
+"  autocmd FileType vimfiler nunmap <buffer> <C-j>
+"  autocmd FileType vimfiler nunmap <buffer> <C-l>
+"  autocmd FileType vimfiler nmap <buffer><Leader>t :q<CR>
+"  autocmd FileType vimfiler nmap <silent><buffer><expr> v vimfiler#do_switch_action('vsplit')
+"  autocmd FileType vimfiler nmap <silent><buffer><expr> s vimfiler#do_switch_action('split')
+"  autocmd FileType vimfiler nmap <buffer> x <Plug>(vimfiler_toggle_mark_current_line)
+"  autocmd FileType vimfiler vmap <buffer> x <Plug>(vimfiler_toggle_mark_selected_lines)
+"  autocmd FileType vimfiler nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
+"  autocmd FileType vimfiler nmap <silent><buffer><expr> <CR> vimfiler#smart_cursor_map(
+"        \ "\<Plug>(vimfiler_expand_tree)",
+"        \ "\<Plug>(vimfiler_edit_file)")
+"augroup END
 
 augroup OMNIFUNCS
   autocmd!
@@ -1110,6 +1117,9 @@ augroup HASKELLSTYLISH
   au FileType haskell nnoremap <leader>hf :call HaskellFormat('both')<CR>
 augroup END
 
+augroup BASH
+  autocmd! BufwritePost *.sh Neomake
+augroup END
 
 augroup HASKELL
   autocmd!
@@ -1199,7 +1209,7 @@ augroup END
 
 augroup PYTHON
   autocmd!
-  autocmd BufEnter *.py let g:deoplete#ignore_sources.python = ['omni']
+  " autocmd BufEnter *.py let g:deoplete#ignore_sources.python = ['omni']
   autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
   autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()
 augroup END
@@ -1221,6 +1231,7 @@ augroup END
 augroup CLJS
   autocmd!
   autocmd BufNewFile,BufRead,BufReadPost *.cljs call SexpSettings()
+  autocmd BufNewFile,BufRead,BufReadPost *.cljs call ClojureSettings()
   autocmd BufEnter *.cljs setlocal iskeyword+=?,-,*,!,+,/,=,<,>,.,:
   " command! Figwheel :Piggieback! (do (require 'figwheel-sidecar.repl-api) (figwheel-sidecar.repl-api/cljs-repl))
 augroup END
@@ -1250,6 +1261,8 @@ endfunction
 
 " Language specific settings {{{
 function! ClojureSettings()
+  nnoremap cia :ParinferOn<CR>
+  nnoremap cid :ParinferOff<CR>
   " Vim Fireplace Mapping
   nnoremap cq :Require!<CR>
   nnoremap cr :Require<CR>
@@ -1259,7 +1272,7 @@ function! ClojureSettings()
   " nnoremap ct :setf clojure<CR>
   nnoremap cf <Plug>FireplacePrint<Plug>(sexp_outer_list)``
   nnoremap cF <Plug>FireplacePrint<Plug>(sexp_outer_top_list)``
-  nnoremap ce <Plug>FireplacePrint<Plug>(sexp_inner_element)``
+  " nnoremap ce <Plug>FireplacePrint<Plug>(sexp_inner_element)``
   "   From vim-sexp doc :h vim-sexp
   "   Use the FireplacePrint operator from fireplace.vim [2] to evaluate
   "   the current top-level compound form, compound form, or element
@@ -1389,12 +1402,15 @@ endif
 " Mappings {{{
 nnoremap <silent><C-p> :FZF<CR>
 nnoremap <silent><C-f> :Unite -buffer-name=search line:all -start-insert<CR>
-nnoremap <silent> <Leader>g :Ag <C-R><C-W><CR>
-nnoremap <silent><C-q> :Ag <C-R><C-W><CR>
+nnoremap <silent> <Leader>a :FZFRg <C-R><C-W><CR>
+nnoremap <silent> <Leader>: :FZFHistory:<CR>
+nnoremap <silent> <Leader>/ :FZFHistory/<CR>
+nnoremap <silent><C-q> :FZFRg <C-R><C-W><CR>
 nnoremap <silent><C-s> :<C-u>Unite neosnippet -start-insert<CR>
 nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
-nnoremap <silent><M-g> :FZFAg<CR>'
-nnoremap <silent><M-p> :FZF<CR>
+" nnoremap <silent><M-g> :FZFAg<CR>'
+nnoremap <silent><M-g> :FZFRg<CR>'
+nnoremap <silent><M-p> :FZFFiles<CR>
 nnoremap <silent><C-b> :FZFBuffers<CR>
 nnoremap <silent><M-b> :FZFBuffers<CR>
 nnoremap <silent><M-t> :Unite -buffer-name=tags tag -start-insert<CR>
