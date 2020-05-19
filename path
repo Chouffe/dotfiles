@@ -18,7 +18,7 @@ PREPAND_PATH=$PREPAND_PATH:/usr/local/go/bin
 PREPAND_PATH=$PREPAND_PATH:~/.cargo/bin
 
 # Anaconda PATH
-PREPAND_PATH=$PREPAND_PATH:~/anaconda3/bin
+# PREPAND_PATH=$PREPAND_PATH:~/anaconda3/bin
 
 # Ruby dev
 # PREPAND_PATH=$PREPAND_PATH:~/.gem/ruby/2.0.0/bin
