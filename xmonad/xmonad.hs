@@ -215,6 +215,7 @@ myLogHook h =
     , ppSep             = "<fc=" ++ color8 ++ ">|</fc>"
     }
     -- Follow mouse to selected buffer
+    -- FIXME
     >> updatePointer (0.5, 0.5) (0.5,0.5)
 
 myLayoutPrinter :: String -> String
