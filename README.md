@@ -12,7 +12,6 @@
 * Pi Hole
 * Mac Address Randomization: macchanger
 
-
 ## Package Management
 
 * Nix
@@ -44,7 +43,9 @@
 * wget
 * curl
 * git
+  * git-extras
 * tig
+* bat
 * htop
 * vtop
 * iotop
