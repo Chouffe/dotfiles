@@ -86,6 +86,7 @@
   * feh
 * Rest Client
   * jq
+  * jet
 * Sound
   * pavucontrol
 * Disk Encrytpion
@@ -93,6 +94,8 @@
 * Gif Screen Recorder
   * Peek
 * Environment Variable management: dotenv with oh my zsh plugin
+* tldr
+* httpie
 
 ## Password manager
 
