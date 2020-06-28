@@ -4,6 +4,10 @@ set -g pane-border-fg black
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
 ZSH_THEME="af-magic"
+# ZSH_THEME="norm"
+# ZSH_THEME="alanpeabody"
+# ZSH_THEME="aussiegeek"
+# ZSH_THEME="Soliah"
 
 # Load the shell dotfiles, and then some:
 # * ~/.path can be used to extend `$PATH`.
@@ -52,7 +56,8 @@ unset file;
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # plugins=(git lein autojump sudo tmux jsontools python cabal)
 # virtualenvwrapper
-plugins=(aws pass docker git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew web-search zsh-autosuggestions zsh-syntax-highlighting dotenv)
+# plugins=(aws pass docker git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew web-search zsh-autosuggestions zsh-syntax-highlighting dotenv)
+plugins=(aws pass docker git gitfast git-extras tig fasd extract lein sudo tmux jsontools python cabal brew web-search zsh-autosuggestions zsh-syntax-highlighting)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -119,7 +124,7 @@ RPROMPT=""
 #
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/chouffe/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/chouffe/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
@@ -141,3 +146,6 @@ bindkey \^U backward-kill-line
 #     zle backward-kill-word
 # }
 # zle -N backward-kill-dir
+
+# direnv hook
+eval "$(direnv hook zsh)"
