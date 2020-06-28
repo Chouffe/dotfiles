@@ -93,7 +93,8 @@
   * [tomb](https://github.com/dyne/Tomb/blob/master/INSTALL.md)
 * Gif Screen Recorder
   * Peek
-* Environment Variable management: dotenv with oh my zsh plugin
+* Environment Variable management:
+  * direnv
 * tldr
 * httpie
 
