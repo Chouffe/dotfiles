@@ -836,6 +836,8 @@ endif
 set background=dark
 colorscheme gruvbox              " Awesome colorscheme
 " colorscheme hybrid_material      " Awesome colorscheme
+" Make the background color transparent
+hi Normal guibg=NONE ctermbg=NONE
 set cursorline                   " Highlight the line you are on
 set cursorline cursorcolumn      " Highlights the column you are in
 highlight clear SignColumn
