@@ -11,6 +11,7 @@ Session.vim
 tags
 .ctags
 .env
+.envrc
 ajunk/
 .gitconfig
 .git/
