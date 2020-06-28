@@ -242,3 +242,8 @@ pomo () {
     && zenity --warning --text="Pomodoro: Start" --width=200 > /dev/null 2>&1 \
     && pomo $work_time $chill_time
 }
+
+pwgen(){
+  n=${1:-10}
+  </dev/urandom tr -dc '12345!@#$%qwertQWERTasdfgASDFGzxcvbZXCVB' | head -c"${n}"; echo ""
+}
