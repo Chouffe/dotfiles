@@ -59,7 +59,7 @@ alias -g P="2>&1| pygmentize -l pytb"
 
 alias dud='du -d 1 -h'
 alias duf='du -sh *'
-alias fd='find . -type d -name'
+# alias fd='find . -type d -name'
 alias ff='find . -type f -name'
 
 # Static Webserver
@@ -93,3 +93,6 @@ alias ghci='stack exec -- ghci'
 # alias loadnvm=\."$NVM_DIR/nvm.sh" && \. "$NVM_DIR/bash_completion"
 
 alias glances='docker run --rm -v /var/run/docker.sock:/var/run/docker.sock:ro --pid host --network host -it docker.io/nicolargo/glances'
+
+# Dev pitch
+# alias awss='aws-vault --backend=pass exec -m `ykman oath code --single AWS_test` --no-session pitch_admin -- aws'
