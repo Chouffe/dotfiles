@@ -247,3 +247,70 @@ pwgen(){
   n=${1:-10}
   </dev/urandom tr -dc '12345!@#$%qwertQWERTasdfgASDFGzxcvbZXCVB' | head -c"${n}"; echo ""
 }
+
+# AWS SSM
+
+# function aws-ssm-instance-list {
+#   output=$(aws ssm describe-instance-information --profile $AWS_PROFILE --query "InstanceInformationList[*].{Name:ComputerName,Id:InstanceId,IPAddress:IPAddress}" --output text)
+#   echo "$output"
+# }
+
+# function aws-ssm-menu {
+#   printf "List of instances for $AWS_PROFILE:\n\n"
+#   instance_list_output=$(aws-ssm-instance-list $AWS_PROFILE)
+#   IFS=$'\n'
+#   instance_list=($instance_list_output)
+#   unset IFS
+#   for i in "${!instance_list[@]}"; do
+#     printf "%s) %s\n" "$i" "${instance_list[$i]}"
+#   done
+#   printf "\nSelect an instance from the list above: "
+#   IFS= read -r opt
+#   if [[ $opt =~ ^[0-9]+$ ]] && (( (opt >= 0) && (opt < "${#instance_list[@]}") )); then
+#     return $opt
+#   else
+#     printf 'invalid option\n'
+#     return -1
+#   fi
+# }
+
+# function aws-scp {
+#   if [ "$#" -lt 1 ]; then
+#     echo "Usage: aws-scp <scp parameters>"
+#   else
+#     scp -o ProxyCommand="bash -c \"aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile $AWS_PROFILE\"" ${@:1}
+#   fi
+# }
+
+# function aws-ssh {
+#   if [ "$#" -lt 1 ]; then
+#     echo "Usage: aws-ssh <ssh parameters>"
+#   else
+#     ssh ${@:1} -o ProxyCommand="bash -c \"aws ssm start-session --target %h --document-name AWS-StartSSHSession --parameters 'portNumber=%p' --profile $AWS_PROFILE\""
+#   fi
+# }
+
+# function aws-ssm-session {
+#   if [ "$#" -lt 1 ]; then
+#     echo "Usage: aws-ssm-session <instance_id>"
+#   else
+#     aws ssm start-session --target $1 --profile $AWS_PROFILE
+#   fi
+# }
+
+# function aws-session-interactive {
+#   if [ "$#" -lt 1 ]; then
+#     echo "Usage: aws-ssh-interactive <profile name>"
+#   else
+#     aws-ssm-menu $1
+#     choice=$?
+#     if [ $choice -ne 255 ] ; then
+#       instance_id=$(echo "${instance_list[$choice]}"| awk {'print $2'})
+#       aws-ssm-session $1 $instance_id
+#     fi
+#   fi
+# }
+
+function yaml-valid {
+  cat $1 | python -c 'import yaml, sys; yaml.safe_load(sys.stdin)'
+}
