@@ -282,7 +282,7 @@ let g:neomake_open_list = 1        " Conserves the cursor position + open the qu
 let g:neomake_highlight_lines = 1
 let g:neomake_haskell_enabled_makers = ['hlint']
 let g:neomake_javascript_enabled_makers = ['eslint']
-let g:neomake_enabled_makers=-1
+let g:neomake_python_enabled_makers = ['flake8']
 " }}}
 
 " Snippets {{{
@@ -418,7 +418,7 @@ elseif executable('pt')
 endif
 
 " Closes/Reopens Last Unit Buffer
-nnoremap <silent> <C-g> :UniteClose<CR>
+" nnoremap <silent> <C-g> :UniteClose<CR>
 nnoremap <silent> <C-x> :UniteResume -no-start-insert<CR>
 
 function! s:unite_my_settings()
@@ -624,38 +624,41 @@ nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " -------------------------
 
 " Python {{{
+Plug 'davidhalter/jedi-vim', { 'for': 'python' }
+Plug 'numirias/semshi', { 'for': 'python', 'do': ':UpdateRemotePlugins' }
+Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
 " Plug 'julienr/vimux-pyutils', {'for': 'python' }
 " Plug 'benmills/vimux'
 " Plug 'klen/python-mode', { 'for': 'python' }
 
-let g:pymode=1
-" Enable default options
-" text-width, commentstring, ...
-let g:pymode_options=0
-" Python version (python 2 -> vim needs to be compiled with the
-" appropriate flags
-let g:pymode_python='python'
-" Motion
-" M: Method
-" C: Class
-let g:pymode_motion=1
-" Documentation
-let g:pymode_doc=1
-let g:pymode_doc_key='K'
-" Run code
-let g:pymode_run=1
-let g:pymode_run_bind='cr'
-" Linting
-let g:pymode_lint = 1
-let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
-let g:pymode_lint_message = 1
-" Syntax
-let g:pymode_syntax_all = 1
-" Disable breakpoints plugin
-let g:pymode_breakpoint = 0
-let g:pymode_breakpoint_bind = '<LocalLeader>b'
-" Don't autofold code
-let g:pymode_folding = 0
+" let g:pymode=1
+" " Enable default options
+" " text-width, commentstring, ...
+" let g:pymode_options=0
+" " Python version (python 2 -> vim needs to be compiled with the
+" " appropriate flags
+" let g:pymode_python='python'
+" " Motion
+" " M: Method
+" " C: Class
+" let g:pymode_motion=1
+" " Documentation
+" let g:pymode_doc=1
+" let g:pymode_doc_key='K'
+" " Run code
+" let g:pymode_run=1
+" let g:pymode_run_bind='cr'
+" " Linting
+" let g:pymode_lint = 1
+" let g:pymode_lint_checkers = ['pyflakes', 'pep8', 'mccabe']
+" let g:pymode_lint_message = 1
+" " Syntax
+" let g:pymode_syntax_all = 1
+" " Disable breakpoints plugin
+" let g:pymode_breakpoint = 0
+" let g:pymode_breakpoint_bind = '<LocalLeader>b'
+" " Don't autofold code
+" let g:pymode_folding = 0
 " }}}
 
 " Scala {{{
@@ -997,7 +1000,9 @@ nnoremap <leader>et :edit ~/.tmux.conf<CR>
 " Scroll Off
 nnoremap <Leader>zz :let &scrolloff=999-&scrolloff<CR>
 " nnoremap <silent><Leader>t :<C-u>VimFilerExplorer -split -simple -parent -winwidth=35 -auto-expand -toggle -no-quit<CR>
+" nnoremap <silent><Leader>t :<C-u>NERDTreeToggle<CR>
 nnoremap <silent><Leader>t :<C-u>NERDTreeToggle<CR>
+nnoremap <silent><Leader>f :<C-u>NERDTreeToggle %<CR>
 " Spell checking
 nnoremap <silent> <leader>s :set spell!<CR>
 " Numbers
@@ -1064,7 +1069,7 @@ augroup OMNIFUNCS
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-  autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+  " autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
   " autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 augroup END
@@ -1120,7 +1125,7 @@ augroup HASKELLSTYLISH
 augroup END
 
 augroup BASH
-  autocmd! BufwritePost *.sh Neomake
+  autocmd! BufwritePost *.sh Neomake!
 augroup END
 
 augroup HASKELL
@@ -1212,8 +1217,14 @@ augroup END
 augroup PYTHON
   autocmd!
   " autocmd BufEnter *.py let g:deoplete#ignore_sources.python = ['omni']
-  autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
+  " autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
   autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()
+  " a conda env is created with neovim and pynvim available
+  " conda create -n pynvim python=3.7
+  " conda activate pynvim
+  " conda install pynvim neovim
+  " which python
+  let g:python3_host_prog='/home/chouffe/anaconda3/envs/pynvim/bin/python'
 augroup END
 
 augroup GOYO
@@ -1295,7 +1306,7 @@ function! JavaScriptSettings()
 endfunction
 
 function! PythonSettings()
-  " TODO
+  autocmd! BufWritePost * Neomake
 endfunction
 
 " Helper function, called below with mappings
@@ -1403,24 +1414,29 @@ endif
 " }}}
 " Mappings {{{
 nnoremap <silent><C-p> :FZF<CR>
-nnoremap <silent><C-f> :Unite -buffer-name=search line:all -start-insert<CR>
+" nnoremap <silent><C-f> :Unite -buffer-name=search line:all -start-insert<CR>
+nnoremap <silent><C-f> :FZFBLines<CR>
+nnoremap <silent><M-f> :FZFLines<CR>
 nnoremap <silent> <Leader>a :FZFRg <C-R><C-W><CR>
 nnoremap <silent> <Leader>: :FZFHistory:<CR>
 nnoremap <silent> <Leader>/ :FZFHistory/<CR>
 nnoremap <silent><C-q> :FZFRg <C-R><C-W><CR>
-nnoremap <silent><C-s> :<C-u>Unite neosnippet -start-insert<CR>
-nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
+" nnoremap <silent><C-s> :<C-u>Unite neosnippet -start-insert<CR>
+" nnoremap <silent> <C-y> :<C-u>Unite history/yank<CR>
 " nnoremap <silent><M-g> :FZFAg<CR>'
 nnoremap <silent><M-g> :FZFRg<CR>'
 nnoremap <silent><M-p> :FZFFiles<CR>
 nnoremap <silent><C-b> :FZFBuffers<CR>
 nnoremap <silent><M-b> :FZFBuffers<CR>
-nnoremap <silent><M-t> :Unite -buffer-name=tags tag -start-insert<CR>
-nnoremap <silent><M-f> :Unite -buffer-name=buffer-tags tag:% -start-insert<CR>
-nnoremap <silent><M-o> :FZFLines<CR>
-nnoremap <silent><M-m> :FZFMarks<CR>
-nnoremap <silent><M-/> :Unite anzu -no-start-insert<CR>
-nnoremap <silent><C-/> :Unite anzu -no-start-insert<CR>
+" nnoremap <silent><M-t> :Unite -buffer-name=tags tag -start-insert<CR>
+" nnoremap <silent><M-f> :Unite -buffer-name=buffer-tags tag:% -start-insert<CR>
+nnoremap <silent><C-t> :FZFBTags<CR>
+nnoremap <silent><M-t> :FZFTags<CR>
+" nnoremap <silent><M-o> :FZFLines<CR>
+" nnoremap <silent><M-m> :FZFMarks<CR>
+nnoremap <silent><C-m> :FZFMarks<CR>
+" nnoremap <silent><M-/> :Unite anzu -no-start-insert<CR>
+" nnoremap <silent><C-/> :Unite anzu -no-start-insert<CR>
 
 " Insert mode completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
