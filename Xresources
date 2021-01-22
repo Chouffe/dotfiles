@@ -2,12 +2,22 @@
 ! URxvt*buffered: true
 URxvt.cursorBlink: true
 URxvt.underlineColor: #d79921
-URxvt.font:  xft:Inconsolata for Powerline:size=14:antialias=true
-URxvt.boldFont:  xft:Inconsolata for Powerline:size=14:antialias=true
+URxvt.font:  xft:Inconsolata\ for\ Powerline:size=18:antialias=true, xft:DejaVu\ Sans:pixelsize=18:minspace=False
+! URxvt*font:              xft:Noto Mono:pixelsize=14:style=Regular,\
+!                          xft:Noto Emoji:pixelsize=14:style=Regular
+URxvt.boldFont:  xft:Inconsolata\ for\ Powerline:size=18:antialias=true, xft:DejaVu\ Sans:pixelsize=18:minspace=False
+URxvt.italicFont: xft:FantasqueSansMono-Italic:pixelsize=18:antialias=true
+! URxvt.boldFont:  xft:DejaVu Sans:pixelsize=18
+! URxvt.font:  xft:DejaVu Sans:pixelsize=14
+! URxvt.font:  xft:Noto Emoji:pixelsize=14, xft:Terminus:pixelsize=14
+! URxvt.font:  xft:Terminus:pixelsize=14
 URxvt.depth: 32
 URxvt.borderless: 1
 URxvt.scrollBar: false
 URxvt.loginShell: true
+URxvt.letterSpace: -2
+URxvt*locale:            en_US.UTF-8
+URxvt*skipBuiltInGlyphs: true
 ! Enable Shift-PageUp/Down in screen
 Urxvt.secondaryScroll:  true
 URxvt.saveLines: 5000
@@ -24,12 +34,17 @@ Xft.dpi:       96
 ! }}
 
 ! Transparency
-! URxvt*transparent: true
-! URxvt*shading: 90
+URxvt.transparent: true
+URxvt.shading: 25
+! Real Transparency
+! URxvt.depth: 32
+! urxvt*background: rgba:0000/0000/0200/c800
+! urxvt*background: rgba:0000/0000/1111/dddd
+URxvt.background: rgba:0000/0000/0000/c811
 
 ! Use visual bell on receipt of a bell character. Helpful to be used with inputrc and tmux.
-URxvt*visualBell:  false
-URxvt*urgentOnBell: false
+URxvt.visualBell:  false
+URxvt.urgentOnBell: false
 
 ! Plugins
 ! Resource: http://funloop.org/post/2015-06-25-urxvt-plugins.html
