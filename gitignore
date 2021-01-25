@@ -16,3 +16,4 @@ ajunk/
 .gitconfig
 .git/
 repl-history
+.ipython
