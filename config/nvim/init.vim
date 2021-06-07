@@ -45,7 +45,7 @@ nmap ga <Plug>(EasyAlign)
 " }}}
 
 " FZF {{{
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf',  { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'tweekmonster/fzf-filemru'
 
@@ -225,12 +225,18 @@ Plug 'miyakogi/conoline.vim'
 " vim over: :substitute preview
 Plug 'osyo-manga/vim-over'
 
-" tslime {{{
-Plug 'chouffe/tslime.vim'
+" vim-slime {{{
+" Plug 'jpalardy/vim-slime'
 
-let g:tslime_always_current_session = 1
-let g:tslime_always_current_window = 1
-let g:tslime_ensure_trailing_newlines = 1
+" let g:slime_target = "tmux"
+" }}}
+
+" tslime {{{
+" Plug 'chouffe/tslime.vim'
+
+" let g:tslime_always_current_session = 1
+" let g:tslime_always_current_window = 1
+" let g:tslime_ensure_trailing_newlines = 1
 
 " let g:tslime_normal_mapping = rs
 " let g:tslime_visual_mapping = rs
@@ -282,12 +288,14 @@ let g:neomake_open_list = 1        " Conserves the cursor position + open the qu
 let g:neomake_highlight_lines = 1
 let g:neomake_haskell_enabled_makers = ['hlint']
 let g:neomake_javascript_enabled_makers = ['eslint']
+" let g:neomake_python_enabled_makers = ['pylint', flake8']
 let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_yaml_enabled_makers = ['yamllint']
 " }}}
 
 " Snippets {{{
 " Snipmate {{{
-Plug 'garbas/vim-snipmate'
+" Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 " }}}
 " Neosnippet {{{
@@ -466,16 +474,28 @@ nnoremap <Leader>ggp :Gpush<CR>
 nnoremap <Leader>ggl :Gpull<CR>
 " }}}
 
+" minimalist status/tabline for vim
+" lightline {{{
+Plug 'itchyny/lightline.vim'
+
+let g:lightline = {
+  \     'colorscheme': 'onedark',
+  \     'active': {
+  \         'left': [['mode', 'paste' ], ['readonly', 'filename', 'modified']],
+  \         'right': [['lineinfo'], ['percent'], ['fileformat', 'fileencoding']]
+  \     }
+  \ }
+" }}}
 " lean & mean status/tabline for vim that's light as air
 " vim-airline {{{
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
 
-let g:airline_theme="gruvbox"
-let g:airline_powerline_fonts=1
-let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tabline#buffer_nr_show=1
-let g:airline#extensions#tabline#buffer_min_count= 2
+" let g:airline_theme="gruvbox"
+" let g:airline_powerline_fonts=1
+" let g:airline#extensions#tabline#enabled=1
+" let g:airline#extensions#tabline#buffer_nr_show=1
+" let g:airline#extensions#tabline#buffer_min_count= 2
 " }}}
 
 " Tmux {{{
@@ -569,54 +589,54 @@ Plug 'kristijanhusak/vim-hybrid-material'
 Plug 'Wutzara/vim-materialtheme'
 " }}}
 
-Plug 'majutsushi/tagbar', { 'for': ['haskell'] }
+" Plug 'majutsushi/tagbar', { 'for': ['haskell'] }
 " Tags {{{
 Plug 'szw/vim-tags'  " Ctags generator for Vim
 
-set tags=tags;/,codex.tags;/
-let g:tagbar_type_ruby = {
-      \ 'kinds' : [
-      \ 'm:modules',
-      \ 'c:classes',
-      \ 'd:describes',
-      \ 'C:contexts',
-      \ 'f:methods',
-      \ 'F:singleton methods'
-      \ ]
-      \ }
-let g:tagbar_type_haskell = {
-      \ 'ctagsbin'  : 'hasktags',
-      \ 'ctagsargs' : '-x -c -o-',
-      \ 'kinds'     : [
-      \  'm:modules:0:1',
-      \  'd:data: 0:1',
-      \  'd_gadt: data gadt:0:1',
-      \  't:type names:0:1',
-      \  'nt:new types:0:1',
-      \  'c:classes:0:1',
-      \  'cons:constructors:1:1',
-      \  'c_gadt:constructor gadt:1:1',
-      \  'c_a:constructor accessors:1:1',
-      \  'ft:function types:1:1',
-      \  'fi:function implementations:0:1',
-      \  'o:others:0:1'
-      \ ],
-      \ 'sro'        : '.',
-      \ 'kind2scope' : {
-      \ 'm' : 'module',
-      \ 'c' : 'class',
-      \ 'd' : 'data',
-      \ 't' : 'type'
-      \ },
-      \ 'scope2kind' : {
-      \ 'module' : 'm',
-      \ 'class'  : 'c',
-      \ 'data'   : 'd',
-      \ 'type'   : 't'
-      \ }
-      \ }
+" set tags=tags;/,codex.tags;/
+" let g:tagbar_type_ruby = {
+"       \ 'kinds' : [
+"       \ 'm:modules',
+"       \ 'c:classes',
+"       \ 'd:describes',
+"       \ 'C:contexts',
+"       \ 'f:methods',
+"       \ 'F:singleton methods'
+"       \ ]
+"       \ }
+" let g:tagbar_type_haskell = {
+"       \ 'ctagsbin'  : 'hasktags',
+"       \ 'ctagsargs' : '-x -c -o-',
+"       \ 'kinds'     : [
+"       \  'm:modules:0:1',
+"       \  'd:data: 0:1',
+"       \  'd_gadt: data gadt:0:1',
+"       \  't:type names:0:1',
+"       \  'nt:new types:0:1',
+"       \  'c:classes:0:1',
+"       \  'cons:constructors:1:1',
+"       \  'c_gadt:constructor gadt:1:1',
+"       \  'c_a:constructor accessors:1:1',
+"       \  'ft:function types:1:1',
+"       \  'fi:function implementations:0:1',
+"       \  'o:others:0:1'
+"       \ ],
+"       \ 'sro'        : '.',
+"       \ 'kind2scope' : {
+"       \ 'm' : 'module',
+"       \ 'c' : 'class',
+"       \ 'd' : 'data',
+"       \ 't' : 'type'
+"       \ },
+"       \ 'scope2kind' : {
+"       \ 'module' : 'm',
+"       \ 'class'  : 'c',
+"       \ 'data'   : 'd',
+"       \ 'type'   : 't'
+"       \ }
+"       \ }
 
-nnoremap <silent> <Leader>b :TagbarToggle<CR>
+" nnoremap <silent> <Leader>b :TagbarToggle<CR>
 " }}}
 
 " -------------------------
@@ -627,6 +647,10 @@ nnoremap <silent> <Leader>b :TagbarToggle<CR>
 Plug 'davidhalter/jedi-vim', { 'for': 'python' }
 Plug 'numirias/semshi', { 'for': 'python', 'do': ':UpdateRemotePlugins' }
 Plug 'Vimjas/vim-python-pep8-indent', { 'for': 'python' }
+Plug 'python/black', { 'for': 'python' }
+Plug 'preservim/tagbar', { 'for': 'python' }
+Plug 'metakirby5/codi.vim', { 'for': 'python' }
+
 " Plug 'julienr/vimux-pyutils', {'for': 'python' }
 " Plug 'benmills/vimux'
 " Plug 'klen/python-mode', { 'for': 'python' }
@@ -1038,6 +1062,7 @@ nnoremap <Leader>h :bprevious<CR>
 nnoremap <Leader>x :only<CR>
 " Close the current buffer and back to the last edited
 nnoremap <leader>d :call BufferDelete()<CR>
+nnoremap <LocalLeader>d :call BufferDelete()<CR>
 " }}}
 " }}}
 
@@ -1217,7 +1242,7 @@ augroup END
 augroup PYTHON
   autocmd!
   " autocmd BufEnter *.py let g:deoplete#ignore_sources.python = ['omni']
-  " autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
+  autocmd BufNewFile,BufRead,BufReadPost *.py call TslimeSettings()
   autocmd BufNewFile,BufRead,BufReadPost *.py call PythonSettings()
   " a conda env is created with neovim and pynvim available
   " conda create -n pynvim python=3.7
@@ -1265,10 +1290,11 @@ augroup END
 " }}}
 
 " Tslime {{{
+" TODO: remove
 function! TslimeSettings()
-  vmap <silent> ce <Plug>SendSelectionToTmux
-  nmap <silent> ce <Plug>NormalModeSendToTmux
-  nmap <silent> cc <Plug>NormalModeSendAllToTmux
+  " vmap <silent> ce <Plug>SendSelectionToTmux
+  " nmap <silent> ce <Plug>NormalModeSendToTmux
+  " nmap <silent> cc <Plug>NormalModeSendAllToTmux
 endfunction
 " }}}
 
@@ -1306,7 +1332,9 @@ function! JavaScriptSettings()
 endfunction
 
 function! PythonSettings()
-  autocmd! BufWritePost * Neomake
+  autocmd! BufWritePost *.py Neomake
+  autocmd! BufWritePre *.py silent! execute ':Black'
+  nnoremap <silent> <LocalLeader>b :TagbarToggle<CR>
 endfunction
 
 " Helper function, called below with mappings
@@ -1450,6 +1478,21 @@ imap <c-x><c-l> <plug>(fzf-complete-line)
 " }}}
 
 " Util Functions {{{
+" Create a Scratch Buffer
+function! ScratchEdit(cmd, options)
+  exe a:cmd tempname()
+  setl buftype=nofile bufhidden=wipe nobuflisted
+  if !empty(a:options) | exe 'setl' a:options | endif
+endfunction
+
+" Commands to Start the scratch buffer
+" Ex: :Sedit ft=javascript
+" Ex: :Ssplit ft=python
+command! -bar -nargs=* Sedit call ScratchEdit('edit', <q-args>)
+command! -bar -nargs=* Ssplit call ScratchEdit('split', <q-args>)
+command! -bar -nargs=* Svsplit call ScratchEdit('vsplit', <q-args>)
+command! -bar -nargs=* Stabedit call ScratchEdit('tabe', <q-args>)
+
 " Remove trailing whitespace
 function! TrimWhiteSpace()
     %s/\s\+$//e
