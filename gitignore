@@ -17,3 +17,5 @@ ajunk/
 .git/
 repl-history
 .ipython
+scratch.py
+.tern-port
